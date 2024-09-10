@@ -37,7 +37,6 @@ public class PlayerMover : MonoBehaviour
         SetAnimState();
 
         _characterController.Move(_direction.normalized * GetMoveSpeed() * Time.deltaTime);
-        Debug.Log($"{GetMoveSpeed()}");
     }
 
     private float GetMoveSpeed()
