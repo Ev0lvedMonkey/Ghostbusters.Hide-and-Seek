@@ -1,17 +1,15 @@
-using Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMover : MonoBehaviour
+public abstract class  CharacterMover : MonoBehaviour
 {
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private Animator _animator;
 
     private Vector3 _direction;
-    private Vector2 _input;
+    protected Vector2 _input;
 
-    private const string Horizontal = "Horizontal";
-    private const string Vertical = "Vertical";
+    protected const string Horizontal = "Horizontal";
+    protected const string Vertical = "Vertical";
     private const float BackMoveSpeed = 3.375f;
     private const float MovementSpeed = 4.5f;
 
@@ -26,7 +24,7 @@ public class PlayerMover : MonoBehaviour
         Move();
     }
 
-    private void Move()
+    public virtual void Move()
     {
         _input = GetInput();
 
@@ -34,8 +32,6 @@ public class PlayerMover : MonoBehaviour
         float verticalInput = _input.y;
 
         _direction = transform.forward * verticalInput + transform.right * horizontalInput;
-
-        SetAnimState();
 
         _characterController.Move(_direction.normalized * GetMoveSpeed() * Time.deltaTime);
     }
@@ -48,14 +44,8 @@ public class PlayerMover : MonoBehaviour
             return MovementSpeed;
     }
 
-    private void SetAnimState()
-    {
-        _animator.SetFloat(Horizontal, _input.x);
-        _animator.SetFloat(Vertical, _input.y);
-    }
-
     private Vector2 GetInput()
     {
-        return new Vector2(UnityEngine.Input.GetAxis(Horizontal), UnityEngine.Input.GetAxis(Vertical));
+        return new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
     }
 }
