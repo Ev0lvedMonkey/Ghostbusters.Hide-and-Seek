@@ -1,10 +1,10 @@
 
 public class HealthController
 {
-    private HealthModel _healthModel;
+    private GhostbusterHealthModel _healthModel;
     private HealthView _healthView;
 
-    public HealthController(HealthModel healthModel, HealthView healthView)
+    public HealthController(GhostbusterHealthModel healthModel, HealthView healthView)
     {
         _healthModel = healthModel;
         _healthView = healthView;

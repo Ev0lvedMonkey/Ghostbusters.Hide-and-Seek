@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Zenject;
+using Zenject.SpaceFighter;
 
 public class WeponFire : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class WeponFire : MonoBehaviour
     [SerializeField, Range(1f, 250f)] private float _maxRayDistance;
     [SerializeField] private ParticleSystem _hitEffect;
 
-    private HealthController _healthController;
+    private GhostbusterHealthController _ghostbusterHealthController;
+    private GhostHealthController _ghostHealthController;
     private float _fireRateTimer;
     private float _cooldownTimer;
     private LayerMask _targetLayerMask;
@@ -27,6 +29,7 @@ public class WeponFire : MonoBehaviour
     private void Start()
     {
         _fireRateTimer = _fireRate;
+        _cooldownTimer = HitCooldown;
 
         _targetLayerMask = LayerMask.GetMask(GhostLayer);
         _aghtungMask = LayerMask.GetMask(TransformableLayer);
@@ -39,6 +42,7 @@ public class WeponFire : MonoBehaviour
             return;
         Fire();
     }
+
 
     private bool ShouldFire()
     {
@@ -71,14 +75,14 @@ public class WeponFire : MonoBehaviour
 
             if (((1 << hitLayer) & _targetLayerMask) != 0)
             {
+                _ghostHealthController.TakeDamage();
                 Debug.Log("Hit ghost object");
                 _cooldownTimer = 0;
             }
             else if (((1 << hitLayer) & _aghtungMask) != 0)
             {
                 Debug.Log("Hit transformable object");
-                _healthController.TakeDamage();
-
+                _ghostbusterHealthController.TakeDamage();
             }
             else if (((1 << hitLayer) & _staticObjectsMask) != 0)
             {
@@ -97,8 +101,20 @@ public class WeponFire : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(HealthController healthController)
+    public void Construct(GhostbusterHealthController ghostbusterhealthController, GhostHealthController ghostHealthController)
     {
-        _healthController = healthController;
+        _ghostbusterHealthController = ghostbusterhealthController;
+        _ghostHealthController = ghostHealthController;
+    }
+
+    [Inject]
+    public void InitializeSignal (SignalBus signalBus)
+    {
+        signalBus.Subscribe<PlayerDiedSignal>(OnPlayerDied);
+    }
+
+    private void OnPlayerDied()
+    {
+        Debug.Log($"try dead");
     }
 }

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthView : MonoBehaviour
+public abstract class HealthView : MonoBehaviour
 {
     [SerializeField] private Image _healthBarImage;
     [SerializeField] private TextMeshProUGUI _healthText;
