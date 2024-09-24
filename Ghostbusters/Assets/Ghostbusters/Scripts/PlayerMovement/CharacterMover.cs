@@ -19,10 +19,6 @@ public abstract class  CharacterMover : MonoBehaviour
             _characterController = GetComponent<CharacterController>();
     }
 
-    private void Update()
-    {
-        Move();
-    }
 
     public virtual void Move()
     {

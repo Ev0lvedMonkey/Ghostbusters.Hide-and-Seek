@@ -1,75 +1,42 @@
+using Org.BouncyCastle.Tls;
 using System;
 using UnityEngine;
 using Zenject;
 using Zenject.SpaceFighter;
 
-public class WeponFire : MonoBehaviour
+public class WeponFire : RayFiringObject
 {
-    [SerializeField, Range(0.02f, 3f)] private float _fireRate;
-    [SerializeField, Range(1f, 250f)] private float _maxRayDistance;
     [SerializeField] private ParticleSystem _hitEffect;
 
     private GhostbusterHealthController _ghostbusterHealthController;
     private GhostHealthController _ghostHealthController;
-    private float _fireRateTimer;
-    private float _cooldownTimer;
     private LayerMask _targetLayerMask;
     private LayerMask _aghtungMask;
     private LayerMask _staticObjectsMask;
-
-    private const KeyCode LMB = KeyCode.Mouse0;
-    private const float ResetCooldownTime = 0;
-    private const float HitCooldown = 3f;
 
     private const string GhostLayer = "Ghost";
     private const string TransformableLayer = "Transformable";
     private const string StaticObjectsLayer = "StaticObjects";
 
 
-    private void Start()
+    protected override void Start()
     {
-        _fireRateTimer = _fireRate;
-        _cooldownTimer = HitCooldown;
-
+        base.Start();
         _targetLayerMask = LayerMask.GetMask(GhostLayer);
         _aghtungMask = LayerMask.GetMask(TransformableLayer);
         _staticObjectsMask = LayerMask.GetMask(StaticObjectsLayer);
     }
 
-    private void Update()
+    protected override void HandleFire()
     {
-        if (!ShouldFire())
-            return;
-        Fire();
-    }
-
-
-    private bool ShouldFire()
-    {
-        _fireRateTimer += Time.deltaTime;
-        _cooldownTimer += Time.deltaTime;
-
-        if (_fireRateTimer < _fireRate) return false;
-        if (_cooldownTimer < HitCooldown) return false;
-        if (Input.GetKeyDown(LMB)) return true;
-
-        return false;
-    }
-
-    private void Fire()
-    {
-        _fireRateTimer = ResetCooldownTime;
-
         Transform firePosition = ServiceLocator.Current.Get<FirePositionService>().FirePosition;
 
         Ray ray = new(firePosition.position, firePosition.forward);
-        RaycastHit hit;
 
         Debug.DrawRay(firePosition.position, firePosition.forward * _maxRayDistance, Color.red, 3);
 
-        int combinedMask = _targetLayerMask | _aghtungMask | _staticObjectsMask;
 
-        if (Physics.Raycast(ray, out hit, _maxRayDistance, combinedMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, _maxRayDistance))
         {
             int hitLayer = hit.collider.gameObject.layer;
 
@@ -77,7 +44,7 @@ public class WeponFire : MonoBehaviour
             {
                 _ghostHealthController.TakeDamage();
                 Debug.Log("Hit ghost object");
-                _cooldownTimer = 0;
+                StartCooldown();
             }
             else if (((1 << hitLayer) & _aghtungMask) != 0)
             {
@@ -108,7 +75,7 @@ public class WeponFire : MonoBehaviour
     }
 
     [Inject]
-    public void InitializeSignal (SignalBus signalBus)
+    public void InitializeSignal(SignalBus signalBus)
     {
         signalBus.Subscribe<PlayerDiedSignal>(OnPlayerDied);
     }
@@ -117,4 +84,5 @@ public class WeponFire : MonoBehaviour
     {
         Debug.Log($"try dead");
     }
+
 }
