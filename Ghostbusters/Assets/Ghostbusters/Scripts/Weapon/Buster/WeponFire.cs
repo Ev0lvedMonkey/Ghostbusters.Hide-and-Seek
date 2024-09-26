@@ -1,5 +1,3 @@
-using Org.BouncyCastle.Tls;
-using System;
 using UnityEngine;
 using Zenject;
 using Zenject.SpaceFighter;
@@ -18,6 +16,8 @@ public class WeponFire : RayFiringObject
     private const string TransformableLayer = "Transformable";
     private const string StaticObjectsLayer = "StaticObjects";
 
+    [Inject]
+    private DiContainer _container;
 
     protected override void Start()
     {
@@ -26,6 +26,7 @@ public class WeponFire : RayFiringObject
         _aghtungMask = LayerMask.GetMask(TransformableLayer);
         _staticObjectsMask = LayerMask.GetMask(StaticObjectsLayer);
     }
+
 
     protected override void HandleFire()
     {

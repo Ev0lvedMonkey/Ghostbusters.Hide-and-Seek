@@ -1,6 +1,7 @@
 using UnityEngine;
+using Mirror;
 
-public abstract class RayFiringObject : MonoBehaviour
+public abstract class RayFiringObject : NetworkBehaviour
 {
     [SerializeField, Range(0.02f, 3f)] protected float _fireRate;
     [SerializeField, Range(1f, 250f)] protected float _maxRayDistance;
@@ -20,6 +21,9 @@ public abstract class RayFiringObject : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!isLocalPlayer) 
+            return;
+
         if (!CanFire())
             return;
 

@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class GhostBusterMover : CharacterMover
+public class GhostbusterMover : CharacterMover
 {
     [SerializeField] private Animator _animator;
 
     private void Update()
     {
+        if (!isLocalPlayer) return;
+
         SetAnimState();
         base.Move();
     }

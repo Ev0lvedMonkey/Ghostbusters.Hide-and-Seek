@@ -1,3 +1,5 @@
+using UnityEngine;
+using Mirror;
 
 public class GhostbusterHealthController
 {
@@ -9,16 +11,16 @@ public class GhostbusterHealthController
         _healthModel = healthModel;
         _healthView = healthView;
 
-        UpdateView();
+        RpcUpdateView();
     }
 
     public void TakeDamage()
     {
         _healthModel.TakeDamage();
-        UpdateView();
+        RpcUpdateView();
     }
 
-    private void UpdateView()
+    private void RpcUpdateView()
     {
         _healthView.UpdateHealthBar(_healthModel.GetHealthPercentage(), _healthModel.CurrentHealth);
     }

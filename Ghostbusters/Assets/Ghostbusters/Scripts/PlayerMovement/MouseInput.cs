@@ -1,7 +1,8 @@
+using Mirror;
 using System;
 using UnityEngine;
 
-public class MouseInput : MonoBehaviour
+public class MouseInput : NetworkBehaviour
 {
     [SerializeField, Range(1f, 5f)] private float _mouseSense;
     [SerializeField] private Transform _camFollowPosition;
@@ -23,6 +24,8 @@ public class MouseInput : MonoBehaviour
 
     private void Update()
     {
+        if(!isLocalPlayer) return;
+
         SetMousePos();
     }
 

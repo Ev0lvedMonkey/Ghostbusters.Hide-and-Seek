@@ -1,7 +1,8 @@
+using Mirror;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public abstract class  CharacterMover : MonoBehaviour
+public abstract class  CharacterMover : NetworkBehaviour
 {
     [SerializeField] private CharacterController _characterController;
 
@@ -22,6 +23,8 @@ public abstract class  CharacterMover : MonoBehaviour
 
     public virtual void Move()
     {
+        if (!isLocalPlayer) return;
+
         _input = GetInput();
 
         float horizontalInput = _input.x;
@@ -30,6 +33,8 @@ public abstract class  CharacterMover : MonoBehaviour
         _direction = transform.forward * verticalInput + transform.right * horizontalInput;
 
         _characterController.Move(_direction.normalized * GetMoveSpeed() * Time.deltaTime);
+
+        //CmdUpdatePosition(transform.position);
     }
 
     private float GetMoveSpeed()
@@ -43,5 +48,20 @@ public abstract class  CharacterMover : MonoBehaviour
     private Vector2 GetInput()
     {
         return new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
+    }
+
+    [Command]
+    private void CmdUpdatePosition(Vector3 position)
+    {
+        RpcUpdatePosition(position);
+    }
+
+    [ClientRpc]
+    private void RpcUpdatePosition(Vector3 position)
+    {
+        if (!isLocalPlayer)
+        {
+            transform.position = position; 
+        }
     }
 }

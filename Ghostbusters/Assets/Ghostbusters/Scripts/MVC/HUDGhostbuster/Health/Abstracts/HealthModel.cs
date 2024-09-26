@@ -1,6 +1,4 @@
 using UnityEngine;
-using Zenject;
-using Zenject.SpaceFighter;
 
 public abstract class HealthModel
 {   

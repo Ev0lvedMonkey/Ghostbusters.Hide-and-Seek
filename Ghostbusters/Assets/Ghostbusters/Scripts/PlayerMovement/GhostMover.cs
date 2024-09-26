@@ -14,6 +14,7 @@ public class GhostMover : CharacterMover
 
     private void Update()
     {
+        if (!isLocalPlayer) return;
         TryJump();
         base.Move();
     }
