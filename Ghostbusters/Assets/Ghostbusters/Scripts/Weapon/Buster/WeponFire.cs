@@ -27,7 +27,7 @@ public class WeponFire : RayFiringObject
         _staticObjectsMask = LayerMask.GetMask(StaticObjectsLayer);
     }
 
-
+    [System.Obsolete]
     protected override void HandleFire()
     {
         Transform firePosition = ServiceLocator.Current.Get<FirePositionService>().FirePosition;
@@ -61,6 +61,7 @@ public class WeponFire : RayFiringObject
         }
     }
 
+    [System.Obsolete]
     private void MakeHitEffect(RaycastHit hit)
     {
         GameObject hitEffect = Instantiate(_hitEffect.gameObject, hit.point, Quaternion.LookRotation(hit.normal));

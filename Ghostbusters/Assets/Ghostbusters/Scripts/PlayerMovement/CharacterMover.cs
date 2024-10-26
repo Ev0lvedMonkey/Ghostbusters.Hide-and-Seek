@@ -14,13 +14,6 @@ public abstract class  CharacterMover : NetworkBehaviour
     private const float BackMoveSpeed = 3.375f;
     private const float MovementSpeed = 4.5f;
 
-    private void OnValidate()
-    {
-        if (_characterController == null)
-            _characterController = GetComponent<CharacterController>();
-    }
-
-
     public virtual void Move()
     {
         if (!isLocalPlayer) return;

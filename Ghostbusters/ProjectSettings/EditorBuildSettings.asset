@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Ghostbusters/Scenes/MainMenuScene.unity
+    guid: 912e09e3e5db1cc4196d137b2231c0fe
+  - enabled: 1
+    path: Assets/Ghostbusters/Scenes/CharactersScene.unity
+    guid: b39dd0927acac834c8c0f96425352e91
+  - enabled: 1
+    path: Assets/Ghostbusters/Scenes/LoadingScene.unity
+    guid: 8d5bf6330096029408a8ae04d7ddd674
   m_configObjects: {}
