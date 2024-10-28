@@ -1,8 +1,6 @@
 using System.Diagnostics;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public static class SceneLoader
 {
@@ -10,10 +8,10 @@ public static class SceneLoader
     public enum Scene
     {
         CharactersScene,
-        MainMenuScene,
+        MenuScene,
         GameScene,
         LoadingScene,
-        MenuScene
+        LobbyScene
     }
 
     private static Scene _targetScene;

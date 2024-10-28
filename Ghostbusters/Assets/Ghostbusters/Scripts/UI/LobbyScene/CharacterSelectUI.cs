@@ -12,11 +12,9 @@ public class CharacterSelectUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _lobbyNameText;
     [SerializeField] private TextMeshProUGUI _lobbyCodeText;
 
-
     private void Awake()
     {
         Init();
-
     }
 
     private void Init()
@@ -33,29 +31,17 @@ public class CharacterSelectUI : MonoBehaviour
         Debug.Log("Copied");
     }
 
-    private static void SetReady()
+    private void SetReady()
     {
         CharacterSelectReady.Instance.SetPlayerReady();
     }
 
     private static void BackToMenu()
     {
-        if (NetworkManager.Singleton.IsServer)
-        {
-            LobbyRelayManager.Instance.LeaveLobby();
-            LobbyRelayManager.Instance.DeleteLobby();
-            NetworkManager.Singleton.Shutdown();
-            Debug.Log("Shutting down host");
-            SceneLoader.Load(SceneLoader.Scene.MainMenuScene);
-        }
-        else
-        {
-            LobbyRelayManager.Instance.LeaveLobby();
-            LobbyRelayManager.Instance.DeleteLobby();
-            NetworkManager.Singleton.Shutdown();
-            Debug.Log("Shutting down");
-            SceneLoader.Load(SceneLoader.Scene.MainMenuScene);
-        }
+        LobbyRelayManager.Instance.LeaveLobbyServerRpc();
+        NetworkManager.Singleton.Shutdown();
+        Debug.Log("Shutting down host");
+        SceneLoader.Load(SceneLoader.Scene.MenuScene);
         Debug.Log("Shutting click");
     }
 

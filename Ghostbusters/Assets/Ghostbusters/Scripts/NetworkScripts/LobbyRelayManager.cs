@@ -19,11 +19,6 @@ using UnityEngine.SceneManagement;
 
 public class LobbyRelayManager : MonoBehaviour
 {
-    [SerializeField] private Button _createLobbyBtn;
-    [SerializeField] private Button _joinLobbyBtn;
-    [SerializeField] private Button _quitBtn;
-    [SerializeField] private TMP_InputField _lobbyCodeInputField;
-
     internal UnityEvent OnCreateLobbyStarted;
     internal UnityEvent OnCreateLobbyFailed;
     internal UnityEvent OnJoinStarted;
@@ -35,37 +30,19 @@ public class LobbyRelayManager : MonoBehaviour
     private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
     public const string KEY_PLAYER_NAME = "PlayerName";
 
-    private float heartbeatTimer;
-    private float lobbyPollTimer;
-    private Lobby joinedLobby;
-    private string playerName;
+    private float _heartbeatTimer;
+    private float _lobbyPollTimer;
+    private Lobby _joinedLobby;
+    private string _playerName;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            Debug.Log($"{gameObject.name} singlton instanced");
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        Debug.LogError($"{gameObject.name} singlton instanced");
+
         InitializeUnityAuthentication();
-        _createLobbyBtn.onClick.AddListener(TestCreateLobby);
-        _joinLobbyBtn.onClick.AddListener(TestJoinWithCode);
-    }
-
-    private async void TestCreateLobby()
-    {
-        Debug.LogError("Click");
-        await CreateLobby("Lobby_" + UnityEngine.Random.Range(0, 200));
-    }
-
-    private async void TestJoinWithCode()
-    {
-        await JoinByCode(_lobbyCodeInputField.text);
     }
 
     public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
@@ -74,71 +51,217 @@ public class LobbyRelayManager : MonoBehaviour
         public List<Lobby> lobbyList;
     }
 
-
-    private async void InitializeUnityAuthentication()
-    {
-        if (UnityServices.State != ServicesInitializationState.Initialized)
-        {
-            playerName = "Player" + UnityEngine.Random.Range(0, 1000);
-            MultiplayerStorage.Instance.SetPlayerName(playerName);
-            InitializationOptions initializationOptions = new();
-            initializationOptions.SetProfile(playerName);
-
-            await UnityServices.InitializeAsync(initializationOptions);
-
-            AuthenticationService.Instance.SignedIn += () =>
-            {
-                Debug.Log("Signed in! " + AuthenticationService.Instance.PlayerId);
-                Debug.Log("Player name: " + playerName);
-            };
-
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        }
-    }
-
     private void Update()
     {
         HandleHeartbeat();
         HandlePeriodicListLobbies();
     }
 
+    public async Task CreateLobby(string lobbyName)
+    {
+        OnCreateLobbyStarted?.Invoke();
+        try
+        {
+            _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerStorage.MAX_PLAYER_AMOUNT, new CreateLobbyOptions
+            {
+                IsPrivate = false,
+            });
+
+            Allocation allocation = await AllocateRelay();
+
+            string relayJoinCode = await GetRelayJoinCode(allocation);
+
+            await LobbyService.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
+            {
+                Data = new Dictionary<string, DataObject> {
+                     { KEY_RELAY_JOIN_CODE , new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode) }
+                 }
+            });
+
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
+            Debug.Log($"{gameObject.name}: created lobby");
+
+            MultiplayerStorage.Instance.StartHost();
+            SceneLoader.LoadNetwork(SceneLoader.Scene.CharactersScene);
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            OnCreateLobbyFailed?.Invoke();
+        }
+    }
+
+    public async void QuickJoin()
+    {
+        OnJoinStarted?.Invoke();
+        try
+        {
+            _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+
+            string relayJoinCode = _joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+
+            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+            Debug.Log($"{gameObject.name}: quick joined");
+
+            MultiplayerStorage.Instance.StartClient();
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            OnQuickJoinFailed?.Invoke();
+        }
+    }
+
+    public async Task JoinByCode(string lobbyCode)
+    {
+        OnJoinStarted?.Invoke();
+        try
+        {
+            _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+
+            string relayJoinCode = _joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+
+            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+            Debug.Log($"{gameObject.name}: joined by code");
+
+            MultiplayerStorage.Instance.StartClient();
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            OnJoinFailed?.Invoke();
+        }
+    }
+
+    public async void DeleteLobby()
+    {
+        if (NetworkManager.Singleton.IsServer)
+        {
+            if (_joinedLobby != null)
+            {
+                try
+                {
+                    if (_joinedLobby == null)
+                        return;
+                    await LobbyService.Instance.DeleteLobbyAsync(_joinedLobby.Id);
+
+                    _joinedLobby = null;
+                    Debug.Log($"{gameObject.name}: delete lobby");
+                }
+                catch (LobbyServiceException e)
+                {
+                    Debug.Log(e);
+                }
+            }
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public async void LeaveLobbyServerRpc()
+    {
+        if (_joinedLobby != null)
+        {
+            try
+            {
+                if (AuthenticationService.Instance.PlayerId == null)
+                    return;
+                await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                Debug.Log($"{gameObject.name}: leave lobby");
+                _joinedLobby = null;
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public async void KickPlayerServerRpc(string playerId)
+    {
+        if (IsLobbyHost())
+        {
+            try
+            {
+                await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, playerId);
+                Debug.Log($"{gameObject.name}:kicked player {playerId}");
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
+        }
+    }
+
+    public Lobby GetJoinedLobby()
+    {
+        Debug.Log($"{gameObject.name}: get lobby {_joinedLobby}");
+        return _joinedLobby;
+    }
+
+    private async void InitializeUnityAuthentication()
+    {
+        if (UnityServices.State != ServicesInitializationState.Initialized)
+        {
+            _playerName = "Player" + UnityEngine.Random.Range(0, 1000);
+            MultiplayerStorage.Instance.SetPlayerName(_playerName);
+            InitializationOptions initializationOptions = new();
+            initializationOptions.SetProfile(_playerName);
+
+            await UnityServices.InitializeAsync(initializationOptions);
+
+            AuthenticationService.Instance.SignedIn += () =>
+            {
+                Debug.Log($"{gameObject.name} Signed in! " + AuthenticationService.Instance.PlayerId);
+                Debug.Log($"{gameObject.name} Player name: " + _playerName);
+            };
+
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+    }
+
     private void HandlePeriodicListLobbies()
     {
-        if (joinedLobby == null &&
+        if (_joinedLobby == null &&
             UnityServices.State == ServicesInitializationState.Initialized &&
             AuthenticationService.Instance.IsSignedIn &&
-            SceneManager.GetActiveScene().name == SceneLoader.Scene.MainMenuScene.ToString())
+            SceneManager.GetActiveScene().name == SceneLoader.Scene.MenuScene.ToString())
         {
 
-            lobbyPollTimer -= Time.deltaTime;
-            if (lobbyPollTimer <= 0f)
+            _lobbyPollTimer -= Time.deltaTime;
+            if (_lobbyPollTimer <= 0f)
             {
                 float listLobbiesTimerMax = 3f;
-                lobbyPollTimer = listLobbiesTimerMax;
+                _lobbyPollTimer = listLobbiesTimerMax;
+                Debug.Log($"{gameObject.name}: HandlePeriodicListLobbies");
                 ListLobbies();
             }
         }
     }
 
-
     private void HandleHeartbeat()
     {
         if (IsLobbyHost())
         {
-            heartbeatTimer -= Time.deltaTime;
-            if (heartbeatTimer <= 0f)
+            _heartbeatTimer -= Time.deltaTime;
+            if (_heartbeatTimer <= 0f)
             {
                 float heartbeatTimerMax = 15f;
-                heartbeatTimer = heartbeatTimerMax;
+                _heartbeatTimer = heartbeatTimerMax;
 
-                LobbyService.Instance.SendHeartbeatPingAsync(joinedLobby.Id);
+                LobbyService.Instance.SendHeartbeatPingAsync(_joinedLobby.Id);
+                Debug.Log($"{gameObject.name}: HandleHeartbeat");
             }
         }
     }
 
     private bool IsLobbyHost()
     {
-        return joinedLobby != null && joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
+        return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
     }
 
     private async void ListLobbies()
@@ -148,7 +271,7 @@ public class LobbyRelayManager : MonoBehaviour
             QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions
             {
                 Filters = new List<QueryFilter> {
-                  new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT)
+                  new (QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT)
              }
             };
             QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(queryLobbiesOptions);
@@ -157,13 +280,18 @@ public class LobbyRelayManager : MonoBehaviour
             {
                 lobbyList = queryResponse.Results
             });
+            Debug.Log($"{gameObject.name}: Update listLobbies");
+            foreach (var item in queryResponse.Results)
+            {
+                Debug.Log($"{gameObject.name}: queryResponse {item.Name}");
+            }
+
         }
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
     }
-
 
     private async Task<Allocation> AllocateRelay()
     {
@@ -201,6 +329,7 @@ public class LobbyRelayManager : MonoBehaviour
         try
         {
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+            Debug.Log($"{gameObject.name}: joined relay");
             return joinAllocation;
         }
         catch (RelayServiceException e)
@@ -208,139 +337,5 @@ public class LobbyRelayManager : MonoBehaviour
             Debug.Log(e);
             return default;
         }
-    }
-
-
-    public async Task CreateLobby(string lobbyName)
-    {
-        OnCreateLobbyStarted?.Invoke();
-        try
-        {
-            joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerStorage.MAX_PLAYER_AMOUNT, new CreateLobbyOptions
-            {
-                IsPrivate = false,
-            });
-
-            Allocation allocation = await AllocateRelay();
-
-            string relayJoinCode = await GetRelayJoinCode(allocation);
-
-            await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
-            {
-                Data = new Dictionary<string, DataObject> {
-                     { KEY_RELAY_JOIN_CODE , new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode) }
-                 }
-            });
-
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
-
-            MultiplayerStorage.Instance.StartHost();
-            SceneLoader.LoadNetwork(SceneLoader.Scene.CharactersScene);
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-            OnCreateLobbyFailed?.Invoke();
-        }
-    }
-
-    public async void QuickJoin()
-    {
-        OnJoinStarted?.Invoke();
-        try
-        {
-            joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
-
-            string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
-
-            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
-
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
-
-            MultiplayerStorage.Instance.StartClient();
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-            OnQuickJoinFailed?.Invoke();
-        }
-    }
-
-
-    public async Task JoinByCode(string lobbyCode)
-    {
-        OnJoinStarted?.Invoke();
-        try
-        {
-            joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-
-            string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
-
-            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
-
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
-
-            MultiplayerStorage.Instance.StartClient();
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-            OnJoinFailed?.Invoke();
-        }
-    }
-
-    public async void DeleteLobby()
-    {
-        if (joinedLobby != null)
-        {
-            try
-            {
-                await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
-
-                joinedLobby = null;
-            }
-            catch (LobbyServiceException e)
-            {
-                Debug.Log(e);
-            }
-        }
-    }
-
-    public async void LeaveLobby()
-    {
-        if (joinedLobby != null)
-        {
-            try
-            {
-                await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
-
-                joinedLobby = null;
-            }
-            catch (LobbyServiceException e)
-            {
-                Debug.Log(e);
-            }
-        }
-    }
-
-    public async void KickPlayer(string playerId)
-    {
-        if (IsLobbyHost())
-        {
-            try
-            {
-                await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, playerId);
-            }
-            catch (LobbyServiceException e)
-            {
-                Debug.Log(e);
-            }
-        }
-    }
-
-
-    public Lobby GetJoinedLobby()
-    {
-        return joinedLobby;
     }
 }

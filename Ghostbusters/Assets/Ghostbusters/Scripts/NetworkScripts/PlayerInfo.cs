@@ -17,8 +17,8 @@ public class PlayerInfo : MonoBehaviour
         kickButton.onClick.AddListener(() =>
         {
             PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
-            LobbyRelayManager.Instance.KickPlayer(playerData.playerId.ToString());
-            MultiplayerStorage.Instance.KickPlayer(playerData.clientId);
+            LobbyRelayManager.Instance.KickPlayerServerRpc(playerData.playerId.ToString());
+            MultiplayerStorage.Instance.KickPlayerServerRpc(playerData.clientId);
         });
     }
 
@@ -32,7 +32,7 @@ public class PlayerInfo : MonoBehaviour
         if (CharacterSelectReady.Instance != null)
         {
             CharacterSelectReady.Instance.OnReadyChanged?.AddListener(CharacterSelectReady_OnReadyChanged);
-            Debug.Log($"MultiplayerStorage add listeners");
+            Debug.Log($"CharacterSelectReady add listeners");
         }
         kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
 
@@ -51,7 +51,7 @@ public class PlayerInfo : MonoBehaviour
 
     private void UpdatePlayer()
     {
-        Debug.Log($"{MultiplayerStorage.Instance.IsPlayerIndexConnected(playerIndex)}  {playerIndex}");
+        Debug.Log($"{MultiplayerStorage.Instance.IsPlayerIndexConnected(playerIndex)} {playerIndex}");
         if (MultiplayerStorage.Instance.IsPlayerIndexConnected(playerIndex))
         {
             Show();

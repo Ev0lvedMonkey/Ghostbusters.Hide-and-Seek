@@ -10,9 +10,7 @@ public class CharacterSelectReady : NetworkBehaviour
 {
     public static CharacterSelectReady Instance { get; private set; }
 
-
     public UnityEvent OnReadyChanged;
-
 
     private Dictionary<ulong, bool> playerReadyDictionary;
 
@@ -30,8 +28,6 @@ public class CharacterSelectReady : NetworkBehaviour
         }
         playerReadyDictionary = new Dictionary<ulong, bool>();
     }
-
-
 
     public void SetPlayerReady()
     {
@@ -57,7 +53,7 @@ public class CharacterSelectReady : NetworkBehaviour
 
         if (allClientsReady)
         {
-            LobbyRelayManager.Instance.DeleteLobby();
+             LobbyRelayManager.Instance.DeleteLobby();
         }
         Debug.Log($"Ready!!!!!!!!!!!!!!!!");
     }
