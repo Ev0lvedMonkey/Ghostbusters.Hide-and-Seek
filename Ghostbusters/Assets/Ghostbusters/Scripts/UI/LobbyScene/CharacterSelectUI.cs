@@ -22,13 +22,11 @@ public class CharacterSelectUI : MonoBehaviour
         _mainMenuButton.onClick.AddListener(BackToMenu);
         _readyButton.onClick.AddListener(SetReady);
         _copyCodeButton.onClick.AddListener(CopyLobbyCode);
-        Debug.LogWarning("Init Components");
     }
 
     private void CopyLobbyCode()
     {
         GUIUtility.systemCopyBuffer = _lobbyCodeText.text;
-        Debug.Log("Copied");
     }
 
     private void SetReady()
@@ -38,11 +36,9 @@ public class CharacterSelectUI : MonoBehaviour
 
     private static void BackToMenu()
     {
-        LobbyRelayManager.Instance.LeaveLobbyServerRpc();
+        LobbyRelayManager.Instance.LeaveLobby();
         NetworkManager.Singleton.Shutdown();
-        Debug.Log("Shutting down host");
         SceneLoader.Load(SceneLoader.Scene.MenuScene);
-        Debug.Log("Shutting click");
     }
 
     private void OnEnable()

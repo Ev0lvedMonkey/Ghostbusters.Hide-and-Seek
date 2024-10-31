@@ -14,30 +14,23 @@ public class MultiplayerStorage : NetworkBehaviour
 
     public static MultiplayerStorage Instance { get; private set; }
 
-    internal UnityEvent OnTryingToJoinGame;
-    internal UnityEvent OnFailedToJoinGame;
-    internal UnityEvent OnPlayerDataNetworkListChanged;
+    internal UnityEvent OnTryingToJoinGame = new();
+    internal UnityEvent OnFailedToJoinGame = new();
+    internal UnityEvent OnPlayerDataNetworkListChanged = new();
 
     private NetworkList<PlayerData> _playerDataNetworkList;
     private string _playerName;
-
-    private void Awake()
+    public void Init()
     {
         _playerDataNetworkList = new NetworkList<PlayerData>();
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Debug.LogError($"{gameObject.name} singlton instanced");
 
         _playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
 
         _playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
-        if (_playerDataNetworkList != null)
-        {
-            Debug.Log($"_playerDataNetworkList COOOOOOL");
-        }
     }
-
 
     public string GetPlayerName()
     {
@@ -71,7 +64,6 @@ public class MultiplayerStorage : NetworkBehaviour
         NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
         NetworkManager.Singleton.StartHost();
-        CheckNetowrkManager();
         Debug.LogWarning($"{gameObject.name}: start host");
     }
 
@@ -115,73 +107,122 @@ public class MultiplayerStorage : NetworkBehaviour
         return _playerDataNetworkList[playerIndex];
     }
 
+
     [ServerRpc(RequireOwnership = false)]
-    public void KickPlayerServerRpc(ulong clientId)
+    public void KickPlayerServerRpc(ulong clientId, ServerRpcParams serverRpcParams = default)
     {
         NetworkManager.Singleton.DisconnectClient(clientId);
         NetworkManager_Server_OnClientDisconnectCallback(clientId);
+
+        // Сообщаем клиентам, что игрок был кикнут
+        KickPlayerClientRpc(clientId);
     }
+
+    [ClientRpc(RequireOwnership = false)]
+    private void KickPlayerClientRpc(ulong clientId)
+    {
+
+        Debug.LogError($"ClientRpc");
+        if (NetworkManager.Singleton.LocalClientId == clientId)
+        {
+            // Загружаем сцену MenuScene только для кикнутого клиента
+            SceneLoader.Load(SceneLoader.Scene.MenuScene);
+            Debug.LogError($"SceneLoader");
+        }
+
+        // Убираем игрока из списка на клиентах
+        for (int i = 0; i < _playerDataNetworkList.Count; i++)
+        {
+            PlayerData playerData = _playerDataNetworkList[i];
+            if (playerData.clientId == clientId)
+            {
+                Debug.LogError($"REMOVE {playerData.clientId}");
+                _playerDataNetworkList.RemoveAt(i);
+            }
+        }
+
+        //OnPlayerKicked.Invoke(); // Вызываем событие для обновления UI на клиентах
+    }
+
+    private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
+    {
+        Debug.LogError($"START");
+        for (int i = 0; i < _playerDataNetworkList.Count; i++)
+        {
+            PlayerData playerData = _playerDataNetworkList[i];
+            if (playerData.clientId == clientId)
+            {
+                Debug.LogError($"REMOVE {playerData.clientId}");
+                _playerDataNetworkList.RemoveAt(i);
+            }
+        }
+    }
+
     private void PlayerDataNetworkList_OnListChanged(NetworkListEvent<PlayerData> changeEvent)
     {
-        OnPlayerDataNetworkListChanged?.Invoke();
+        OnPlayerDataNetworkListChanged.Invoke();
+        Debug.LogError($"PLayer data list changed: {_playerDataNetworkList.Count}");
+
     }
 
     private void CheckNetowrkManager()
     {
         if (NetworkManager.Singleton != _networkManager)
         {
+            Debug.LogWarning($"{gameObject.name} destroind");
             Destroy(_networkManager.gameObject);
-            Debug.LogError($"{gameObject.name} destroind");
             return;
-        }
-    }
-
-    private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
-    {
-        for (int i = 0; i < _playerDataNetworkList.Count; i++)
-        {
-            PlayerData playerData = _playerDataNetworkList[i];
-            if (playerData.clientId == clientId)
-            {
-                _playerDataNetworkList.RemoveAt(i);
-            }
         }
     }
 
     private void NetworkManager_OnClientConnectedCallback(ulong clientId)
     {
         PlayerData newPlayer;
-        Debug.LogWarning($"Client wanna add ID: {clientId}");
-        if (clientId == 0)
+        if (Application.isEditor)
         {
-            int newPlayerClientId = UnityEngine.Random.Range(100, 999);
-            newPlayer = new() { clientId = (ulong)newPlayerClientId };
+            if (clientId == 0)
+            {
+                int newPlayerClientId = UnityEngine.Random.Range(100, 999);
+                newPlayer = new() { clientId = (ulong)newPlayerClientId, playerName = GetPlayerName(), playerId = AuthenticationService.Instance.PlayerId };
+            }
+            else
+                newPlayer = new() { clientId = (ulong)clientId, playerName = GetPlayerName(), playerId = AuthenticationService.Instance.PlayerId };
         }
         else
-            newPlayer = new() { clientId = clientId };
-        Debug.LogWarning($"AND : {newPlayer.clientId}");
+        {
+            newPlayer = new() { clientId = (ulong)clientId, playerName = GetPlayerName(), playerId = AuthenticationService.Instance.PlayerId };
+        }
         if (_playerDataNetworkList == null)
         {
-            Debug.LogError($"{gameObject.name} PlayerDataNetworkList null");
+            Debug.LogWarning($"{gameObject.name} PlayerDataNetworkList null");
             return;
         }
         _playerDataNetworkList.Add(newPlayer);
-        Debug.LogWarning($"Player added ID: {clientId}");
-        Debug.LogWarning($"_playerDataNetworkList count: {_playerDataNetworkList.Count}");
-        string playerName = GetPlayerName();
-        if (string.IsNullOrEmpty(playerName))
-        {
-            Debug.LogWarning("Player name is null or empty.");
-            return;
-        }
-        string playerId = AuthenticationService.Instance.PlayerId;
-        if (string.IsNullOrEmpty(playerId))
-        {
-            Debug.LogWarning("PlayerId is null or empty.");
-            return;
-        }
-        SetPlayerNameServerRpc(playerName);
-        SetPlayerIdServerRpc(playerId);
+        Debug.LogError($"{newPlayer.clientId} NEW PLAYER");
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerNameServerRpc(string playerName, ServerRpcParams serverRpcParams = default)
+    {
+        int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
+
+        PlayerData playerData = _playerDataNetworkList[playerDataIndex];
+
+        playerData.playerName = playerName;
+
+        _playerDataNetworkList[playerDataIndex] = playerData;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerIdServerRpc(string playerId, ServerRpcParams serverRpcParams = default)
+    {
+        int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
+
+        PlayerData playerData = _playerDataNetworkList[playerDataIndex];
+
+        playerData.playerId = playerId;
+
+        _playerDataNetworkList[playerDataIndex] = playerData;
     }
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
@@ -209,29 +250,6 @@ public class MultiplayerStorage : NetworkBehaviour
         SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void SetPlayerNameServerRpc(string playerName, ServerRpcParams serverRpcParams = default)
-    {
-        int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
-
-        PlayerData playerData = _playerDataNetworkList[playerDataIndex];
-
-        playerData.playerName = playerName;
-
-        _playerDataNetworkList[playerDataIndex] = playerData;
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SetPlayerIdServerRpc(string playerId, ServerRpcParams serverRpcParams = default)
-    {
-        int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
-
-        PlayerData playerData = _playerDataNetworkList[playerDataIndex];
-
-        playerData.playerId = playerId;
-
-        _playerDataNetworkList[playerDataIndex] = playerData;
-    }
 
     private void NetworkManager_Client_OnClientDisconnectCallback(ulong clientId)
     {

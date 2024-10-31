@@ -1,33 +1,26 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Diagnostics;
 using Unity.Netcode;
-using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine;
+
 
 public class CharacterSelectReady : NetworkBehaviour
 {
     public static CharacterSelectReady Instance { get; private set; }
 
-    public UnityEvent OnReadyChanged;
+    internal UnityEvent OnReadyChanged = new();
 
     private Dictionary<ulong, bool> playerReadyDictionary;
 
+
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            Debug.Log($"{gameObject.name} singlton instanced");
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
+
         playerReadyDictionary = new Dictionary<ulong, bool>();
     }
+
 
     public void SetPlayerReady()
     {
@@ -46,6 +39,7 @@ public class CharacterSelectReady : NetworkBehaviour
         {
             if (!playerReadyDictionary.ContainsKey(clientId) || !playerReadyDictionary[clientId])
             {
+                // This player is NOT ready
                 allClientsReady = false;
                 break;
             }
@@ -53,9 +47,10 @@ public class CharacterSelectReady : NetworkBehaviour
 
         if (allClientsReady)
         {
-             LobbyRelayManager.Instance.DeleteLobby();
+            LobbyRelayManager.Instance.DeleteLobby();
+            UnityEngine.Debug.LogError($"ALLL READY");
+            SceneLoader.LoadNetwork(SceneLoader.Scene.GameScene);
         }
-        Debug.Log($"Ready!!!!!!!!!!!!!!!!");
     }
 
     [ClientRpc]
@@ -63,7 +58,7 @@ public class CharacterSelectReady : NetworkBehaviour
     {
         playerReadyDictionary[clientId] = true;
 
-        OnReadyChanged?.Invoke();
+        OnReadyChanged.Invoke();
     }
 
 

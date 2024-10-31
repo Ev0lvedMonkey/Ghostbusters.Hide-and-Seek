@@ -5,25 +5,19 @@ using UnityEngine.UI;
 
 public class LobbyMessageUI : MonoBehaviour
 {
-
     [SerializeField] private GameConnectionHandler _gameConnectionHandler;
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Button closeButton;
 
-
-    private void Awake()
+    public void Init()
     {
         closeButton.onClick.AddListener(Hide);
-    }
-
-    private void Start()
-    {
-        LobbyRelayManager.Instance.OnCreateLobbyStarted?.AddListener(LobbyMessage_OnCreateLobbyStarted);
-        LobbyRelayManager.Instance.OnCreateLobbyFailed?.AddListener(LobbyMessage_OnCreateLobbyFailed);
-        LobbyRelayManager.Instance.OnJoinStarted?.AddListener(LobbyMessage_OnJoinStarted);
-        LobbyRelayManager.Instance.OnJoinFailed?.AddListener(LobbyMessage_OnJoinFailed);
-        LobbyRelayManager.Instance.OnQuickJoinFailed?.AddListener(LobbyMessage_OnQuickJoinFailed);
-        MultiplayerStorage.Instance.OnFailedToJoinGame?.AddListener(KitchenGameMultiplayer_OnFailedToJoinGame);
+        LobbyRelayManager.Instance.OnCreateLobbyStarted.AddListener(LobbyMessage_OnCreateLobbyStarted);
+        LobbyRelayManager.Instance.OnCreateLobbyFailed.AddListener(LobbyMessage_OnCreateLobbyFailed);
+        LobbyRelayManager.Instance.OnJoinStarted.AddListener(LobbyMessage_OnJoinStarted);
+        LobbyRelayManager.Instance.OnJoinFailed.AddListener(LobbyMessage_OnJoinFailed);
+        LobbyRelayManager.Instance.OnQuickJoinFailed.AddListener(LobbyMessage_OnQuickJoinFailed);
+        MultiplayerStorage.Instance.OnFailedToJoinGame.AddListener(KitchenGameMultiplayer_OnFailedToJoinGame);
         Hide();
     }
 

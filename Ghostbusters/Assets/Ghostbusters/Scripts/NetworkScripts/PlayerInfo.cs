@@ -14,35 +14,48 @@ public class PlayerInfo : MonoBehaviour
 
     private void Awake()
     {
-        kickButton.onClick.AddListener(() =>
-        {
-            PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
-            LobbyRelayManager.Instance.KickPlayerServerRpc(playerData.playerId.ToString());
-            MultiplayerStorage.Instance.KickPlayerServerRpc(playerData.clientId);
-        });
+        kickButton.onClick.AddListener(KickPlayer);
     }
+
 
     private void Start()
     {
         if (MultiplayerStorage.Instance != null)
         {
-            MultiplayerStorage.Instance.OnPlayerDataNetworkListChanged?.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
-            Debug.Log($"MultiplayerStorage add listeners");
+            MultiplayerStorage.Instance.OnPlayerDataNetworkListChanged.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
         }
         if (CharacterSelectReady.Instance != null)
         {
-            CharacterSelectReady.Instance.OnReadyChanged?.AddListener(CharacterSelectReady_OnReadyChanged);
-            Debug.Log($"CharacterSelectReady add listeners");
+            CharacterSelectReady.Instance.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
         }
-        kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
-
         UpdatePlayer();
+    }
+
+
+    private void CheckKickButton(PlayerData playerData)
+    {
+        if (MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(playerData.clientId)).playerId
+            == LobbyRelayManager.Instance.GetJoinedLobby().HostId)
+            kickButton.gameObject.SetActive(false);
+        else
+            kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
     }
 
     private void CharacterSelectReady_OnReadyChanged()
     {
         UpdatePlayer();
     }
+
+    private void KickPlayer()
+    {
+        PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
+        LobbyRelayManager.Instance.KickPlayer(playerData.playerId.ToString());
+        MultiplayerStorage.Instance.KickPlayerServerRpc(playerData.clientId);
+        Debug.LogError($"{playerData.playerName}");
+        Debug.LogError($"{playerData.playerId}");
+        Debug.LogError($"{playerData.clientId}");
+    }
+
 
     private void MultiplayerStorage_OnPlayerDataNetworkListChanged()
     {
@@ -51,16 +64,25 @@ public class PlayerInfo : MonoBehaviour
 
     private void UpdatePlayer()
     {
-        Debug.Log($"{MultiplayerStorage.Instance.IsPlayerIndexConnected(playerIndex)} {playerIndex}");
         if (MultiplayerStorage.Instance.IsPlayerIndexConnected(playerIndex))
         {
             Show();
 
             PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
+            Debug.LogError($"update");
 
-            readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+            if (Application.isEditor)
+            {
 
+                if (LobbyRelayManager.Instance.IsLobbyHost())
+                    readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(0));
+                else
+                    readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+            }
+            else
+                readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
             playerNameText.text = playerData.playerName.ToString();
+            CheckKickButton(playerData);
         }
         else
         {
@@ -71,6 +93,7 @@ public class PlayerInfo : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
+        Debug.LogError($"{playerIndex}");
     }
 
     private void Hide()

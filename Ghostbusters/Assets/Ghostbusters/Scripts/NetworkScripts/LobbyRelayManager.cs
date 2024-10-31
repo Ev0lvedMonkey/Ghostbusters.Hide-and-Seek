@@ -16,14 +16,16 @@ using QFSW.QC;
 using UnityEngine.Events;
 using System;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LobbyRelayManager : MonoBehaviour
 {
-    internal UnityEvent OnCreateLobbyStarted;
-    internal UnityEvent OnCreateLobbyFailed;
-    internal UnityEvent OnJoinStarted;
-    internal UnityEvent OnQuickJoinFailed;
-    internal UnityEvent OnJoinFailed;
+    internal UnityEvent OnCreateLobbyStarted = new();
+    internal UnityEvent OnCreateLobbyFailed = new();
+    internal UnityEvent OnJoinStarted = new();
+    internal UnityEvent OnQuickJoinFailed = new();
+    internal UnityEvent OnJoinFailed = new();
+    internal UnityEvent OnSignIn = new();
 
     public static LobbyRelayManager Instance { get; private set; }
 
@@ -35,15 +37,14 @@ public class LobbyRelayManager : MonoBehaviour
     private Lobby _joinedLobby;
     private string _playerName;
 
-    private void Awake()
+    public void Init()
     {
-
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Debug.LogError($"{gameObject.name} singlton instanced");
-
-        InitializeUnityAuthentication();
     }
+
+    public void InitializeAuthentication() =>
+        InitializeUnityAuthentication();
 
     public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
     public class OnLobbyListChangedEventArgs : EventArgs
@@ -62,6 +63,11 @@ public class LobbyRelayManager : MonoBehaviour
         OnCreateLobbyStarted?.Invoke();
         try
         {
+            if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
+            {
+                Debug.LogError("NO AUTH");
+                return;
+            }
             _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerStorage.MAX_PLAYER_AMOUNT, new CreateLobbyOptions
             {
                 IsPrivate = false,
@@ -139,36 +145,29 @@ public class LobbyRelayManager : MonoBehaviour
 
     public async void DeleteLobby()
     {
-        if (NetworkManager.Singleton.IsServer)
+        if (_joinedLobby != null)
         {
-            if (_joinedLobby != null)
+            try
             {
-                try
-                {
-                    if (_joinedLobby == null)
-                        return;
-                    await LobbyService.Instance.DeleteLobbyAsync(_joinedLobby.Id);
+                await LobbyService.Instance.DeleteLobbyAsync(_joinedLobby.Id);
 
-                    _joinedLobby = null;
-                    Debug.Log($"{gameObject.name}: delete lobby");
-                }
-                catch (LobbyServiceException e)
-                {
-                    Debug.Log(e);
-                }
+                _joinedLobby = null;
+                Debug.Log($"{gameObject.name}: delete lobby");
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
             }
         }
+
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public async void LeaveLobbyServerRpc()
+    public async void LeaveLobby()
     {
         if (_joinedLobby != null)
         {
             try
             {
-                if (AuthenticationService.Instance.PlayerId == null)
-                    return;
                 await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
                 Debug.Log($"{gameObject.name}: leave lobby");
                 _joinedLobby = null;
@@ -180,8 +179,8 @@ public class LobbyRelayManager : MonoBehaviour
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public async void KickPlayerServerRpc(string playerId)
+
+    public async void KickPlayer(string playerId)
     {
         if (IsLobbyHost())
         {
@@ -199,8 +198,11 @@ public class LobbyRelayManager : MonoBehaviour
 
     public Lobby GetJoinedLobby()
     {
-        Debug.Log($"{gameObject.name}: get lobby {_joinedLobby}");
         return _joinedLobby;
+    }
+    public bool IsLobbyHost()
+    {
+        return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
     }
 
     private async void InitializeUnityAuthentication()
@@ -221,7 +223,10 @@ public class LobbyRelayManager : MonoBehaviour
             };
 
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            OnSignIn.Invoke();
         }
+        else
+            OnSignIn.Invoke();
     }
 
     private void HandlePeriodicListLobbies()
@@ -254,14 +259,8 @@ public class LobbyRelayManager : MonoBehaviour
                 _heartbeatTimer = heartbeatTimerMax;
 
                 LobbyService.Instance.SendHeartbeatPingAsync(_joinedLobby.Id);
-                Debug.Log($"{gameObject.name}: HandleHeartbeat");
             }
         }
-    }
-
-    private bool IsLobbyHost()
-    {
-        return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
     }
 
     private async void ListLobbies()

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Ghostbusters/Scenes/MenuScene.unity
+    guid: 90de5d3a8db6f63429ffdb90283e8a88
+  - enabled: 1
     path: Assets/Ghostbusters/Scenes/LobbyScene.unity
     guid: 912e09e3e5db1cc4196d137b2231c0fe
   - enabled: 1
@@ -17,7 +20,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Ghostbusters/Scenes/GameScene.unity
     guid: 37dba3d15c1a3414e8e73b41763d6c88
-  - enabled: 1
-    path: Assets/Ghostbusters/Scenes/MenuScene.unity
-    guid: 90de5d3a8db6f63429ffdb90283e8a88
   m_configObjects: {}

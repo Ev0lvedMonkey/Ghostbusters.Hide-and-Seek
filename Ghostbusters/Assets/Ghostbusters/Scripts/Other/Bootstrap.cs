@@ -10,9 +10,10 @@ public class Bootstrap : MonoBehaviour
 
     private void Awake()
     {
-        //_lobbyRelayManager.Init();
-        //_multiplayerStorage.Init();
-        //_lobbyMessageUI.Init();
-        //_mainMenuUi.Init();
+        _multiplayerStorage.Init();
+        _lobbyRelayManager.Init();
+        _mainMenuUi.Init();
+        _lobbyRelayManager.InitializeAuthentication();
+        _lobbyMessageUI.Init();
     }
 }
