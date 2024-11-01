@@ -24,24 +24,15 @@ public class HostDisconnectUI : MonoBehaviour
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
     {
-        Debug.LogError($"CLIENT ID {clientId}");
-        PlayerData player = MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId);
-        Debug.LogError($"player ID {player.playerId}");
-        Debug.LogError($"player name {player.playerName}");
-
-
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             if (NetworkManager.Singleton.IsHost)
             {
-
-                Debug.LogError("NetworkManager_OnClientDisconnectCallback");
                 Show();
             }
             else
             {
                 SceneLoader.Load(SceneLoader.Scene.MenuScene);
-                Debug.LogError("KKKKKKKKK");
             }
         }
     }

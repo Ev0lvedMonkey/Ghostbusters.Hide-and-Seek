@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.55
+  m_fontSize: 29.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -283,7 +283,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 477289937725861651}
-  - component: {fileID: 5937991195641054085}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -312,20 +311,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5937991195641054085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3553710891035489684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e78dfc12cb8b0bf42add77b59821a8e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthBarImage: {fileID: 3009692436909291946}
-  _healthText: {fileID: 4952168160158066209}
 --- !u!1 &4532268940961750269
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +473,7 @@ GameObject:
   - component: {fileID: 5034877245797644510}
   - component: {fileID: 5396560954711317618}
   - component: {fileID: 2629982356130037405}
+  - component: {fileID: 521877080074158807}
   m_Layer: 5
   m_Name: GhostHUD
   m_TagString: Untagged
@@ -580,6 +566,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &521877080074158807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673520849597746340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e78dfc12cb8b0bf42add77b59821a8e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthBarImage: {fileID: 3009692436909291946}
+  _healthText: {fileID: 4952168160158066209}
 --- !u!1 &7787866320642787726
 GameObject:
   m_ObjectHideFlags: 0

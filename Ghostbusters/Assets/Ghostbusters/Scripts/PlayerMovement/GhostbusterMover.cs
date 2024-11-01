@@ -6,7 +6,7 @@ public class GhostbusterMover : CharacterMover
 
     private void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!IsOwner) return;
 
         SetAnimState();
         base.Move();

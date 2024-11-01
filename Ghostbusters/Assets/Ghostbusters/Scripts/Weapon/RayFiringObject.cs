@@ -1,5 +1,5 @@
 using UnityEngine;
-using Mirror;
+using Unity.Netcode;
 
 public abstract class RayFiringObject : NetworkBehaviour
 {
@@ -21,7 +21,7 @@ public abstract class RayFiringObject : NetworkBehaviour
 
     protected virtual void Update()
     {
-        if (!isLocalPlayer) 
+        if (!IsOwner) 
             return;
 
         if (!CanFire())

@@ -25,7 +25,7 @@ public class TransformingShoot : RayFiringObject
     {
         Transform firePosition = ServiceLocator.Current.Get<FirePositionService>().FirePosition;
 
-        Ray ray = new Ray(firePosition.position, firePosition.forward);
+        Ray ray = new(firePosition.position, firePosition.forward);
 
         Debug.DrawRay(firePosition.position, firePosition.forward * _maxRayDistance, Color.red, 3);
 

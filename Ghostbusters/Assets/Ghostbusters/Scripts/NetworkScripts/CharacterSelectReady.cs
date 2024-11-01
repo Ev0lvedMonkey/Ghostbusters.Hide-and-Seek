@@ -21,7 +21,6 @@ public class CharacterSelectReady : NetworkBehaviour
         playerReadyDictionary = new Dictionary<ulong, bool>();
     }
 
-
     public void SetPlayerReady()
     {
         SetPlayerReadyServerRpc();
@@ -48,7 +47,6 @@ public class CharacterSelectReady : NetworkBehaviour
         if (allClientsReady)
         {
             LobbyRelayManager.Instance.DeleteLobby();
-            UnityEngine.Debug.LogError($"ALLL READY");
             SceneLoader.LoadNetwork(SceneLoader.Scene.GameScene);
         }
     }

@@ -1,4 +1,4 @@
-using Mirror;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -16,7 +16,7 @@ public abstract class  CharacterMover : NetworkBehaviour
 
     public virtual void Move()
     {
-        if (!isLocalPlayer) return;
+        if (!IsOwner) return;
 
         _input = GetInput();
 
@@ -43,16 +43,16 @@ public abstract class  CharacterMover : NetworkBehaviour
         return new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
     }
 
-    [Command]
+    //[Command]
     private void CmdUpdatePosition(Vector3 position)
     {
-        RpcUpdatePosition(position);
+        RpcUpdatePositionClientRpc(position);
     }
 
     [ClientRpc]
-    private void RpcUpdatePosition(Vector3 position)
+    private void RpcUpdatePositionClientRpc(Vector3 position)
     {
-        if (!isLocalPlayer)
+        if (!IsOwner)
         {
             transform.position = position; 
         }

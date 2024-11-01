@@ -51,9 +51,6 @@ public class PlayerInfo : MonoBehaviour
         PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
         LobbyRelayManager.Instance.KickPlayer(playerData.playerId.ToString());
         MultiplayerStorage.Instance.KickPlayerServerRpc(playerData.clientId);
-        Debug.LogError($"{playerData.playerName}");
-        Debug.LogError($"{playerData.playerId}");
-        Debug.LogError($"{playerData.clientId}");
     }
 
 
@@ -69,11 +66,8 @@ public class PlayerInfo : MonoBehaviour
             Show();
 
             PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
-            Debug.LogError($"update");
-
             if (Application.isEditor)
             {
-
                 if (LobbyRelayManager.Instance.IsLobbyHost())
                     readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(0));
                 else
@@ -93,7 +87,6 @@ public class PlayerInfo : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
-        Debug.LogError($"{playerIndex}");
     }
 
     private void Hide()

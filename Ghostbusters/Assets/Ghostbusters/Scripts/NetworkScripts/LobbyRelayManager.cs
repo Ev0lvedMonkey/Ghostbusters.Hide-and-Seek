@@ -85,7 +85,6 @@ public class LobbyRelayManager : MonoBehaviour
             });
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
-            Debug.Log($"{gameObject.name}: created lobby");
 
             MultiplayerStorage.Instance.StartHost();
             SceneLoader.LoadNetwork(SceneLoader.Scene.CharactersScene);
@@ -169,7 +168,6 @@ public class LobbyRelayManager : MonoBehaviour
             try
             {
                 await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
-                Debug.Log($"{gameObject.name}: leave lobby");
                 _joinedLobby = null;
             }
             catch (LobbyServiceException e)
@@ -187,7 +185,6 @@ public class LobbyRelayManager : MonoBehaviour
             try
             {
                 await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, playerId);
-                Debug.Log($"{gameObject.name}:kicked player {playerId}");
             }
             catch (LobbyServiceException e)
             {

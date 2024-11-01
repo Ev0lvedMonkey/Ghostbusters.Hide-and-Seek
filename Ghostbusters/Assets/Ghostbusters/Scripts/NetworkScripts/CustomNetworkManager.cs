@@ -9,8 +9,8 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        SpawnNewPlayer(conn, _weaponFireFactory);
-        SpawnNewPlayer(conn, _transformingShootFactory);
+        //SpawnNewPlayer(conn, _weaponFireFactory);
+        //SpawnNewPlayer(conn, _transformingShootFactory);
     }
 
     private void SpawnNewPlayer<T>(NetworkConnectionToClient conn, IFactory<T> factory) where T : NetworkBehaviour

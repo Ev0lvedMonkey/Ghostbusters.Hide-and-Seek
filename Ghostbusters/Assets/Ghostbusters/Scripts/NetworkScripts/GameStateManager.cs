@@ -8,12 +8,12 @@ public class GameStateManager : NetworkBehaviour
 {
     public static GameStateManager Instance { get; private set; }
 
-    internal UnityEvent OnStateChanged;
-    internal UnityEvent OnLocalGamePaused;
-    internal UnityEvent OnLocalGameUnpaused;
-    internal UnityEvent OnMultiplayerGamePaused;
-    internal UnityEvent OnMultiplayerGameUnpaused;
-    internal UnityEvent OnLocalPlayerReadyChanged;
+    internal UnityEvent OnStateChanged = new();
+    internal UnityEvent OnLocalGamePaused = new();
+    internal UnityEvent OnLocalGameUnpaused = new();
+    internal UnityEvent OnMultiplayerGamePaused = new();
+    internal UnityEvent OnMultiplayerGameUnpaused = new();
+    internal UnityEvent OnLocalPlayerReadyChanged = new();
 
 
     private enum State
@@ -25,6 +25,7 @@ public class GameStateManager : NetworkBehaviour
     }
 
 
+    [SerializeField] private Transform ghostPrefab;
     [SerializeField] private Transform playerPrefab;
 
 
@@ -48,12 +49,6 @@ public class GameStateManager : NetworkBehaviour
         playerPausedDictionary = new Dictionary<ulong, bool>();
     }
 
-    //private void Start()
-    //{
-    //    GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
-    //    GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
-    //}
-
     public override void OnNetworkSpawn()
     {
         state.OnValueChanged += State_OnValueChanged;
@@ -70,8 +65,17 @@ public class GameStateManager : NetworkBehaviour
     {
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            Transform playerTransform = Instantiate(playerPrefab);
-            playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+            int idPlayer = MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
+            if (idPlayer == 0 || idPlayer == 2)
+            {
+                Transform playerTransform = Instantiate(ghostPrefab);
+                playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+            }
+            else
+            {
+                Transform playerTransform = Instantiate(playerPrefab);
+                playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+            }
         }
     }
 
@@ -100,22 +104,6 @@ public class GameStateManager : NetworkBehaviour
     {
         OnStateChanged?.Invoke();
     }
-
-    private void GameInput_OnInteractAction()
-    {
-        if (state.Value == State.WaitingToStart)
-        {
-            isLocalPlayerReady = true;
-            OnLocalPlayerReadyChanged.Invoke();
-
-            SetPlayerReadyServerRpc();
-        }
-    }
-    private void GameInput_OnPauseAction()
-    {
-        TogglePauseGame();
-    }
-
 
     [ServerRpc(RequireOwnership = false)]
     private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
@@ -157,13 +145,6 @@ public class GameStateManager : NetworkBehaviour
                 {
                     state.Value = State.GamePlaying;
                     gamePlayingTimer.Value = gamePlayingTimerMax;
-                }
-                break;
-            case State.GamePlaying:
-                gamePlayingTimer.Value -= Time.deltaTime;
-                if (gamePlayingTimer.Value < 0f)
-                {
-                    state.Value = State.GameOver;
                 }
                 break;
             case State.GameOver:

@@ -1,4 +1,4 @@
-using Mirror;
+using Unity.Netcode;
 using System;
 using UnityEngine;
 
@@ -24,7 +24,7 @@ public class MouseInput : NetworkBehaviour
 
     private void Update()
     {
-        if(!isLocalPlayer) return;
+        if(!IsOwner) return;
 
         SetMousePos();
     }

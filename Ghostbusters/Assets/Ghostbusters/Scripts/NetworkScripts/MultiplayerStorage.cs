@@ -34,7 +34,6 @@ public class MultiplayerStorage : NetworkBehaviour
 
     public string GetPlayerName()
     {
-        Debug.Log($"{gameObject.name}: get player name {_playerName}");
         return _playerName;
     }
 
@@ -64,12 +63,10 @@ public class MultiplayerStorage : NetworkBehaviour
         NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
         NetworkManager.Singleton.StartHost();
-        Debug.LogWarning($"{gameObject.name}: start host");
     }
 
     public bool IsPlayerIndexConnected(int playerIndex)
     {
-        Debug.LogWarning($"PlayerDataNetworkList.Count {_playerDataNetworkList.Count}");
         return playerIndex < _playerDataNetworkList.Count;
     }
 
@@ -79,6 +76,7 @@ public class MultiplayerStorage : NetworkBehaviour
         {
             if (_playerDataNetworkList[i].clientId == clientId)
             {
+                Debug.LogError($"return {i}");
                 return i;
             }
         }
@@ -89,8 +87,16 @@ public class MultiplayerStorage : NetworkBehaviour
     {
         foreach (PlayerData playerData in _playerDataNetworkList)
         {
+            if (clientId == 0 && _playerDataNetworkList.Count > 0)
+            {
+                PlayerData firstPlayerData = _playerDataNetworkList[0];
+                return firstPlayerData;
+            }
             if (playerData.clientId == clientId)
             {
+                Debug.LogError($"return playerdata {playerData.playerName}");
+                Debug.LogError($"return playerdata {playerData.playerId}");
+                Debug.LogError($"return playerdata {playerData.clientId}");
                 return playerData;
             }
         }
@@ -122,21 +128,11 @@ public class MultiplayerStorage : NetworkBehaviour
     private void KickPlayerClientRpc(ulong clientId)
     {
 
-        Debug.LogError($"ClientRpc");
-        if (NetworkManager.Singleton.LocalClientId == clientId)
-        {
-            // Загружаем сцену MenuScene только для кикнутого клиента
-            SceneLoader.Load(SceneLoader.Scene.MenuScene);
-            Debug.LogError($"SceneLoader");
-        }
-
-        // Убираем игрока из списка на клиентах
         for (int i = 0; i < _playerDataNetworkList.Count; i++)
         {
             PlayerData playerData = _playerDataNetworkList[i];
             if (playerData.clientId == clientId)
             {
-                Debug.LogError($"REMOVE {playerData.clientId}");
                 _playerDataNetworkList.RemoveAt(i);
             }
         }
@@ -146,13 +142,11 @@ public class MultiplayerStorage : NetworkBehaviour
 
     private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
     {
-        Debug.LogError($"START");
         for (int i = 0; i < _playerDataNetworkList.Count; i++)
         {
             PlayerData playerData = _playerDataNetworkList[i];
             if (playerData.clientId == clientId)
             {
-                Debug.LogError($"REMOVE {playerData.clientId}");
                 _playerDataNetworkList.RemoveAt(i);
             }
         }
@@ -161,8 +155,6 @@ public class MultiplayerStorage : NetworkBehaviour
     private void PlayerDataNetworkList_OnListChanged(NetworkListEvent<PlayerData> changeEvent)
     {
         OnPlayerDataNetworkListChanged.Invoke();
-        Debug.LogError($"PLayer data list changed: {_playerDataNetworkList.Count}");
-
     }
 
     private void CheckNetowrkManager()
@@ -198,7 +190,6 @@ public class MultiplayerStorage : NetworkBehaviour
             return;
         }
         _playerDataNetworkList.Add(newPlayer);
-        Debug.LogError($"{newPlayer.clientId} NEW PLAYER");
     }
 
     [ServerRpc(RequireOwnership = false)]

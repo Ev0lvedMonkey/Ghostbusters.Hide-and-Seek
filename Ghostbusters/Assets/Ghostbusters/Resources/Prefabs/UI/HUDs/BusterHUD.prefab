@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.55
+  m_fontSize: 29.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -218,7 +218,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2688941633021427609}
-  - component: {fileID: 3277445262467851485}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -247,20 +246,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3277445262467851485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356328779683547826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ceaa2e65753dd44d962e0015bb75194, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthBarImage: {fileID: 3031181729331298939}
-  _healthText: {fileID: 3451000447340436200}
 --- !u!1 &1802211945580220027
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,6 +663,7 @@ GameObject:
   - component: {fileID: 8166821787553501196}
   - component: {fileID: 3225090280263852681}
   - component: {fileID: 696982154103996634}
+  - component: {fileID: 4009084473512610073}
   m_Layer: 5
   m_Name: BusterHUD
   m_TagString: Untagged
@@ -770,6 +756,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4009084473512610073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7506120872589108128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ceaa2e65753dd44d962e0015bb75194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthBarImage: {fileID: 3031181729331298939}
+  _healthText: {fileID: 3451000447340436200}
 --- !u!1 &8526114027163205007
 GameObject:
   m_ObjectHideFlags: 0
