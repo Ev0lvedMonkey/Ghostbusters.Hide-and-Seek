@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GhostMover : CharacterMover
 {
-    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] internal Rigidbody _rigidbody;
     [SerializeField] private Transform _groundCheckDot;
     [SerializeField] private LayerMask _groundLayer;
 
@@ -16,13 +16,17 @@ public class GhostMover : CharacterMover
     {
         if (!IsOwner) return;
         TryJump();
-        base.Move();
     }
 
+    private void FixedUpdate()
+    {
+        if (!IsOwner) return;
+
+        base.Move();
+    }
     private void TryJump()
     {
         _isGrounded = Physics.CheckSphere(_groundCheckDot.position, 0.1f, _groundLayer);
-        Debug.Log($"Grounded: {_isGrounded}");
 
         if (Input.GetKeyDown(Jumpkey) && _isGrounded)
         {

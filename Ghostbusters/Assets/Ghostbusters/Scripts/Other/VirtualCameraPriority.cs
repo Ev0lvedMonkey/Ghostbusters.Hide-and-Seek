@@ -17,12 +17,24 @@ public class VirtualCameraPriority : NetworkBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
         if (IsOwner)
+        {
             _virtualCamera.Priority = 10;
+            ActivateCamera();
+        }
         else
+        {
+            DeactivateCamera();
             _virtualCamera.Priority = 0;
+        }
 
     }
+
+    private void ActivateCamera() =>
+            _virtualCamera.gameObject.SetActive(true);
+
+    private void DeactivateCamera() =>
+            _virtualCamera.gameObject.SetActive(false);
 }

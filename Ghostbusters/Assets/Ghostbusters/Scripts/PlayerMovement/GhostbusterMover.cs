@@ -9,6 +9,12 @@ public class GhostbusterMover : CharacterMover
         if (!IsOwner) return;
 
         SetAnimState();
+    }
+
+    private void FixedUpdate()
+    {
+        if (!IsOwner) return;
+        
         base.Move();
     }
 

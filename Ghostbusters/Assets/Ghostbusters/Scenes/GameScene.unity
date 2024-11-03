@@ -795,6 +795,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224130951485110974, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.000030517578
       objectReference: {fileID: 0}
@@ -1275,7 +1279,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.35
+  m_fontSize: 30.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3062,7 +3066,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.45
+  m_fontSize: 38.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3197,7 +3201,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 2874304489409965433, guid: 6709ee023e2b27546814a661e1926aae, type: 3}
+  ghostView: {fileID: 521877080074158807, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
   playerPrefab: {fileID: 3143400298435435878, guid: 49b2e1893a37e574597223e8c5b73872, type: 3}
+  playerView: {fileID: 4009084473512610073, guid: b62ca8aac848c99479f6caa2153f2456, type: 3}
 --- !u!4 &1991110627
 Transform:
   m_ObjectHideFlags: 0

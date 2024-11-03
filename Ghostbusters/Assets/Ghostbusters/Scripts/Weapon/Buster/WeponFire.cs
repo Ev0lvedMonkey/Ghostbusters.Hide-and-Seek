@@ -16,9 +16,6 @@ public class WeponFire : RayFiringObject
     private const string TransformableLayer = "Transformable";
     private const string StaticObjectsLayer = "StaticObjects";
 
-    [Inject]
-    private DiContainer _container;
-
     protected override void Start()
     {
         base.Start();
@@ -74,12 +71,14 @@ public class WeponFire : RayFiringObject
     {
         _ghostbusterHealthController = ghostbusterhealthController;
         _ghostHealthController = ghostHealthController;
+        Debug.Log("GhostbusterHealthController INJECTED");
     }
 
     [Inject]
     public void InitializeSignal(SignalBus signalBus)
     {
         signalBus.Subscribe<PlayerDiedSignal>(OnPlayerDied);
+        Debug.Log("SIGNAL INJECTED");
     }
 
     private void OnPlayerDied()

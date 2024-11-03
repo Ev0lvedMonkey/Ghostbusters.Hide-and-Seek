@@ -138,7 +138,7 @@ public class LobbyRelayManager : MonoBehaviour
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
-            OnJoinFailed?.Invoke();
+            OnJoinFailed.Invoke();
         }
     }
 

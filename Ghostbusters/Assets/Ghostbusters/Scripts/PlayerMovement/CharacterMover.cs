@@ -1,60 +1,52 @@
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
-public abstract class  CharacterMover : NetworkBehaviour
+public abstract class CharacterMover : NetworkBehaviour
 {
-    [SerializeField] private CharacterController _characterController;
-
     private Vector3 _direction;
     protected Vector2 _input;
 
     protected const string Horizontal = "Horizontal";
     protected const string Vertical = "Vertical";
     private const float BackMoveSpeed = 3.375f;
-    private const float MovementSpeed = 4.5f;
+    [SerializeField] private float MovementSpeed = 4.5f;
 
     public virtual void Move()
     {
         if (!IsOwner) return;
 
         _input = GetInput();
-
         float horizontalInput = _input.x;
         float verticalInput = _input.y;
 
         _direction = transform.forward * verticalInput + transform.right * horizontalInput;
+        Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * Time.deltaTime;
 
-        _characterController.Move(_direction.normalized * GetMoveSpeed() * Time.deltaTime);
+        transform.position = targetPosition;
+        UpdatePositionServerRpc(targetPosition);
+    }
 
-        //CmdUpdatePosition(transform.position);
+    [ServerRpc]
+    private void UpdatePositionServerRpc(Vector3 targetPosition)
+    {
+        UpdatePositionClientRpc(targetPosition);
+    }
+
+    [ClientRpc]
+    private void UpdatePositionClientRpc(Vector3 targetPosition)
+    {
+        if (IsOwner) return;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, 0.1f);
     }
 
     private float GetMoveSpeed()
     {
-        if (_input.y < 0)
-            return BackMoveSpeed;
-        else
-            return MovementSpeed;
+        return _input.y < 0 ? BackMoveSpeed : MovementSpeed;
     }
 
     private Vector2 GetInput()
     {
         return new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
-    }
-
-    //[Command]
-    private void CmdUpdatePosition(Vector3 position)
-    {
-        RpcUpdatePositionClientRpc(position);
-    }
-
-    [ClientRpc]
-    private void RpcUpdatePositionClientRpc(Vector3 position)
-    {
-        if (!IsOwner)
-        {
-            transform.position = position; 
-        }
     }
 }

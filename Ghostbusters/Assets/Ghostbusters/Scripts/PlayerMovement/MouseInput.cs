@@ -24,12 +24,37 @@ public class MouseInput : NetworkBehaviour
 
     private void Update()
     {
-        if(!IsOwner) return;
+        if (!IsOwner) return;
 
         SetMousePos();
+        UpdateRotationServerRpc(_xAxis, _yAxis); 
+    }
+
+    [ServerRpc]
+    private void UpdateRotationServerRpc(float xAxis, float yAxis)
+    {
+        UpdateRotationClientRpc(xAxis, yAxis); 
+    }
+
+    [ClientRpc]
+    private void UpdateRotationClientRpc(float xAxis, float yAxis)
+    {
+        if (IsOwner) return; 
+
+        _xAxis = xAxis;
+        _yAxis = yAxis;
+        ApplyRotation();
     }
 
     private void LateUpdate()
+    {
+        if (IsOwner)
+        {
+            ApplyRotation();
+        }
+    }
+
+    private void ApplyRotation()
     {
         _fullbodyRotation.Rotate(_xAxis, _yAxis);
         _torseRotation.Rotate(_xAxis, _yAxis);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 public class GameStateManager : NetworkBehaviour
 {
@@ -24,9 +25,13 @@ public class GameStateManager : NetworkBehaviour
         GameOver,
     }
 
+    [Inject]
+    private DiContainer _container;
 
     [SerializeField] private Transform ghostPrefab;
+    [SerializeField] private GhostHealthView ghostView;
     [SerializeField] private Transform playerPrefab;
+    [SerializeField] private GhostbusterHealthView playerView;
 
 
     private NetworkVariable<State> state = new(State.WaitingToStart);
@@ -39,7 +44,7 @@ public class GameStateManager : NetworkBehaviour
     private Dictionary<ulong, bool> playerReadyDictionary;
     private Dictionary<ulong, bool> playerPausedDictionary;
     private bool autoTestGamePausedState;
-
+    private bool isSingleHUDOnClient;
 
     private void Awake()
     {
@@ -65,16 +70,29 @@ public class GameStateManager : NetworkBehaviour
     {
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            int idPlayer = MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
+            int idPlayer =
+                MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
             if (idPlayer == 0 || idPlayer == 2)
             {
                 Transform playerTransform = Instantiate(ghostPrefab);
                 playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+                if (!isSingleHUDOnClient)
+                {
+                    _container.InstantiatePrefab(ghostView);
+                    Debug.Log("GHOST VIEW");
+                    isSingleHUDOnClient = true;
+                }
             }
             else
             {
                 Transform playerTransform = Instantiate(playerPrefab);
                 playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+                if (!isSingleHUDOnClient)
+                {
+                    _container.InstantiatePrefab(playerView);
+                    Debug.Log("buster VIEW");
+                    isSingleHUDOnClient = true;
+                }
             }
         }
     }
