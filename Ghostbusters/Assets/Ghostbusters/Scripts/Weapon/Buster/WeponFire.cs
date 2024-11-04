@@ -2,15 +2,14 @@ using UnityEngine;
 using Zenject;
 using Zenject.SpaceFighter;
 
-public class WeponFire : RayFiringObject
+public class WeaponFire : RayFiringObject
 {
     [SerializeField] private ParticleSystem _hitEffect;
+    [SerializeField] private CharacterHealthControllerTemp _characterHealth;
 
-    private GhostbusterHealthController _ghostbusterHealthController;
-    private GhostHealthController _ghostHealthController;
     private LayerMask _targetLayerMask;
-    private LayerMask _aghtungMask;
-    private LayerMask _staticObjectsMask;
+    private LayerMask _transformableLayerMask;
+    private LayerMask _staticObjectsLayerMask;
 
     private const string GhostLayer = "Ghost";
     private const string TransformableLayer = "Transformable";
@@ -20,11 +19,19 @@ public class WeponFire : RayFiringObject
     {
         base.Start();
         _targetLayerMask = LayerMask.GetMask(GhostLayer);
-        _aghtungMask = LayerMask.GetMask(TransformableLayer);
-        _staticObjectsMask = LayerMask.GetMask(StaticObjectsLayer);
+        _transformableLayerMask = LayerMask.GetMask(TransformableLayer);
+        _staticObjectsLayerMask = LayerMask.GetMask(StaticObjectsLayer);
     }
 
-    [System.Obsolete]
+    private void OnValidate()
+    {
+        if (_characterHealth == null)
+        {
+            if (TryGetComponent(out CharacterHealthControllerTemp controller))
+                _characterHealth = controller;
+        }
+    }
+
     protected override void HandleFire()
     {
         Transform firePosition = ServiceLocator.Current.Get<FirePositionService>().FirePosition;
@@ -33,23 +40,28 @@ public class WeponFire : RayFiringObject
 
         Debug.DrawRay(firePosition.position, firePosition.forward * _maxRayDistance, Color.red, 3);
 
-
         if (Physics.Raycast(ray, out RaycastHit hit, _maxRayDistance))
         {
             int hitLayer = hit.collider.gameObject.layer;
 
+            // Определяем цель на основе слоя
             if (((1 << hitLayer) & _targetLayerMask) != 0)
             {
-                _ghostHealthController.TakeDamage();
-                Debug.Log("Hit ghost object");
+                // Если попали в призрака, вызываем `TakeDamage` у цели
+                if (hit.collider.TryGetComponent(out CharacterHealthControllerTemp controller))
+                {
+                    controller.TakeDamageServerRpc();
+                    Debug.Log("Hit ghost object");
+                }
                 StartCooldown();
             }
-            else if (((1 << hitLayer) & _aghtungMask) != 0)
+            else if (((1 << hitLayer) & _transformableLayerMask) != 0)
             {
                 Debug.Log("Hit transformable object");
-                _ghostbusterHealthController.TakeDamage();
+                // Наносим урон себе, если попали в трансформируемый объект
+                _characterHealth.TakeDamageServerRpc();
             }
-            else if (((1 << hitLayer) & _staticObjectsMask) != 0)
+            else if (((1 << hitLayer) & _staticObjectsLayerMask) != 0)
             {
                 Debug.Log("Hit static object");
             }
@@ -66,12 +78,12 @@ public class WeponFire : RayFiringObject
         Debug.Log("Effect played");
     }
 
+    /*
     [Inject]
-    public void Construct(GhostbusterHealthController ghostbusterhealthController, GhostHealthController ghostHealthController)
+    public void Construct(CharacterHealthController characterHealthController)
     {
-        _ghostbusterHealthController = ghostbusterhealthController;
-        _ghostHealthController = ghostHealthController;
-        Debug.Log("GhostbusterHealthController INJECTED");
+        _targetHealthController = characterHealthController;
+        Debug.Log("CharacterHealthController INJECTED");
     }
 
     [Inject]
@@ -83,7 +95,7 @@ public class WeponFire : RayFiringObject
 
     private void OnPlayerDied()
     {
-        Debug.Log($"try dead");
+        Debug.Log("Player died event handled");
     }
-
+    */
 }

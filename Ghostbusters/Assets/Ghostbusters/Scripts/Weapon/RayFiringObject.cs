@@ -10,7 +10,7 @@ public abstract class RayFiringObject : NetworkBehaviour
     protected bool _isCooldownActive;
 
     protected const float ResetCooldownTimer = 0;
-    protected const float HitCooldown = 3f;
+    protected const float HitCooldown = 1.5f;
     private const KeyCode LMB = KeyCode.Mouse0;
 
     protected virtual void Start()

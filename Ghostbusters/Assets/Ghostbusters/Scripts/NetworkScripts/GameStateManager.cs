@@ -44,7 +44,6 @@ public class GameStateManager : NetworkBehaviour
     private Dictionary<ulong, bool> playerReadyDictionary;
     private Dictionary<ulong, bool> playerPausedDictionary;
     private bool autoTestGamePausedState;
-    private bool isSingleHUDOnClient;
 
     private void Awake()
     {
@@ -70,31 +69,27 @@ public class GameStateManager : NetworkBehaviour
     {
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            int idPlayer =
-                MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
-            if (idPlayer == 0 || idPlayer == 2)
+            Transform playerTransform;
+            if (IsGhost(clientId))
             {
-                Transform playerTransform = Instantiate(ghostPrefab);
-                playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-                if (!isSingleHUDOnClient)
-                {
-                    _container.InstantiatePrefab(ghostView);
-                    Debug.Log("GHOST VIEW");
-                    isSingleHUDOnClient = true;
-                }
+                playerTransform = Instantiate(ghostPrefab);
+                Debug.Log("GHOST VIEW");
             }
             else
             {
-                Transform playerTransform = Instantiate(playerPrefab);
-                playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-                if (!isSingleHUDOnClient)
-                {
-                    _container.InstantiatePrefab(playerView);
-                    Debug.Log("buster VIEW");
-                    isSingleHUDOnClient = true;
-                }
+                playerTransform = Instantiate(playerPrefab);
+                Debug.Log("buster VIEW");
             }
+            playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
         }
+    }
+
+    private bool IsGhost(ulong clientId)
+    {
+        int idPlayer =
+            MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
+        if (idPlayer == 0 || idPlayer == 2) return true;
+        else return false;
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
