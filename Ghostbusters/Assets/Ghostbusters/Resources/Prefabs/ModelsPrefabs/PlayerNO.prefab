@@ -201,6 +201,7 @@ MonoBehaviour:
   _fireRate: 0.62
   _maxRayDistance: 100
   _hitEffect: {fileID: 2102073053131499544, guid: 4fa7fbfd989c2d247942c721c0a1fbd5, type: 3}
+  _characterHealth: {fileID: -6096408923155873637}
 --- !u!114 &7895445609988697491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,6 +246,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _deathEffect: {fileID: 0}
+  _bodyTransform: {fileID: 5173266347649546689}
+  _bodyRigidbody: {fileID: 1874786418358173608}
   _hudView: {fileID: 9014929157552778291}
 --- !u!33 &627271985527512015
 MeshFilter:
@@ -571,6 +574,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2e1990b0277863145b01bb9a92d33132, type: 3}
       propertyPath: m_Name
       value: PlayerModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2e1990b0277863145b01bb9a92d33132, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 2e1990b0277863145b01bb9a92d33132, type: 3}
       propertyPath: m_Controller

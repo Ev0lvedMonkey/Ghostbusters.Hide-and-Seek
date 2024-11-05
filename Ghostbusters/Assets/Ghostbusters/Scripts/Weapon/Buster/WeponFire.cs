@@ -44,13 +44,11 @@ public class WeaponFire : RayFiringObject
         {
             int hitLayer = hit.collider.gameObject.layer;
 
-            // Определяем цель на основе слоя
             if (((1 << hitLayer) & _targetLayerMask) != 0)
             {
-                // Если попали в призрака, вызываем `TakeDamage` у цели
                 if (hit.collider.TryGetComponent(out CharacterHealthControllerTemp controller))
                 {
-                    controller.TakeDamageServerRpc();
+                    controller.TakeDamageServerRpc(false);
                     Debug.Log("Hit ghost object");
                 }
                 StartCooldown();
@@ -58,8 +56,7 @@ public class WeaponFire : RayFiringObject
             else if (((1 << hitLayer) & _transformableLayerMask) != 0)
             {
                 Debug.Log("Hit transformable object");
-                // Наносим урон себе, если попали в трансформируемый объект
-                _characterHealth.TakeDamageServerRpc();
+                _characterHealth.TakeDamageServerRpc(true);
             }
             else if (((1 << hitLayer) & _staticObjectsLayerMask) != 0)
             {

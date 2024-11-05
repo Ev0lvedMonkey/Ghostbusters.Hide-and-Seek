@@ -88,7 +88,7 @@ public class GameStateManager : NetworkBehaviour
     {
         int idPlayer =
             MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
-        if (idPlayer == 0 || idPlayer == 2) return true;
+        if (idPlayer == 1 || idPlayer == 2) return true;
         else return false;
     }
 

@@ -324,8 +324,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1e74657db4d504c96396378dec2eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 150
+  _maxHealth: 100
   _deathEffect: {fileID: 0}
+  _bodyTransform: {fileID: 7045450888813315848}
+  _bodyRigidbody: {fileID: 2787314762436721399}
   _hudView: {fileID: 6250410782170815527}
 --- !u!1 &7413153348805525786
 GameObject:

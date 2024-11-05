@@ -5,12 +5,14 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
 {
     [SerializeField, Range(100, 150)] private float _maxHealth;
     [SerializeField] private GameObject _deathEffect;
+    [SerializeField] private Transform _bodyTransform;
+    [SerializeField] private Rigidbody _bodyRigidbody;
     [SerializeField] private HealthView _hudView;
 
-    private const float DAMAGE = 5f;
+    private const int SELF_DAMAGE = 50;
+    private const int GHOST_DAMAGE = 50;
 
     private float _currentHealth;
-    private bool _isDead;
 
     private void Awake()
     {
@@ -19,54 +21,55 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
 
     private void Start()
     {
-        EnableHUD();
+        if (IsOwner)
+            EnableHUD();
     }
 
     public void EnableHUD()
     {
-        if (IsOwner)
-        {
-            _hudView.gameObject.SetActive(true);
-            Debug.Log($"{gameObject.name} HUD enabled for owner");
-        }
+        _hudView.gameObject.SetActive(true);
+        Debug.Log($"{gameObject.name} HUD enabled for owner");
+    }
+
+    public void DisableHUD()
+    {
+        _hudView.gameObject.SetActive(false);
+        Debug.Log($"{gameObject.name} HUD disabled for owner");
     }
 
     public override void OnNetworkSpawn()
     {
         if (IsOwner)
         {
-            UpdateHUD();
+            UpdateHUDClientRpc(_currentHealth);
         }
     }
 
-    public void Heal(float healAmount)
+    public void Heal()
     {
-        if (_isDead || healAmount <= 0) return;
-
-        _currentHealth += healAmount;
+        _currentHealth += 20;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
 
-        UpdateHUD();
         UpdateHUDClientRpc(_currentHealth);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void TakeDamageServerRpc(ServerRpcParams rpcParams = default)
+    public void TakeDamageServerRpc(bool isSelfDamage, ServerRpcParams rpcParams = default)
     {
-        Debug.Log($"{gameObject.name} updated taked damage {_currentHealth}");
+        Debug.Log($"{gameObject.name} took damage. Current health: {_currentHealth}");
 
-        if (_isDead || DAMAGE <= 0) return;
+        int currentDamage = isSelfDamage ? SELF_DAMAGE : GHOST_DAMAGE;
 
-        _currentHealth -= DAMAGE;
+        _currentHealth -= currentDamage;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
 
         if (_currentHealth <= 0)
         {
-            HandleDeath();
+            HandleDeathServerRpc();
         }
         else
         {
-            UpdateHUDClientRpc(_currentHealth);  // Обновляем HUD на всех клиентах
+            UpdateHUDClientRpc(_currentHealth);
         }
     }
 
@@ -86,24 +89,37 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
         }
     }
 
-    private void UpdateHUD()
+    [ServerRpc(RequireOwnership = false)]
+    private void HandleDeathServerRpc()
     {
-        if (_hudView != null)
-        {
-            _hudView.UpdateHealthBar(GetHealthPercentage(), _currentHealth);
-        }
+
+        DisableHUD();
+        _bodyTransform.GetChild(0).gameObject.SetActive(false);
+
+        _bodyRigidbody.isKinematic = true;
+        _bodyRigidbody.useGravity = false;
+
+
+        SpawnDeathEffect();
+        HandleDeathClientRpc();
+        UpdateHUDClientRpc(_currentHealth);
+        Debug.Log($"{gameObject.name} entered spectator mode on client.");
     }
 
-    private void HandleDeath()
+    [ClientRpc]
+    private void HandleDeathClientRpc()
     {
-        _isDead = true;
+
+        DisableHUD();
+        _bodyTransform.gameObject.SetActive(false);
+
+        _bodyRigidbody.isKinematic = true;
+        _bodyRigidbody.useGravity = false;
+
+
         SpawnDeathEffect();
 
-        // Переход в режим наблюдателя
-        EnterSpectatorMode();
-
-        // Обновляем HUD на всех клиентах
-        UpdateHUDClientRpc(_currentHealth);
+        Debug.Log($"{gameObject.name} entered spectator mode on client.");
     }
 
     private void SpawnDeathEffect()
@@ -112,28 +128,6 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
         {
             Instantiate(_deathEffect, transform.position, Quaternion.identity);
         }
-    }
-
-    private void EnterSpectatorMode()
-    {
-        var renderers = GetComponentsInChildren<Renderer>();
-        foreach (var renderer in renderers)
-        {
-            renderer.enabled = false;
-        }
-
-        var colliders = GetComponentsInChildren<Collider>();
-        foreach (var collider in colliders)
-        {
-            collider.enabled = false;
-        }
-
-        if (TryGetComponent<Rigidbody>(out var rigidbody))
-        {
-            rigidbody.isKinematic = true;
-            rigidbody.detectCollisions = false;
-        }
-        Debug.Log("Entered spectator mode.");
     }
 
     private float GetHealthPercentage()

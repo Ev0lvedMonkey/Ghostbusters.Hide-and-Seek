@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class TransformingShoot : RayFiringObject
@@ -7,7 +8,6 @@ public class TransformingShoot : RayFiringObject
     private MeshFilter bodyMeshFilter;
     private MeshRenderer bodyRenderer;
     private CapsuleCollider bodyCapsuleCollider;
-
 
     protected override void Start()
     {
@@ -21,6 +21,7 @@ public class TransformingShoot : RayFiringObject
         bodyRenderer = _bodyObject.GetComponent<MeshRenderer>();
         bodyCapsuleCollider = _bodyObject.GetComponent<CapsuleCollider>();
     }
+
     protected override void HandleFire()
     {
         Transform firePosition = ServiceLocator.Current.Get<FirePositionService>().FirePosition;
@@ -38,15 +39,44 @@ public class TransformingShoot : RayFiringObject
 
     private void TryTransform(RaycastHit hit)
     {
-        TransformableObject transformableObject = hit.collider.GetComponent<TransformableObject>();
-
-        if (transformableObject == null)
+        if (!hit.collider.TryGetComponent<TransformableObject>(out var transformableObject))
+        {
+            Debug.Log("TransformableObject not found");
             return;
+        }
 
-        ApplyTransform(hit.transform);
+        if (!hit.transform.TryGetComponent<NetworkObject>(out var targetNetworkObject))
+        {
+            Debug.Log("NetworkObject not found");
+            return;
+        }
+
+        ApplyTransformServerRpc(targetNetworkObject, OwnerClientId);
     }
 
-    private void ApplyTransform(Transform targetTransform)
+    [ServerRpc(RequireOwnership = false)]
+    private void ApplyTransformServerRpc(NetworkObjectReference targetObjectRef, ulong clientId)
+    {
+        if (targetObjectRef.TryGet(out NetworkObject targetObject))
+        {
+            Transform targetTransform = targetObject.transform;
+            ApplyTransformLocally(targetTransform);
+
+            ApplyTransformClientRpc(targetObjectRef, clientId);
+        }
+    }
+
+    [ClientRpc]
+    private void ApplyTransformClientRpc(NetworkObjectReference targetObjectRef, ulong initiatorClientId)
+    {
+        if (targetObjectRef.TryGet(out NetworkObject targetObject))
+        {
+            Transform targetTransform = targetObject.transform;
+            ApplyTransformLocally(targetTransform);
+        }
+    }
+
+    private void ApplyTransformLocally(Transform targetTransform)
     {
         MeshFilter targetMeshFilter = targetTransform.GetComponent<MeshFilter>();
         MeshRenderer targetRenderer = targetTransform.GetComponent<MeshRenderer>();
@@ -70,5 +100,4 @@ public class TransformingShoot : RayFiringObject
     {
         _bodyObject.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
     }
-
 }
