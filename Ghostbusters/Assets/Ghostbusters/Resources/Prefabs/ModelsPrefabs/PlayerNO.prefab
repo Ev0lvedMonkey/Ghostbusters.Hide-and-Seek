@@ -43,11 +43,11 @@ GameObject:
   - component: {fileID: 9030675597157732721}
   - component: {fileID: -8970653089036855174}
   - component: {fileID: 131683806190917558}
-  - component: {fileID: 948506629201644526}
   - component: {fileID: -2515787978255025047}
   - component: {fileID: -7911315309490851568}
   - component: {fileID: 7155014602679406567}
   - component: {fileID: 7895445609988697491}
+  - component: {fileID: 289307720369143025}
   - component: {fileID: -9148439180790676213}
   - component: {fileID: -6096408923155873637}
   - component: {fileID: 627271985527512015}
@@ -128,21 +128,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 4.5
   _animator: {fileID: 1237098469879964603}
---- !u!114 &948506629201644526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5255370187049413777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eab09f5d062b854ba4b2293aa5cf11f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mouseSense: 3
-  _camFollowPosition: {fileID: 4730471717647617360}
-  _torseObj: {fileID: 1149413298654292678}
 --- !u!114 &-2515787978255025047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +204,21 @@ MonoBehaviour:
   - {x: -8, y: 0, z: 14}
   - {x: 3.5, y: 0, z: -14}
   - {x: 3.5, y: 0, z: 14}
+--- !u!114 &289307720369143025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5255370187049413777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1475b8f080bffb429fc4b6194419d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mouseSense: 3
+  _camFollowPosition: {fileID: 4730471717647617360}
+  _torseObj: {fileID: 1149413298654292678}
 --- !u!114 &-9148439180790676213
 MonoBehaviour:
   m_ObjectHideFlags: 0

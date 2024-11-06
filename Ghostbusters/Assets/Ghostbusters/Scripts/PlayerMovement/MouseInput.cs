@@ -2,13 +2,13 @@ using Unity.Netcode;
 using System;
 using UnityEngine;
 
-public class MouseInput : NetworkBehaviour
+public abstract class MouseInput : NetworkBehaviour
 {
     [SerializeField, Range(1f, 5f)] private float _mouseSense;
     [SerializeField] private Transform _camFollowPosition;
     [SerializeField] private Transform _torseObj;
 
-    private float _xAxis, _yAxis;
+    protected float _xAxis, _yAxis;
     private IRotatable _fullbodyRotation;
     private IRotatable _torseRotation;
     private IRotatable _camRotation;
@@ -24,22 +24,18 @@ public class MouseInput : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsOwner) return;
-
-        SetMousePos();
-        UpdateRotationServerRpc(_xAxis, _yAxis); 
     }
 
     [ServerRpc]
-    private void UpdateRotationServerRpc(float xAxis, float yAxis)
+    protected virtual void UpdateRotationServerRpc(float xAxis, float yAxis)
     {
-        UpdateRotationClientRpc(xAxis, yAxis); 
+        UpdateRotationClientRpc(xAxis, yAxis);
     }
 
     [ClientRpc]
     private void UpdateRotationClientRpc(float xAxis, float yAxis)
     {
-        if (IsOwner) return; 
+        if (IsOwner) return;
 
         _xAxis = xAxis;
         _yAxis = yAxis;
@@ -54,11 +50,21 @@ public class MouseInput : NetworkBehaviour
         }
     }
 
-    private void ApplyRotation()
+    protected virtual void ApplyRotation()
+    {
+        BodyRotation();
+        CamRotation();
+    }
+
+    protected virtual void CamRotation()
+    {
+        _camRotation.Rotate(_xAxis, _yAxis);
+    }
+
+    protected virtual void BodyRotation()
     {
         _fullbodyRotation.Rotate(_xAxis, _yAxis);
         _torseRotation.Rotate(_xAxis, _yAxis);
-        _camRotation.Rotate(_xAxis, _yAxis);
     }
 
     private void Init()
@@ -68,7 +74,7 @@ public class MouseInput : NetworkBehaviour
         _torseRotation = new TorseRotation(_torseObj);
     }
 
-    private void SetMousePos()
+    protected virtual void SetMousePos()
     {
         _xAxis += Input.GetAxisRaw(MouseX);
         _yAxis -= Input.GetAxisRaw(MouseY);

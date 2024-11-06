@@ -215,13 +215,13 @@ public class GameStateManager : NetworkBehaviour
                     gamePlayingTimer.Value = gamePlayingTimerMax;
                 }
                 break;
-            case State.GamePlaying:
-                gamePlayingTimer.Value -= Time.deltaTime;
-                if (gamePlayingTimer.Value < 0f)
-                {
-                    state.Value = State.WinGhost;
-                }
-                break;
+            //case State.GamePlaying:
+            //    gamePlayingTimer.Value -= Time.deltaTime;
+            //    if (gamePlayingTimer.Value < 0f)
+            //    {
+            //        state.Value = State.WinGhost;
+            //    }
+            //    break;
 
         }
     }

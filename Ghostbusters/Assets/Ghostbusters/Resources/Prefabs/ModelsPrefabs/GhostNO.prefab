@@ -374,11 +374,11 @@ GameObject:
   - component: {fileID: 110489326125998510}
   - component: {fileID: -6451329845446121523}
   - component: {fileID: 5563767208832348612}
-  - component: {fileID: 7248060541195914727}
   - component: {fileID: 8254223609894997543}
   - component: {fileID: 7822123977495879398}
   - component: {fileID: 8119963331742901446}
   - component: {fileID: 2787314762436721399}
+  - component: {fileID: 7320319623691824065}
   m_Layer: 0
   m_Name: GhostNO
   m_TagString: Untagged
@@ -487,21 +487,6 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1
---- !u!114 &7248060541195914727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8826096940076894113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eab09f5d062b854ba4b2293aa5cf11f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mouseSense: 3
-  _camFollowPosition: {fileID: 6165201409464766203}
-  _torseObj: {fileID: 7045450888813315848}
 --- !u!114 &8254223609894997543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,6 +559,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7320319623691824065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8826096940076894113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11905c9e2c95d764eb85b39fce0e21bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mouseSense: 3
+  _camFollowPosition: {fileID: 6165201409464766203}
+  _torseObj: {fileID: 2874304489409965433}
+  _ghostMover: {fileID: 5563767208832348612}
 --- !u!1001 &5873818774442680048
 PrefabInstance:
   m_ObjectHideFlags: 0

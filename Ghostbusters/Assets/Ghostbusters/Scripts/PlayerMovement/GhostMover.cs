@@ -7,6 +7,9 @@ public class GhostMover : CharacterMover
     [SerializeField] private LayerMask _groundLayer;
 
     private bool _isGrounded;
+    private float _idleTimer;
+    private const float IdleDuration = 2f;
+    public bool IsRotationLocked { get; private set; } = false;
 
     private readonly Vector3 JumpDir = Vector3.up;
     private const KeyCode Jumpkey = KeyCode.Space;
@@ -15,7 +18,9 @@ public class GhostMover : CharacterMover
     private void Update()
     {
         if (!IsOwner) return;
+
         TryJump();
+        UpdateIdleState();
     }
 
     private void FixedUpdate()
@@ -24,10 +29,10 @@ public class GhostMover : CharacterMover
 
         base.Move();
     }
+
     private void TryJump()
     {
-        _isGrounded = Physics.CheckSphere(_groundCheckDot.position, 0.1f, _groundLayer);
-
+        _isGrounded = Physics.CheckSphere(_groundCheckDot.position, 0.3f, _groundLayer);
         if (Input.GetKeyDown(Jumpkey) && _isGrounded)
         {
             Jump();
@@ -39,5 +44,23 @@ public class GhostMover : CharacterMover
         _rigidbody.AddForce(JumpDir * JumpHeight, ForceMode.Impulse);
         _isGrounded = false;
         Debug.Log("Jumped");
+    }
+
+    private void UpdateIdleState()
+    {
+        if (_input != Vector2.zero || _rigidbody.velocity.magnitude > 0.1f)
+        {
+            _idleTimer = 0f;
+            IsRotationLocked = false;
+        }
+        else
+        {
+            _idleTimer += Time.deltaTime;
+
+            if (_idleTimer >= IdleDuration)
+            {
+                IsRotationLocked = true;
+            }
+        }
     }
 }
