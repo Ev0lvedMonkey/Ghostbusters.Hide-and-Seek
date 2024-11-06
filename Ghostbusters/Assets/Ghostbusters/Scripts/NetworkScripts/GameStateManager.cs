@@ -33,7 +33,7 @@ public class GameStateManager : NetworkBehaviour
     private bool isLocalPlayerReady;
     private NetworkVariable<float> countdownToStartTimer = new(3f);
     private NetworkVariable<float> gamePlayingTimer = new(0f);
-    private float gamePlayingTimerMax = 90f;
+    private float gamePlayingTimerMax = 5f;
     private bool isLocalGamePaused = false;
     private NetworkVariable<bool> isGamePaused = new(false);
     private Dictionary<ulong, bool> playerReadyDictionary;
@@ -58,6 +58,11 @@ public class GameStateManager : NetworkBehaviour
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
         }
+    }
+
+    private void Start()
+    {
+        SetPlayerReadyServerRpc();
     }
 
     private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
@@ -107,45 +112,38 @@ public class GameStateManager : NetworkBehaviour
 
     private void CheckWinCondition()
     {
-        try
+        bool allGhostsLost = false;
+        bool allBustersLost = false;
+        if (_playerStatusList.Count <= 2)
         {
-            bool allGhostsLost = false;
-            bool allBustersLost = false;
-            if (_playerStatusList.Count <= 2)
+            for (int i = 0; i < _playerStatusList.Count; i++)
             {
-                for (int i = 0; i < _playerStatusList.Count; i++)
-                {
-                    if (_playerStatusList[0] == true)
-                        allGhostsLost = true;
-                    else if (_playerStatusList[1] == true)
-                        allBustersLost = true;
-                    else continue;
-                }
+                if (_playerStatusList[0] == true)
+                    allGhostsLost = true;
+                else if (_playerStatusList[1] == true)
+                    allBustersLost = true;
+                else continue;
             }
-            else if (_playerStatusList.Count >= 2)
+        }
+        else if (_playerStatusList.Count >= 2)
+        {
+            for (int i = 0; i < _playerStatusList.Count; i++)
             {
-                for (int i = 0; i < _playerStatusList.Count; i++)
-                {
-                    if (_playerStatusList[0] == true && _playerStatusList[2] == true)
-                        allGhostsLost = true;
-                    else if (_playerStatusList[1] == true && _playerStatusList[3] == true)
-                        allBustersLost = true;
-                    else continue;
+                if (_playerStatusList[0] == true && _playerStatusList[2] == true)
+                    allGhostsLost = true;
+                else if (_playerStatusList[1] == true && _playerStatusList[3] == true)
+                    allBustersLost = true;
+                else continue;
 
-                }
             }
-            else
-            {
-                allGhostsLost = false;
-                allBustersLost = false;
-            }
-            if (allGhostsLost) state.Value = State.WinBusters;
-            else if (allBustersLost) state.Value = State.WinGhost;
         }
-        catch
+        else
         {
-            Debug.Log("bug here");
+            allGhostsLost = false;
+            allBustersLost = false;
         }
+        if (allGhostsLost) state.Value = State.WinBusters;
+        else if (allBustersLost) state.Value = State.WinGhost;
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
@@ -172,6 +170,7 @@ public class GameStateManager : NetworkBehaviour
     private void State_OnValueChanged(State previousValue, State newValue)
     {
         OnStateChanged?.Invoke();
+        Debug.LogError($"State changed from {previousValue} to {newValue}");
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -192,6 +191,7 @@ public class GameStateManager : NetworkBehaviour
         if (allClientsReady)
         {
             state.Value = State.CountdownToStart;
+            Debug.Log($"CountdownToStart started");
         }
     }
 
@@ -215,6 +215,14 @@ public class GameStateManager : NetworkBehaviour
                     gamePlayingTimer.Value = gamePlayingTimerMax;
                 }
                 break;
+            case State.GamePlaying:
+                gamePlayingTimer.Value -= Time.deltaTime;
+                if (gamePlayingTimer.Value < 0f)
+                {
+                    state.Value = State.WinGhost;
+                }
+                break;
+
         }
     }
 
