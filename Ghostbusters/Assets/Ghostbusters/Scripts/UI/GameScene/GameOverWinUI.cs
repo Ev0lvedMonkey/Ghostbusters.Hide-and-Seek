@@ -10,7 +10,8 @@ public class GameOverWinUI : MonoBehaviour
 
     private void Awake()
     {
-        _playAgainButton.onClick.AddListener(() => {
+        _playAgainButton.onClick.AddListener(() =>
+        {
             NetworkManager.Singleton.Shutdown();
             SceneLoader.Load(SceneLoader.Scene.MenuScene);
         });
@@ -25,15 +26,22 @@ public class GameOverWinUI : MonoBehaviour
 
     private void KitchenGameManager_OnStateChanged()
     {
-        if (GameStateManager.Instance.IsGameOver())
+        Show();
+        switch (GameStateManager.Instance.IsGameOver().ToString())
         {
-            Show();
-            _gameOverWinText.text = "«¿√À”ÿ ¿";
+            case "WinBusters":
+                _gameOverWinText.text = "Busters WIN!";
+                break;
+            case "WinGhost":
+                _gameOverWinText.text = "GHOST WIN!";
+                break;
+            default:
+                _gameOverWinText.text = "Something wrong";
+                break;
+
         }
-        else
-        {
-            Hide();
-        }
+
+
     }
 
     private void Show()

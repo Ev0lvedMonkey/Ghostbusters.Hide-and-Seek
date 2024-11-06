@@ -16,23 +16,19 @@ public class GameStateManager : NetworkBehaviour
     internal UnityEvent OnLocalPlayerReadyChanged = new();
 
 
-    private enum State
+    public enum State
     {
         WaitingToStart,
         CountdownToStart,
         GamePlaying,
-        GameOver,
+        WinBusters,
+        WinGhost
     }
 
-    [Inject]
-    private DiContainer _container;
-
     [SerializeField] private Transform ghostPrefab;
-    [SerializeField] private GhostHealthView ghostView;
     [SerializeField] private Transform playerPrefab;
-    [SerializeField] private GhostbusterHealthView playerView;
 
-
+    private NetworkList<bool> _playerStatusList = new();
     private NetworkVariable<State> state = new(State.WaitingToStart);
     private bool isLocalPlayerReady;
     private NetworkVariable<float> countdownToStartTimer = new(3f);
@@ -80,6 +76,8 @@ public class GameStateManager : NetworkBehaviour
                 Debug.Log("buster Instantiated");
             }
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+            Debug.Log($"SceneManager_OnLoadEventCompleted added new player on status list with clientID {clientId}");
+            _playerStatusList.Add(false);
         }
     }
 
@@ -89,6 +87,65 @@ public class GameStateManager : NetworkBehaviour
             MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
         if (idPlayer == 0 || idPlayer == 2) return true;
         else return false;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ReportPlayerLostServerRpc(ulong clientId)
+    {
+        int playerIndex = MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(clientId);
+        Debug.Log($"ReportPlayerLostServerRpc invoke player with clientID {clientId}, his index {playerIndex}");
+        if (playerIndex != -1) _playerStatusList[playerIndex] = true;
+        int index = 0;
+        foreach (var item in _playerStatusList)
+        {
+            Debug.Log($"layerStatusList index {index} is dead? - {item}");
+            index++;
+        }
+
+        CheckWinCondition();
+    }
+
+    private void CheckWinCondition()
+    {
+        try
+        {
+            bool allGhostsLost = false;
+            bool allBustersLost = false;
+            if (_playerStatusList.Count <= 2)
+            {
+                for (int i = 0; i < _playerStatusList.Count; i++)
+                {
+                    if (_playerStatusList[0] == true)
+                        allGhostsLost = true;
+                    else if (_playerStatusList[1] == true)
+                        allBustersLost = true;
+                    else continue;
+                }
+            }
+            else if (_playerStatusList.Count >= 2)
+            {
+                for (int i = 0; i < _playerStatusList.Count; i++)
+                {
+                    if (_playerStatusList[0] == true && _playerStatusList[2] == true)
+                        allGhostsLost = true;
+                    else if (_playerStatusList[1] == true && _playerStatusList[3] == true)
+                        allBustersLost = true;
+                    else continue;
+
+                }
+            }
+            else
+            {
+                allGhostsLost = false;
+                allBustersLost = false;
+            }
+            if (allGhostsLost) state.Value = State.WinBusters;
+            else if (allBustersLost) state.Value = State.WinGhost;
+        }
+        catch
+        {
+            Debug.Log("bug here");
+        }
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
@@ -158,8 +215,6 @@ public class GameStateManager : NetworkBehaviour
                     gamePlayingTimer.Value = gamePlayingTimerMax;
                 }
                 break;
-            case State.GameOver:
-                break;
         }
     }
 
@@ -187,9 +242,9 @@ public class GameStateManager : NetworkBehaviour
         return countdownToStartTimer.Value;
     }
 
-    public bool IsGameOver()
+    public State IsGameOver()
     {
-        return state.Value == State.GameOver;
+        return state.Value;
     }
 
     public bool IsWaitingToStart()

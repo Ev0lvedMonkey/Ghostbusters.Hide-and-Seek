@@ -58,8 +58,6 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(bool isSelfDamage, ServerRpcParams rpcParams = default)
     {
-        Debug.Log($"{gameObject.name} took damage. Current health: {_currentHealth}");
-
         int currentDamage = isSelfDamage ? SELF_DAMAGE : GHOST_DAMAGE;
 
         _currentHealth -= currentDamage;
@@ -95,12 +93,16 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     private void HandleDeathServerRpc()
     {
         HandleDeathClientRpc();
-        Debug.Log($"{gameObject.name} entered spectator mode on client.");
     }
 
     [ClientRpc]
     private void HandleDeathClientRpc()
     {
+        if (IsOwner)
+        {
+            ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
+            GameStateManager.Instance.ReportPlayerLostServerRpc(clientID);
+        }
         DisableHUD();
         _bodyTransform.gameObject.SetActive(false);
 
