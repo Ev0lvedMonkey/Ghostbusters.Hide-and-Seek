@@ -248,6 +248,7 @@ MonoBehaviour:
   _deathEffect: {fileID: 0}
   _bodyTransform: {fileID: 5173266347649546689}
   _bodyRigidbody: {fileID: 1874786418358173608}
+  _fireObj: {fileID: 7155014602679406567}
   _hudView: {fileID: 9014929157552778291}
 --- !u!33 &627271985527512015
 MeshFilter:

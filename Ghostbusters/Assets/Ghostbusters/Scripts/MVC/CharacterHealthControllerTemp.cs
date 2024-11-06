@@ -7,6 +7,7 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     [SerializeField] private GameObject _deathEffect;
     [SerializeField] private Transform _bodyTransform;
     [SerializeField] private Rigidbody _bodyRigidbody;
+    [SerializeField] private RayFiringObject _fireObj;
     [SerializeField] private HealthView _hudView;
 
     private const int SELF_DAMAGE = 50;
@@ -25,24 +26,25 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
             EnableHUD();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+            TakeDamageServerRpc(true);
+    }
+
     public void EnableHUD()
     {
         _hudView.gameObject.SetActive(true);
-        Debug.Log($"{gameObject.name} HUD enabled for owner");
     }
 
     public void DisableHUD()
     {
         _hudView.gameObject.SetActive(false);
-        Debug.Log($"{gameObject.name} HUD disabled for owner");
     }
 
     public override void OnNetworkSpawn()
     {
-        if (IsOwner)
-        {
-            UpdateHUDClientRpc(_currentHealth);
-        }
+        UpdateHUDClientRpc(_currentHealth);
     }
 
     public void Heal()
@@ -92,33 +94,22 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void HandleDeathServerRpc()
     {
-
-        DisableHUD();
-        _bodyTransform.GetChild(0).gameObject.SetActive(false);
-
-        _bodyRigidbody.isKinematic = true;
-        _bodyRigidbody.useGravity = false;
-
-
-        SpawnDeathEffect();
         HandleDeathClientRpc();
-        UpdateHUDClientRpc(_currentHealth);
         Debug.Log($"{gameObject.name} entered spectator mode on client.");
     }
 
     [ClientRpc]
     private void HandleDeathClientRpc()
     {
-
         DisableHUD();
         _bodyTransform.gameObject.SetActive(false);
 
         _bodyRigidbody.isKinematic = true;
         _bodyRigidbody.useGravity = false;
-
+        _fireObj.enabled = false;
 
         SpawnDeathEffect();
-
+        UpdateHUDClientRpc(_currentHealth);
         Debug.Log($"{gameObject.name} entered spectator mode on client.");
     }
 

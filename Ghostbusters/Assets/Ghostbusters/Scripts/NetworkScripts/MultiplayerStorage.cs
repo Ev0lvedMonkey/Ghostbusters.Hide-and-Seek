@@ -2,8 +2,6 @@ using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
-using System.Collections;
 
 public class MultiplayerStorage : NetworkBehaviour
 {
@@ -76,7 +74,7 @@ public class MultiplayerStorage : NetworkBehaviour
         {
             if (_playerDataNetworkList[i].clientId == clientId)
             {
-                Debug.LogError($"return {i}");
+                Debug.Log($"GetPlayerDataIndexFromClientId Return index {i} from input clientID {clientId}");
                 return i;
             }
         }
@@ -94,9 +92,9 @@ public class MultiplayerStorage : NetworkBehaviour
             }
             if (playerData.clientId == clientId)
             {
-                Debug.LogError($"return playerdata {playerData.playerName}");
-                Debug.LogError($"return playerdata {playerData.playerId}");
-                Debug.LogError($"return playerdata {playerData.clientId}");
+                Debug.LogError($"GetPlayerDataFromClientId return playerdata {playerData.playerName}");
+                Debug.LogError($"GetPlayerDataFromClientId return playerdata {playerData.playerId}");
+                Debug.LogError($"GetPlayerDataFromClientId return playerdata {playerData.clientId}");
                 return playerData;
             }
         }
@@ -120,7 +118,6 @@ public class MultiplayerStorage : NetworkBehaviour
         NetworkManager.Singleton.DisconnectClient(clientId);
         NetworkManager_Server_OnClientDisconnectCallback(clientId);
 
-        // Сообщаем клиентам, что игрок был кикнут
         KickPlayerClientRpc(clientId);
     }
 
@@ -136,8 +133,6 @@ public class MultiplayerStorage : NetworkBehaviour
                 _playerDataNetworkList.RemoveAt(i);
             }
         }
-
-        //OnPlayerKicked.Invoke(); // Вызываем событие для обновления UI на клиентах
     }
 
     private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
@@ -155,16 +150,6 @@ public class MultiplayerStorage : NetworkBehaviour
     private void PlayerDataNetworkList_OnListChanged(NetworkListEvent<PlayerData> changeEvent)
     {
         OnPlayerDataNetworkListChanged.Invoke();
-    }
-
-    private void CheckNetowrkManager()
-    {
-        if (NetworkManager.Singleton != _networkManager)
-        {
-            Debug.LogWarning($"{gameObject.name} destroind");
-            Destroy(_networkManager.gameObject);
-            return;
-        }
     }
 
     private void NetworkManager_OnClientConnectedCallback(ulong clientId)

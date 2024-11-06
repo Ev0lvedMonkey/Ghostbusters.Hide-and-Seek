@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -73,12 +72,12 @@ public class GameStateManager : NetworkBehaviour
             if (IsGhost(clientId))
             {
                 playerTransform = Instantiate(ghostPrefab);
-                Debug.Log("GHOST VIEW");
+                Debug.Log("GHOST Instantiated");
             }
             else
             {
                 playerTransform = Instantiate(playerPrefab);
-                Debug.Log("buster VIEW");
+                Debug.Log("buster Instantiated");
             }
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
         }
@@ -88,7 +87,7 @@ public class GameStateManager : NetworkBehaviour
     {
         int idPlayer =
             MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
-        if (idPlayer == 1 || idPlayer == 2) return true;
+        if (idPlayer == 0 || idPlayer == 2) return true;
         else return false;
     }
 
@@ -128,7 +127,6 @@ public class GameStateManager : NetworkBehaviour
         {
             if (!playerReadyDictionary.ContainsKey(clientId) || !playerReadyDictionary[clientId])
             {
-                // This player is NOT ready
                 allClientsReady = false;
                 break;
             }

@@ -328,6 +328,7 @@ MonoBehaviour:
   _deathEffect: {fileID: 0}
   _bodyTransform: {fileID: 7045450888813315848}
   _bodyRigidbody: {fileID: 2787314762436721399}
+  _fireObj: {fileID: 8254223609894997543}
   _hudView: {fileID: 6250410782170815527}
 --- !u!1 &7413153348805525786
 GameObject:
