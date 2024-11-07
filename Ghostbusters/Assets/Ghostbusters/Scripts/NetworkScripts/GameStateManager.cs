@@ -14,6 +14,7 @@ public class GameStateManager : NetworkBehaviour
     internal UnityEvent OnMultiplayerGamePaused = new();
     internal UnityEvent OnMultiplayerGameUnpaused = new();
     internal UnityEvent OnLocalPlayerReadyChanged = new();
+    public UnityEvent OnStartGame = new();
 
 
     public enum State
@@ -65,6 +66,77 @@ public class GameStateManager : NetworkBehaviour
         SetPlayerReadyServerRpc();
     }
 
+    public void InvokeStartGameEvent() =>
+        OnStartGame.Invoke();
+
+    public bool IsGamePlaying()
+    {
+        return state.Value == State.GamePlaying;
+    }
+
+    public bool IsCountdownToStartActive()
+    {
+        return state.Value == State.CountdownToStart;
+    }
+
+    public float GetCountdownToStartTimer()
+    {
+        return countdownToStartTimer.Value;
+    }
+
+    public State IsGameOver()
+    {
+        return state.Value;
+    }
+
+    public bool IsWaitingToStart()
+    {
+        return state.Value == State.WaitingToStart;
+    }
+
+    public bool IsLocalPlayerReady()
+    {
+        return isLocalPlayerReady;
+    }
+
+    public float GetGamePlayingTimerNormalized()
+    {
+        return 1 - (gamePlayingTimer.Value / gamePlayingTimerMax);
+    }
+
+    public void TogglePauseGame()
+    {
+        isLocalGamePaused = !isLocalGamePaused;
+        if (isLocalGamePaused)
+        {
+            PauseGameServerRpc();
+
+            OnLocalGamePaused.Invoke();
+        }
+        else
+        {
+            UnpauseGameServerRpc();
+
+            OnLocalGameUnpaused.Invoke();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ReportPlayerLostServerRpc(ulong clientId)
+    {
+        int playerIndex = MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(clientId);
+        Debug.Log($"ReportPlayerLostServerRpc invoke player with clientID {clientId}, his index {playerIndex}");
+        if (playerIndex != -1) _playerStatusList[playerIndex] = true;
+        int index = 0;
+        foreach (var item in _playerStatusList)
+        {
+            Debug.Log($"layerStatusList index {index} is dead? - {item}");
+            index++;
+        }
+
+        CheckWinCondition();
+    }
+
     private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
@@ -90,24 +162,8 @@ public class GameStateManager : NetworkBehaviour
     {
         int idPlayer =
             MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
-        if (idPlayer == 1 || idPlayer == 2) return true;
+        if (idPlayer == 0 || idPlayer == 2) return true;
         else return false;
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void ReportPlayerLostServerRpc(ulong clientId)
-    {
-        int playerIndex = MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(clientId);
-        Debug.Log($"ReportPlayerLostServerRpc invoke player with clientID {clientId}, his index {playerIndex}");
-        if (playerIndex != -1) _playerStatusList[playerIndex] = true;
-        int index = 0;
-        foreach (var item in _playerStatusList)
-        {
-            Debug.Log($"layerStatusList index {index} is dead? - {item}");
-            index++;
-        }
-
-        CheckWinCondition();
     }
 
     private void CheckWinCondition()
@@ -174,6 +230,7 @@ public class GameStateManager : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
+   
     private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
     {
         playerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
@@ -235,57 +292,6 @@ public class GameStateManager : NetworkBehaviour
         }
     }
 
-    public bool IsGamePlaying()
-    {
-        return state.Value == State.GamePlaying;
-    }
-
-    public bool IsCountdownToStartActive()
-    {
-        return state.Value == State.CountdownToStart;
-    }
-
-    public float GetCountdownToStartTimer()
-    {
-        return countdownToStartTimer.Value;
-    }
-
-    public State IsGameOver()
-    {
-        return state.Value;
-    }
-
-    public bool IsWaitingToStart()
-    {
-        return state.Value == State.WaitingToStart;
-    }
-
-    public bool IsLocalPlayerReady()
-    {
-        return isLocalPlayerReady;
-    }
-
-    public float GetGamePlayingTimerNormalized()
-    {
-        return 1 - (gamePlayingTimer.Value / gamePlayingTimerMax);
-    }
-
-    public void TogglePauseGame()
-    {
-        isLocalGamePaused = !isLocalGamePaused;
-        if (isLocalGamePaused)
-        {
-            PauseGameServerRpc();
-
-            OnLocalGamePaused.Invoke();
-        }
-        else
-        {
-            UnpauseGameServerRpc();
-
-            OnLocalGameUnpaused.Invoke();
-        }
-    }
 
     [ServerRpc(RequireOwnership = false)]
     private void PauseGameServerRpc(ServerRpcParams serverRpcParams = default)

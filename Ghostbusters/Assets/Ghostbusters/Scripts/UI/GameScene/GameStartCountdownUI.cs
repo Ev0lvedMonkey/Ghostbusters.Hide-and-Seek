@@ -19,13 +19,16 @@ public class GameStartCountdownUI : MonoBehaviour
         if (GameStateManager.Instance.IsCountdownToStartActive())
             Show();
         else
+        {
+            GameStateManager.Instance.OnStartGame.Invoke();
             Hide();
+        }
     }
 
     private void Update()
     {
         int countdownNumber = Mathf.CeilToInt(GameStateManager.Instance.GetCountdownToStartTimer());
-        countdownText.text = countdownNumber.ToString();
+        countdownText.text = $"{countdownNumber} sec";
 
         if (previousCountdownNumber != countdownNumber)
             previousCountdownNumber = countdownNumber;
