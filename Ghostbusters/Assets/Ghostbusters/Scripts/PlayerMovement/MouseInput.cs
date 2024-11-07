@@ -52,7 +52,8 @@ public abstract class MouseInput : NetworkBehaviour
 
     protected virtual void ApplyRotation()
     {
-        BodyRotation();
+        TorseRotation();
+        FullBodyRotation();
         CamRotation();
     }
 
@@ -61,7 +62,13 @@ public abstract class MouseInput : NetworkBehaviour
         _camRotation.Rotate(_xAxis, _yAxis);
     }
 
-    protected virtual void BodyRotation()
+    protected virtual void TorseRotation()
+    {
+        _fullbodyRotation.Rotate(_xAxis, _yAxis);
+        _torseRotation.Rotate(_xAxis, _yAxis);
+    } 
+    
+    protected virtual void FullBodyRotation()
     {
         _fullbodyRotation.Rotate(_xAxis, _yAxis);
         _torseRotation.Rotate(_xAxis, _yAxis);

@@ -1,10 +1,11 @@
+using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 using Zenject.SpaceFighter;
 
 public class WeaponFire : RayFiringObject
 {
-    [SerializeField] private ParticleSystem _hitEffect;
+    [SerializeField] private GameObject _hitEffect;
     [SerializeField] private CharacterHealthControllerTemp _characterHealth;
 
     private LayerMask _targetLayerMask;
@@ -62,16 +63,14 @@ public class WeaponFire : RayFiringObject
             {
                 Debug.Log("Hit static object");
             }
-
-            MakeHitEffect(hit);
+            MakeHitEffectClientRpc(hit.point, hit.normal);
         }
     }
 
-    [System.Obsolete]
-    private void MakeHitEffect(RaycastHit hit)
+    [ClientRpc]
+    private void MakeHitEffectClientRpc(Vector3 hitPoint, Vector3 hitNormal)
     {
-        GameObject hitEffect = Instantiate(_hitEffect.gameObject, hit.point, Quaternion.LookRotation(hit.normal));
-        Destroy(hitEffect, _hitEffect.duration);
+        Instantiate(_hitEffect, hitPoint, Quaternion.LookRotation(hitNormal));
         Debug.Log("Effect played");
     }
 

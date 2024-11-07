@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 100
-  _deathEffect: {fileID: 0}
+  _deathEffect: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
   _bodyTransform: {fileID: 5173266347649546689}
   _bodyRigidbody: {fileID: 1874786418358173608}
   _fireObj: {fileID: 7155014602679406567}

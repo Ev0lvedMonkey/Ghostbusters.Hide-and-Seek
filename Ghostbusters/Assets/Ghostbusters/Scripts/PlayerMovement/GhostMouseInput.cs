@@ -18,6 +18,7 @@ public class GhostMouseInput : MouseInput
     {
         base.CamRotation();
         if (_ghostMover.IsRotationLocked) return;
-        base.BodyRotation();        
+        base.FullBodyRotation();        
+        base.TorseRotation();        
     }
 }

@@ -21,7 +21,7 @@ public abstract class RayFiringObject : NetworkBehaviour
 
     protected virtual void Update()
     {
-        if (!IsOwner) 
+        if (!IsOwner)
             return;
 
         if (!CanFire())
@@ -64,5 +64,6 @@ public abstract class RayFiringObject : NetworkBehaviour
         _isCooldownActive = true;
     }
 
+    
     protected abstract void HandleFire();
 }

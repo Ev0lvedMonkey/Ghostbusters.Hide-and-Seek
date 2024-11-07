@@ -110,16 +110,17 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
         _bodyRigidbody.useGravity = false;
         _fireObj.enabled = false;
 
-        SpawnDeathEffect();
+        SpawnDeathEffectClientRpc();
         UpdateHUDClientRpc(_currentHealth);
         Debug.Log($"{gameObject.name} entered spectator mode on client.");
     }
 
-    private void SpawnDeathEffect()
+    [ClientRpc]
+    private void SpawnDeathEffectClientRpc()
     {
         if (_deathEffect != null)
         {
-            Instantiate(_deathEffect, transform.position, Quaternion.identity);
+            Instantiate(_deathEffect, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
         }
     }
 

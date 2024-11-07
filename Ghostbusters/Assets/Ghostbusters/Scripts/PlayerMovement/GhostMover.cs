@@ -7,8 +7,6 @@ public class GhostMover : CharacterMover
     [SerializeField] private LayerMask _groundLayer;
 
     private bool _isGrounded;
-    private float _idleTimer;
-    private const float IdleDuration = 2f;
     public bool IsRotationLocked { get; private set; } = false;
 
     private readonly Vector3 JumpDir = Vector3.up;
@@ -50,17 +48,11 @@ public class GhostMover : CharacterMover
     {
         if (_input != Vector2.zero || _rigidbody.velocity.magnitude > 0.1f)
         {
-            _idleTimer = 0f;
             IsRotationLocked = false;
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
-            _idleTimer += Time.deltaTime;
-
-            if (_idleTimer >= IdleDuration)
-            {
-                IsRotationLocked = true;
-            }
+            IsRotationLocked = true;
         }
     }
 }
