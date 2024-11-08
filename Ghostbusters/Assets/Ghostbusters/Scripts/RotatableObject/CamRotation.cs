@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class CamRotation : IRotatable
+public class CamRotation 
 {
     private readonly Transform _cameraTransform;
 
@@ -13,5 +13,10 @@ public class CamRotation : IRotatable
     public void Rotate(float xAxis, float yAxis)
     {
         _cameraTransform.localEulerAngles = new Vector3(yAxis, _cameraTransform.localEulerAngles.y, _cameraTransform.localEulerAngles.z);
+    }
+
+    public void CustomRotate(float xAxis, float yAxis)
+    {
+        _cameraTransform.localEulerAngles = new Vector3(_cameraTransform.localEulerAngles.x, xAxis, _cameraTransform.localEulerAngles.z);
     }
 }

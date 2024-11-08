@@ -339,6 +339,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6165201409464766203}
+  - component: {fileID: 7498242714500724640}
   m_Layer: 6
   m_Name: CamFollowPos
   m_TagString: Untagged
@@ -354,13 +355,27 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7413153348805525786}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0527717, y: -0, z: -0, w: 0.9986066}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.3279998, y: 1.22, z: -0.263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2874304489409965433}
-  m_LocalEulerAnglesHint: {x: 6.05, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7498242714500724640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7413153348805525786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72f74519ca0cf5d45a4fae34e0c63892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objTransform: {fileID: 0}
+  _rotate: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &8826096940076894113
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +563,21 @@ MonoBehaviour:
   _camFollowPosition: {fileID: 6165201409464766203}
   _torseObj: {fileID: 2874304489409965433}
   _ghostMover: {fileID: 5563767208832348612}
+  OnSetDeafaultStats:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7498242714500724640}
+        m_TargetAssemblyTypeName: DeafaultCamPos, Assembly-CSharp
+        m_MethodName: SetDeafaultStats
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!54 &2787314762436721399
 Rigidbody:
   m_ObjectHideFlags: 0

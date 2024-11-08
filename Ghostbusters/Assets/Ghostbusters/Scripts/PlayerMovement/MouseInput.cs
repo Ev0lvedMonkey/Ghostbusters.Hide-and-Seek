@@ -11,19 +11,17 @@ public abstract class MouseInput : NetworkBehaviour
     protected float _xAxis, _yAxis;
     private IRotatable _fullbodyRotation;
     private IRotatable _torseRotation;
-    private IRotatable _camRotation;
+    private CamRotation _camRotation;
+
+    private Quaternion _camRotateAngle;
 
     private const string MouseX = "Mouse X";
     private const string MouseY = "Mouse Y";
-    private const float AngleLimit = 80f;
+    private const float AngleLimit = 70f;
 
     private void Awake()
     {
         Init();
-    }
-
-    private void Update()
-    {
     }
 
     [ServerRpc]
@@ -62,16 +60,28 @@ public abstract class MouseInput : NetworkBehaviour
         _camRotation.Rotate(_xAxis, _yAxis);
     }
 
+    protected virtual void CustomCamRotation()
+    {
+        _camRotation.CustomRotate(_xAxis, _yAxis);
+    }
+
     protected virtual void TorseRotation()
     {
         _fullbodyRotation.Rotate(_xAxis, _yAxis);
         _torseRotation.Rotate(_xAxis, _yAxis);
-    } 
-    
+    }
+
     protected virtual void FullBodyRotation()
     {
         _fullbodyRotation.Rotate(_xAxis, _yAxis);
         _torseRotation.Rotate(_xAxis, _yAxis);
+    }
+
+    protected virtual void SetMousePos()
+    {
+        _xAxis += Input.GetAxisRaw(MouseX);
+        _yAxis -= Input.GetAxisRaw(MouseY);
+        _yAxis = Mathf.Clamp(_yAxis, -AngleLimit, AngleLimit);
     }
 
     private void Init()
@@ -81,10 +91,4 @@ public abstract class MouseInput : NetworkBehaviour
         _torseRotation = new TorseRotation(_torseObj);
     }
 
-    protected virtual void SetMousePos()
-    {
-        _xAxis += Input.GetAxisRaw(MouseX);
-        _yAxis -= Input.GetAxisRaw(MouseY);
-        _yAxis = Mathf.Clamp(_yAxis, -AngleLimit, AngleLimit);
-    }
 }
