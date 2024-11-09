@@ -14,7 +14,9 @@ public class GameStateManager : NetworkBehaviour
     internal UnityEvent OnMultiplayerGamePaused = new();
     internal UnityEvent OnMultiplayerGameUnpaused = new();
     internal UnityEvent OnLocalPlayerReadyChanged = new();
-    public UnityEvent OnStartGame = new();
+    internal UnityEvent OnStartGame = new();
+    internal UnityEvent OnCloseHUD = new();
+    internal UnityEvent OnOpenHUD = new();
 
 
     public enum State

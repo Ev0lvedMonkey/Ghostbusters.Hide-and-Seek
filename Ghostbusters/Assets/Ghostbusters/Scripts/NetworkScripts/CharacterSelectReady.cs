@@ -48,6 +48,7 @@ public class CharacterSelectReady : NetworkBehaviour
         {
             LobbyRelayManager.Instance.DeleteLobby();
             SceneLoader.LoadNetwork(SceneLoader.Scene.GameScene);
+            CursorController.DisableCursor();
         }
     }
 

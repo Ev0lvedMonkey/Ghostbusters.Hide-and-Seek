@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class MouseInput : NetworkBehaviour
 {
-    [SerializeField, Range(1f, 5f)] private float _mouseSense;
+    //[SerializeField, Range(1f, 5f)] private float _mouseSense;
     [SerializeField] private Transform _camFollowPosition;
     [SerializeField] private Transform _torseObj;
 
@@ -12,8 +12,6 @@ public abstract class MouseInput : NetworkBehaviour
     private IRotatable _fullbodyRotation;
     private IRotatable _torseRotation;
     private CamRotation _camRotation;
-
-    private Quaternion _camRotateAngle;
 
     private const string MouseX = "Mouse X";
     private const string MouseY = "Mouse Y";

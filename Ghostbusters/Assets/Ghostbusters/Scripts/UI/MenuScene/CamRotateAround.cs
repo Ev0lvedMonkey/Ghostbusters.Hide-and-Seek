@@ -10,6 +10,11 @@ public class CamRotateAround : MonoBehaviour
     private float _initialHeight;
     private int _rotateDirection;
 
+    private void Awake()
+    {
+        CursorController.EnableCursor();
+    }
+
     private void OnValidate()
     {
         if (_target == null)
