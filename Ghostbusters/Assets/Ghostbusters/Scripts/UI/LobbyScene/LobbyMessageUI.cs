@@ -23,12 +23,12 @@ public class LobbyMessageUI : MonoBehaviour
 
     private void LobbyMessage_OnQuickJoinFailed()
     {
-        ShowMessage("Could not find a Lobby to Quick Join!");
+        ShowMessage("Не удалось найти лобби для быстрого присоединения!");
     }
 
     private void LobbyMessage_OnJoinFailed()
     {
-        ShowMessage("Failed to join Lobby!");
+        ShowMessage("Не удалось присоединиться к лобби!");
     }
 
     private void LobbyMessage_OnJoinStarted()
@@ -38,19 +38,19 @@ public class LobbyMessageUI : MonoBehaviour
 
     private void LobbyMessage_OnCreateLobbyFailed()
     {
-        ShowMessage("Failed to create Lobby!");
+        ShowMessage("Присоединение к лобби...");
     }
 
     private void LobbyMessage_OnCreateLobbyStarted()
     {
-        ShowMessage("Creating Lobby...");
+        ShowMessage("Создание лобби...");
     }
 
     private void KitchenGameMultiplayer_OnFailedToJoinGame()
     {
         if (NetworkManager.Singleton.DisconnectReason == "")
         {
-            ShowMessage("Failed to connect");
+            ShowMessage("Не удалось подключиться");
         }
         else
         {

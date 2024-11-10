@@ -19,6 +19,7 @@ public class GhostMouseInput : MouseInput
     {
         if (_ghostMover.IsRotationLocked)
         {
+            Debug.Log($"is locked");
             OnSetDeafaultStats.Invoke();
             base.CustomCamRotation();
                 SetDefaultBodyRotation();
@@ -28,6 +29,7 @@ public class GhostMouseInput : MouseInput
         }
         else
         {
+            Debug.Log($"unlock !!!!!!!!");
             if (_isFirstFrame == false)
             {
                 OnSetDeafaultStats.Invoke();

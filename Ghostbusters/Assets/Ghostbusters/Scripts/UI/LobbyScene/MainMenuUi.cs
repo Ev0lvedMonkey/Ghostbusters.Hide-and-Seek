@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainMenuUi : MonoBehaviour
 {
     [SerializeField] private Button _createLobbyBtn;
+    [SerializeField] private Button _quickJoinLobbyBtn;
     [SerializeField] private Button _joinLobbyBtn;
     [SerializeField] private Button _menuBtn;
     [SerializeField] private TMP_InputField _lobbyCodeInputField;
@@ -25,6 +26,7 @@ public class MainMenuUi : MonoBehaviour
         ActivateButtons();
         _createLobbyBtn.onClick.AddListener(TestCreateLobby);
         _joinLobbyBtn.onClick.AddListener(TestJoinWithCode);
+        _quickJoinLobbyBtn.onClick.AddListener(TestQuickJoin);
         _menuBtn.onClick.AddListener(() => { SceneLoader.Load(SceneLoader.Scene.MenuScene);});
     }
 
@@ -39,12 +41,19 @@ public class MainMenuUi : MonoBehaviour
     {
         _createLobbyBtn.interactable = true;
         _joinLobbyBtn.interactable = true;
+        _quickJoinLobbyBtn.interactable = true;
     }
 
     private void DeactivateButtons()
     {
         _createLobbyBtn.interactable = false;
         _joinLobbyBtn.interactable = false;
+        _quickJoinLobbyBtn.interactable = false;
+    }
+
+    private async void TestQuickJoin()
+    {
+        await LobbyRelayManager.Instance.QuickJoin();
     }
 
     private async void TestJoinWithCode()

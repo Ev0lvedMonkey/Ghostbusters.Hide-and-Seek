@@ -10,13 +10,9 @@ using Unity.Services.Relay.Models;
 using Unity.Services.Relay;
 using UnityEngine;
 using System.Threading.Tasks;
-using UnityEngine.UI;
-using TMPro;
-using QFSW.QC;
 using UnityEngine.Events;
 using System;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class LobbyRelayManager : MonoBehaviour
 {
@@ -96,7 +92,7 @@ public class LobbyRelayManager : MonoBehaviour
         }
     }
 
-    public async void QuickJoin()
+    public async Task QuickJoin()
     {
         OnJoinStarted?.Invoke();
         try
@@ -177,7 +173,6 @@ public class LobbyRelayManager : MonoBehaviour
         }
     }
 
-
     public async void KickPlayer(string playerId)
     {
         if (IsLobbyHost())
@@ -197,11 +192,11 @@ public class LobbyRelayManager : MonoBehaviour
             }
         }
     }
-
     public Lobby GetJoinedLobby()
     {
         return _joinedLobby;
     }
+
     public bool IsLobbyHost()
     {
         return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;

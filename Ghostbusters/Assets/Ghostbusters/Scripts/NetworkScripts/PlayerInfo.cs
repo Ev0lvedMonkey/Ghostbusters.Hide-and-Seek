@@ -1,6 +1,5 @@
 using TMPro;
 using Unity.Netcode;
-using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.UI;
 

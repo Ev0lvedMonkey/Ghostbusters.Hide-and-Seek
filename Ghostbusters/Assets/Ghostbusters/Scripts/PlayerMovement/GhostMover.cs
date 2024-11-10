@@ -46,7 +46,7 @@ public class GhostMover : CharacterMover
 
     private void UpdateIdleState()
     {
-        if (_input != Vector2.zero || _rigidbody.velocity.magnitude > 0.1f)
+        if (_input != Vector2.zero)
         {
             IsRotationLocked = false;
         }

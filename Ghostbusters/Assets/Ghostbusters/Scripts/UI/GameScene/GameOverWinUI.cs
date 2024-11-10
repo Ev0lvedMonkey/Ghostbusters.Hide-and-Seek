@@ -33,12 +33,12 @@ public class GameOverWinUI : MonoBehaviour
         switch (GameStateManager.Instance.IsGameOver().ToString())
         {
             case "WinBusters":
-                _gameOverWinText.text = "Busters WIN!";
+                _gameOverWinText.text = "Охотники победили!";
                 RemoveListeners();
                 Show();
                 break;
             case "WinGhost":
-                _gameOverWinText.text = "GHOST WIN!";
+                _gameOverWinText.text = "Призраки победи!";
                 RemoveListeners();
                 Show();
                 break;
