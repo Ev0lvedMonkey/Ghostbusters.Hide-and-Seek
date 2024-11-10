@@ -7,7 +7,7 @@ public class TransformingShoot : RayFiringObject
 
     private MeshFilter bodyMeshFilter;
     private MeshRenderer bodyRenderer;
-    private CapsuleCollider bodyCapsuleCollider;
+    private MeshCollider bodyMeshCollider;
 
     protected override void Start()
     {
@@ -19,7 +19,7 @@ public class TransformingShoot : RayFiringObject
     {
         bodyMeshFilter = _bodyObject.GetComponent<MeshFilter>();
         bodyRenderer = _bodyObject.GetComponent<MeshRenderer>();
-        bodyCapsuleCollider = _bodyObject.GetComponent<CapsuleCollider>();
+        bodyMeshCollider = _bodyObject.GetComponent<MeshCollider>();
     }
 
     protected override void HandleFire()
@@ -80,21 +80,23 @@ public class TransformingShoot : RayFiringObject
     {
         MeshFilter targetMeshFilter = targetTransform.GetComponent<MeshFilter>();
         MeshRenderer targetRenderer = targetTransform.GetComponent<MeshRenderer>();
-        CapsuleCollider targetCapsuleCollider = targetTransform.GetComponent<CapsuleCollider>();
+        MeshCollider targetMeshCollider = targetTransform.GetComponent<MeshCollider>();
 
-        if (targetMeshFilter == null && targetRenderer == null && targetCapsuleCollider == null)
+        if (targetMeshFilter == null && targetRenderer == null && targetMeshCollider == null)
             return;
 
         bodyMeshFilter.mesh = targetMeshFilter.mesh;
         bodyRenderer.materials = targetRenderer.materials;
         _bodyObject.transform.localScale = targetTransform.localScale;
 
-        bodyCapsuleCollider.center = targetCapsuleCollider.center;
-        bodyCapsuleCollider.radius = targetCapsuleCollider.radius;
-        bodyCapsuleCollider.height = targetCapsuleCollider.height;
+        // Устанавливаем mesh для MeshCollider
+        bodyMeshCollider.sharedMesh = targetMeshCollider.sharedMesh;
+        bodyMeshCollider.convex = targetMeshCollider.convex;
+        bodyMeshCollider.isTrigger = targetMeshCollider.isTrigger;
 
         AdjustBodyPosition();
     }
+
 
     private void AdjustBodyPosition()
     {

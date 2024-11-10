@@ -184,7 +184,12 @@ public class LobbyRelayManager : MonoBehaviour
         {
             try
             {
+                Debug.Log($"!!!!!!!!!!!!!! Kicked {playerId} {Instance.GetJoinedLobby().HostId}");
                 await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, playerId);
+
+                NetworkManager.Singleton.Shutdown();
+                _joinedLobby = null;
+                Debug.Log("!!!!!!!!!!!!!!!!!!!!! Shutdown !!!!!!!!!!!!!!!!!!!!!");
             }
             catch (LobbyServiceException e)
             {

@@ -8,10 +8,16 @@ public class KeyboardInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!_isMenuOpen)
+            if (_isMenuOpen == false)
+            {
                 GameStateManager.Instance.OnOpenHUD.Invoke();
+                CursorController.DisableCursor();
+            }
             else
+            {
                 GameStateManager.Instance.OnCloseHUD.Invoke();
+                CursorController.EnableCursor();
+            }
             _isMenuOpen = !_isMenuOpen;
         }
     }

@@ -4,7 +4,7 @@ using UnityEngine.Events;
 public class GhostMouseInput : MouseInput
 {
     [SerializeField] private GhostMover _ghostMover;
-    [SerializeField] private UnityEvent OnSetDeafaultStats; 
+    [SerializeField] private UnityEvent OnSetDeafaultStats;
     private bool _isFirstFrame;
 
     void Update()
@@ -21,6 +21,8 @@ public class GhostMouseInput : MouseInput
         {
             OnSetDeafaultStats.Invoke();
             base.CustomCamRotation();
+                SetDefaultBodyRotation();
+
             _isFirstFrame = false;
             return;
         }

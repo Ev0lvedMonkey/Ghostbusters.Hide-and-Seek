@@ -34,10 +34,6 @@ public class PlayerInfo : MonoBehaviour
 
     private void CheckKickButton(PlayerData playerData)
     {
-        if (MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(playerData.clientId)).playerId
-            == LobbyRelayManager.Instance.GetJoinedLobby().HostId)
-            kickButton.gameObject.SetActive(false);
-        else
             kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
     }
 
@@ -48,7 +44,8 @@ public class PlayerInfo : MonoBehaviour
 
     private void KickPlayer()
     {
-        PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
+        PlayerData playerData = MultiplayerStorage.Instance.GetPlayerData();
+        Debug.Log($"pressed kick {playerData.playerId} {LobbyRelayManager.Instance.GetJoinedLobby().HostId}");
         LobbyRelayManager.Instance.KickPlayer(playerData.playerId.ToString());
         MultiplayerStorage.Instance.KickPlayerServerRpc(playerData.clientId);
     }
@@ -76,7 +73,7 @@ public class PlayerInfo : MonoBehaviour
             else
                 readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
             playerNameText.text = playerData.playerName.ToString();
-            CheckKickButton(playerData);
+            //CheckKickButton(playerData);
         }
         else
         {

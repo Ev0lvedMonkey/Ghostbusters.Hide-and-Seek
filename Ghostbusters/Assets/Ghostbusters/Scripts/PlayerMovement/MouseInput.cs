@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class MouseInput : NetworkBehaviour
 {
-    //[SerializeField, Range(1f, 5f)] private float _mouseSense;
+    [SerializeField] private MouseSenceConfiguration _mouseSenseConfig;
     [SerializeField] private Transform _camFollowPosition;
     [SerializeField] private Transform _torseObj;
 
@@ -46,6 +46,14 @@ public abstract class MouseInput : NetworkBehaviour
         }
     }
 
+    protected void SetDefaultBodyRotation()
+    {
+        if (IsOwner)
+        {
+            transform.eulerAngles = Vector3.zero;
+        }
+    }
+
     protected virtual void ApplyRotation()
     {
         TorseRotation();
@@ -77,8 +85,8 @@ public abstract class MouseInput : NetworkBehaviour
 
     protected virtual void SetMousePos()
     {
-        _xAxis += Input.GetAxisRaw(MouseX);
-        _yAxis -= Input.GetAxisRaw(MouseY);
+        _xAxis += Input.GetAxisRaw(MouseX) * _mouseSenseConfig.GetMouseSense();
+        _yAxis -= Input.GetAxisRaw(MouseY) * _mouseSenseConfig.GetMouseSense();
         _yAxis = Mathf.Clamp(_yAxis, -AngleLimit, AngleLimit);
     }
 

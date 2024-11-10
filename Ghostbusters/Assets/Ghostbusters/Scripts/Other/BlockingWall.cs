@@ -1,17 +1,16 @@
-using Org.BouncyCastle.Security.Certificates;
-using System.Collections;
 using UnityEngine;
 
 public class BlockingWall : MonoBehaviour
 {
-    [SerializeField] private Transform _stopPos;
     [SerializeField] private float _moveSpeed = 8f;
 
     private bool _isOpen;
 
     void Start()
     {
-        GameStateManager.Instance.OnStartGame.AddListener(() => { _isOpen = true; Destroy(transform.gameObject, 3f);
+        GameStateManager.Instance.OnStartGame.AddListener(() =>
+        {
+            _isOpen = true; Destroy(transform.gameObject, 3f);
         });
     }
 

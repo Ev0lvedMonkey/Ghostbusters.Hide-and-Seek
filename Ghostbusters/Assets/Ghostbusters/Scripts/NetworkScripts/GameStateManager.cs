@@ -34,9 +34,9 @@ public class GameStateManager : NetworkBehaviour
     private NetworkList<bool> _playerStatusList = new();
     private NetworkVariable<State> state = new(State.WaitingToStart);
     private bool isLocalPlayerReady;
-    private NetworkVariable<float> countdownToStartTimer = new(3f);
+    private NetworkVariable<float> countdownToStartTimer = new(1f);
     private NetworkVariable<float> gamePlayingTimer = new(0f);
-    private float gamePlayingTimerMax = 5f;
+    private float gamePlayingTimerMax = 60f;
     private bool isLocalGamePaused = false;
     private NetworkVariable<bool> isGamePaused = new(false);
     private Dictionary<ulong, bool> playerReadyDictionary;

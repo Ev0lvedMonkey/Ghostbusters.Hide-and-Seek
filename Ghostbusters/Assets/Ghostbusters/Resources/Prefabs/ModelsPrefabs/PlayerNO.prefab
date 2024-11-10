@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3035442843
+  GlobalObjectIdHash: 1829906515
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fireRate: 0.62
   _maxRayDistance: 100
-  _hitEffect: {fileID: 2102073053131499544, guid: 4fa7fbfd989c2d247942c721c0a1fbd5, type: 3}
+  _hitEffect: {fileID: 8601352837897393951, guid: 4fa7fbfd989c2d247942c721c0a1fbd5, type: 3}
   _characterHealth: {fileID: -6096408923155873637}
 --- !u!114 &7895445609988697491
 MonoBehaviour:
@@ -200,10 +200,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPositionList:
-  - {x: -8, y: 0, z: -14}
-  - {x: -8, y: 0, z: 14}
-  - {x: 3.5, y: 0, z: -14}
-  - {x: 3.5, y: 0, z: 14}
+  - {x: 1, y: 0, z: 12}
+  - {x: 3, y: 0, z: -8}
+  - {x: -2, y: 0, z: 2}
+  - {x: -3, y: 0, z: -8}
 --- !u!114 &289307720369143025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1475b8f080bffb429fc4b6194419d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mouseSense: 3
+  _mouseSenseConfig: {fileID: 11400000, guid: b95d8db789e061c4e925b5dd5b707af2, type: 2}
   _camFollowPosition: {fileID: 4730471717647617360}
   _torseObj: {fileID: 1149413298654292678}
 --- !u!114 &-9148439180790676213

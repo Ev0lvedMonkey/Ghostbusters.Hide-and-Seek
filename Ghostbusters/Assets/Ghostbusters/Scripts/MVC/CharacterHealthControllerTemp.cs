@@ -10,8 +10,8 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     [SerializeField] private RayFiringObject _fireObj;
     [SerializeField] private HealthView _hudView;
 
-    private const int SELF_DAMAGE = 50;
-    private const int GHOST_DAMAGE = 50;
+    private const int SELF_DAMAGE = 10;
+    private const int GHOST_DAMAGE = 20;
 
     private float _currentHealth;
 
