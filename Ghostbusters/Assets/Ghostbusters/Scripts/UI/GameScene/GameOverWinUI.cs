@@ -21,8 +21,8 @@ public class GameOverWinUI : MonoBehaviour
     private void Start()
     {
         GameStateManager.Instance.OnStateChanged.AddListener(GameManager_OnStateChanged);
-        GameStateManager.Instance.OnOpenHUD.AddListener(() => { gameObject.SetActive(true); });
-        GameStateManager.Instance.OnCloseHUD.AddListener(() => { gameObject.SetActive(false); });
+        GameStateManager.Instance.OnOpenHUD.AddListener(() => { Show(); });
+        GameStateManager.Instance.OnCloseHUD.AddListener(() => { Hide(); });
 
         Hide();
     }
@@ -55,12 +55,14 @@ public class GameOverWinUI : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
+        CursorController.EnableCursor();
         Debug.Log($"{gameObject.name} SHOW");
         _playAgainButton.Select();
     }
 
     private void Hide()
     {
+        CursorController.DisableCursor();
         gameObject.SetActive(false);
         Debug.Log($"{gameObject.name} HIDE");
     }

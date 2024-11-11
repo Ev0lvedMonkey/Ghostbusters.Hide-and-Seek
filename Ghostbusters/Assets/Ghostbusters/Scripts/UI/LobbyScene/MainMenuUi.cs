@@ -13,6 +13,7 @@ public class MainMenuUi : MonoBehaviour
 
     public void Init()
     {
+        Dispose();
         LobbyRelayManager.Instance.OnSignIn.AddListener(InitButton);
     }
 
@@ -39,16 +40,16 @@ public class MainMenuUi : MonoBehaviour
 
     private void ActivateButtons()
     {
-        _createLobbyBtn.interactable = true;
-        _joinLobbyBtn.interactable = true;
-        _quickJoinLobbyBtn.interactable = true;
+        _createLobbyBtn.gameObject.SetActive(true);
+        _joinLobbyBtn.gameObject.SetActive(true);
+        _quickJoinLobbyBtn.gameObject.SetActive(true);
     }
 
     private void DeactivateButtons()
     {
-        _createLobbyBtn.interactable = false;
-        _joinLobbyBtn.interactable = false;
-        _quickJoinLobbyBtn.interactable = false;
+        _createLobbyBtn.gameObject.SetActive(false);
+        _joinLobbyBtn.gameObject.SetActive(false);
+        _quickJoinLobbyBtn.gameObject.SetActive(false);
     }
 
     private async void TestQuickJoin()

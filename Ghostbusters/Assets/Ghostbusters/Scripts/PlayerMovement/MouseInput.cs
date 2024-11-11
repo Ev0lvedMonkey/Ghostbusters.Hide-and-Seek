@@ -15,7 +15,7 @@ public abstract class MouseInput : NetworkBehaviour
 
     private const string MouseX = "Mouse X";
     private const string MouseY = "Mouse Y";
-    private const float AngleLimit = 70f;
+    private const float AngleLimit = 25f;
 
     private void Awake()
     {

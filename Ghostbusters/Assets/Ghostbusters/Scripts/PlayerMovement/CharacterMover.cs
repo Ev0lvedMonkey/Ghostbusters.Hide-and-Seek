@@ -2,28 +2,36 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public abstract class CharacterMover : NetworkBehaviour
 {
+    [SerializeField] internal Rigidbody _rigidbody;
     private Vector3 _direction;
     protected Vector2 _input;
 
     protected const string Horizontal = "Horizontal";
     protected const string Vertical = "Vertical";
     private const float BackMoveSpeed = 3.375f;
-    [SerializeField] private float MovementSpeed = 4.5f;
+    private const float MovementSpeed = 4.5f;
+
+    private void Awake()
+    {
+        _rigidbody.isKinematic = true;
+    }
 
     public virtual void Move()
     {
         if (!IsOwner) return;
 
         _input = GetInput();
+
         float horizontalInput = _input.x;
         float verticalInput = _input.y;
 
         _direction = transform.forward * verticalInput + transform.right * horizontalInput;
         Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * Time.deltaTime;
 
-        transform.position = targetPosition;
+        _rigidbody.MovePosition(targetPosition);
         UpdatePositionServerRpc(targetPosition);
     }
 
@@ -37,7 +45,7 @@ public abstract class CharacterMover : NetworkBehaviour
     private void UpdatePositionClientRpc(Vector3 targetPosition)
     {
         if (IsOwner) return;
-        transform.position = Vector3.Lerp(transform.position, targetPosition, 0.1f);
+        _rigidbody.MovePosition(targetPosition);
     }
 
     private float GetMoveSpeed()

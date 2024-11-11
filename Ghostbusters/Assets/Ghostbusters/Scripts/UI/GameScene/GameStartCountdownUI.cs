@@ -28,7 +28,7 @@ public class GameStartCountdownUI : MonoBehaviour
     private void Update()
     {
         int countdownNumber = Mathf.CeilToInt(GameStateManager.Instance.GetCountdownToStartTimer());
-        countdownText.text = $"{countdownNumber} sec";
+        countdownText.text = $"{countdownNumber}";
 
         if (previousCountdownNumber != countdownNumber)
             previousCountdownNumber = countdownNumber;

@@ -11,12 +11,10 @@ public class KeyboardInput : MonoBehaviour
             if (_isMenuOpen == false)
             {
                 GameStateManager.Instance.OnOpenHUD.Invoke();
-                CursorController.EnableCursor();
             }
             else
             {
                 GameStateManager.Instance.OnCloseHUD.Invoke();
-                CursorController.DisableCursor();
             }
             _isMenuOpen = !_isMenuOpen;
         }

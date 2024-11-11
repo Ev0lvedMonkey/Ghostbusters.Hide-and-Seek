@@ -63,13 +63,23 @@ public class WeaponFire : RayFiringObject
             {
                 Debug.Log("Hit static object");
             }
-            MakeHitEffectClientRpc(hit.point, hit.normal);
+            Instantiate(_hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+
+            MakeHitEffectServerRpc(hit.point, hit.normal);
         }
+    }
+
+
+    [ServerRpc]
+    private void MakeHitEffectServerRpc(Vector3 hitPoint, Vector3 hitNormal)
+    {
+        MakeHitEffectClientRpc(hitPoint, hitNormal);
     }
 
     [ClientRpc]
     private void MakeHitEffectClientRpc(Vector3 hitPoint, Vector3 hitNormal)
     {
+        if (IsOwner) return;
         Instantiate(_hitEffect, hitPoint, Quaternion.LookRotation(hitNormal));
         Debug.Log("Effect played");
     }

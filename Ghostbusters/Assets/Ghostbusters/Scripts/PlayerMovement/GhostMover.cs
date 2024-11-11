@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class GhostMover : CharacterMover
 {
-    [SerializeField] internal Rigidbody _rigidbody;
-    [SerializeField] private Transform _groundCheckDot;
+   [SerializeField] private Transform _groundCheckDot;
     [SerializeField] private LayerMask _groundLayer;
 
     private bool _isGrounded;
@@ -12,6 +11,11 @@ public class GhostMover : CharacterMover
     private readonly Vector3 JumpDir = Vector3.up;
     private const KeyCode Jumpkey = KeyCode.Space;
     private const float JumpHeight = 5.5f;
+
+    private void Start()
+    {
+        GameStateManager.Instance.OnOpenHUD.AddListener(() => { IsRotationLocked = true; }) ;
+    }
 
     private void Update()
     {
