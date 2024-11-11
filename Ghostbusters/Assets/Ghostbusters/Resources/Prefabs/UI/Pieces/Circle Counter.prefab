@@ -1,0 +1,178 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4201473456747042551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3923685438236569773}
+  - component: {fileID: 6627499386606320245}
+  - component: {fileID: 6109420803191415861}
+  - component: {fileID: 7109244368971843684}
+  m_Layer: 5
+  m_Name: Circle Counter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3923685438236569773
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201473456747042551}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6627499386606320245
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201473456747042551}
+  m_CullTransparentMesh: 1
+--- !u!114 &6109420803191415861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201473456747042551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1562987aced605245b02487195a48f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.3160377, g: 0.466264, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  overrideSprite: {fileID: 21300000, guid: 97b76aa1ccfc53948b87273dc00de1e8, type: 3}
+  m_thickness: 39.84
+  m_FillAmount: 0.864
+  m_invertFill: 1
+  m_fillPattern: 0
+  m_fillDeep: 2
+  m_GlobalDegreeOffset: 0
+  m_MaxDegree: 180
+  m_SegmentsCount: 5
+  m_SegmentsPerSpriteCount: 1
+  m_segmentDegreeOffset: -1.2
+  m_border: 0
+  m_Gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 1, g: 0.8291089, b: 0, a: 0}
+    key3: {r: 0.21982914, g: 0.7169812, b: 0.2681992, a: 0}
+    key4: {r: 0, g: 0.5211234, b: 1, a: 0}
+    key5: {r: 0.6117647, g: 0.19276638, b: 0.10588236, a: 0}
+    key6: {r: 0.5566038, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 35273
+    ctime3: 49537
+    ctime4: 65535
+    ctime5: 62644
+    ctime6: 65535
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  m_Diagonal_Gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0.5137255, g: 0.55026525, b: 1, a: 0}
+    key3: {r: 0.21982914, g: 0.7169812, b: 0.2681992, a: 0}
+    key4: {r: 0, g: 0.5211234, b: 1, a: 0}
+    key5: {r: 0.6117647, g: 0.19276638, b: 0.10588236, a: 0}
+    key6: {r: 0.5566038, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 64957
+    ctime3: 49537
+    ctime4: 65535
+    ctime5: 62644
+    ctime6: 65535
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 65535
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  m_GradientDegreeOffset: 266
+--- !u!114 &7109244368971843684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201473456747042551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fef5807beb7e76428c3d544135e12ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.32849863
+      outSlope: 0.32849863
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3.0441527
+      value: 1
+      inSlope: 0.32849863
+      outSlope: 0.32849863
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 0
+    m_RotationOrder: 4
+  _circle: {fileID: 6109420803191415861}

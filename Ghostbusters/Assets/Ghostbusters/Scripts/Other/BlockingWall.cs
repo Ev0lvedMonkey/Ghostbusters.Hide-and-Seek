@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BlockingWall : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 8f;
+    [SerializeField] private float _moveSpeed = 20f;
 
     private bool _isOpen;
 
@@ -10,7 +10,7 @@ public class BlockingWall : MonoBehaviour
     {
         GameStateManager.Instance.OnStartGame.AddListener(() =>
         {
-            _isOpen = true; Destroy(transform.gameObject, 3f);
+            Destroy(transform.gameObject, 1f);
         });
     }
 
@@ -19,13 +19,5 @@ public class BlockingWall : MonoBehaviour
         Vector3 targetPosition = new(transform.position.x, transform.position.y * 2, transform.position.z);
         transform.position =
             Vector3.MoveTowards(transform.position, targetPosition, _moveSpeed * Time.deltaTime);
-    }
-
-    void Update()
-    {
-        if (_isOpen)
-        {
-            MoveWall();
-        }
     }
 }
