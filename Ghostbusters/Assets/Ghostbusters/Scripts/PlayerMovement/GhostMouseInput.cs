@@ -7,6 +7,13 @@ public class GhostMouseInput : MouseInput
     [SerializeField] private UnityEvent OnSetDeafaultStats;
     private bool _isFirstFrame;
 
+    private void Start()
+    {
+        Debug.Log($"Set nouse limits ghost");
+        SetMinusAngleLimit(25);
+        SetPlusAngleLimit(10);
+    }
+
     void Update()
     {
         if (!IsOwner) return;

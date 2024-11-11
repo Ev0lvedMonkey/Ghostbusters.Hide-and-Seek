@@ -17,6 +17,15 @@ public abstract class MouseInput : NetworkBehaviour
     private const string MouseY = "Mouse Y";
     private const float AngleLimit = 25f;
 
+
+    private const float MinMinusAngleLimit = 0;
+    private const float MaxMinusAngleLimit = -AngleLimit;
+    private const float MinPlusAngleLimit = 0f;
+    private const float MaxPlusAngleLimit = AngleLimit;
+
+    protected float MinusAngleLimit { get; private set; }
+    protected float PlusAngleLimit { get; private set; }
+
     private void Awake()
     {
         Init();
@@ -54,6 +63,20 @@ public abstract class MouseInput : NetworkBehaviour
         }
     }
 
+    protected void SetMinusAngleLimit(float angle)
+    {
+        angle = Mathf.Clamp(angle, MinMinusAngleLimit, MaxMinusAngleLimit);
+        MinusAngleLimit = angle;
+        Debug.Log($"SetMinusAngleLimit MinusAngleLimit: {MinusAngleLimit}  angle: {angle} ");
+    }
+
+    protected void SetPlusAngleLimit(float angle)
+    {
+        angle = Mathf.Clamp(angle, MinPlusAngleLimit, MaxPlusAngleLimit);
+        PlusAngleLimit = angle;
+        Debug.Log($"SetPlusAngleLimit PlusAngleLimit: {PlusAngleLimit}  angle: {angle} ");
+    }
+
     protected virtual void ApplyRotation()
     {
         TorseRotation();
@@ -87,7 +110,7 @@ public abstract class MouseInput : NetworkBehaviour
     {
         _xAxis += Input.GetAxisRaw(MouseX) * _mouseSenseConfig.GetMouseSense();
         _yAxis -= Input.GetAxisRaw(MouseY) * _mouseSenseConfig.GetMouseSense();
-        _yAxis = Mathf.Clamp(_yAxis, -AngleLimit, AngleLimit);
+        _yAxis = Mathf.Clamp(_yAxis, MinusAngleLimit, PlusAngleLimit);
     }
 
     private void Init()
