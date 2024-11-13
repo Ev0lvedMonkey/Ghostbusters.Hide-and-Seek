@@ -8,7 +8,6 @@ public abstract class RayFiringObject : NetworkBehaviour
 
     protected float _actionTimer;
     protected bool _isCooldownActive;
-
     protected const float ResetCooldownTimer = 0;
     protected const float HitCooldown = 1.5f;
     private const KeyCode LMB = KeyCode.Mouse0;
@@ -21,12 +20,8 @@ public abstract class RayFiringObject : NetworkBehaviour
 
     protected virtual void Update()
     {
-        if (!IsOwner)
+        if (!IsOwner || !CanFire())
             return;
-
-        if (!CanFire())
-            return;
-
         Fire();
     }
 
@@ -53,17 +48,14 @@ public abstract class RayFiringObject : NetworkBehaviour
         HandleFire();
     }
 
-    protected void ResetActionTimer()
-    {
-        _actionTimer = ResetCooldownTimer;
-    }
+    protected void ResetActionTimer() =>
+        _actionTimer = ResetCooldownTimer;    
 
     protected void StartCooldown()
     {
         _actionTimer = ResetCooldownTimer;
         _isCooldownActive = true;
     }
-
-    
+   
     protected abstract void HandleFire();
 }

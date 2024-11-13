@@ -32,10 +32,9 @@ public abstract class MouseInput : NetworkBehaviour
     }
 
     [ServerRpc]
-    protected virtual void UpdateRotationServerRpc(float xAxis, float yAxis)
-    {
+    protected virtual void UpdateRotationServerRpc(float xAxis, float yAxis) =>
         UpdateRotationClientRpc(xAxis, yAxis);
-    }
+    
 
     [ClientRpc]
     private void UpdateRotationClientRpc(float xAxis, float yAxis)

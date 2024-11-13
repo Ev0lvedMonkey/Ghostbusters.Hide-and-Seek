@@ -1,20 +1,29 @@
 using System;
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class GameOverWinUI : MonoBehaviour
 {
+    public static GameOverWinUI Instance;
+
+    public UnityEvent PlayerExit = new();
+
     [SerializeField] private TextMeshProUGUI _gameOverWinText;
     [SerializeField] private Button _playAgainButton;
 
+   
     private void Awake()
     {
+        Instance = this;
         _playAgainButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.Shutdown();
             SceneLoader.Load(SceneLoader.Scene.MenuScene);
+            PlayerExit.Invoke();
         });
     }
 
@@ -23,7 +32,7 @@ public class GameOverWinUI : MonoBehaviour
         GameStateManager.Instance.OnStateChanged.AddListener(GameManager_OnStateChanged);
         GameStateManager.Instance.OnOpenHUD.AddListener(() => { Show(); });
         GameStateManager.Instance.OnCloseHUD.AddListener(() => { Hide(); });
-
+        _playAgainButton.gameObject.SetActive(false);
         Hide();
     }
 
@@ -33,11 +42,13 @@ public class GameOverWinUI : MonoBehaviour
         {
             case "WinBusters":
                 _gameOverWinText.text = "Охотники победили!";
+                _playAgainButton.gameObject.SetActive(true);
                 RemoveListeners();
                 Show();
                 break;
             case "WinGhost":
-                _gameOverWinText.text = "Призраки победи!";
+                _gameOverWinText.text = "Призраки победили!";
+                _playAgainButton.gameObject.SetActive(true);
                 RemoveListeners();
                 Show();
                 break;

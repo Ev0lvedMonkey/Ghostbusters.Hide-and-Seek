@@ -126,7 +126,8 @@ public class LobbyRelayManager : MonoBehaviour
 
             JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
 
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+            NetworkManager.Singleton.GetComponent<UnityTransport>().
+                SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
             Debug.Log($"{gameObject.name}: joined by code");
 
             MultiplayerStorage.Instance.StartClient();

@@ -8,7 +8,6 @@ public abstract class CharacterMover : NetworkBehaviour
     [SerializeField] internal Rigidbody _rigidbody;
     private Vector3 _direction;
     protected Vector2 _input;
-
     protected const string Horizontal = "Horizontal";
     protected const string Vertical = "Vertical";
     private const float BackMoveSpeed = 3.375f;
@@ -30,7 +29,6 @@ public abstract class CharacterMover : NetworkBehaviour
 
         _direction = transform.forward * verticalInput + transform.right * horizontalInput;
         Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * Time.deltaTime;
-
         _rigidbody.MovePosition(targetPosition);
         UpdatePositionServerRpc(targetPosition);
     }

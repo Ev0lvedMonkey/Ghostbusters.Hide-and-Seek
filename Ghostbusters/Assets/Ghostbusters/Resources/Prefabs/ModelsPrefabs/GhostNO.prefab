@@ -306,6 +306,21 @@ MonoBehaviour:
   _bodyTransform: {fileID: 7045450888813315848}
   _bodyRigidbody: {fileID: 2787314762436721399}
   _fireObj: {fileID: 8254223609894997543}
+  OnSpectatorStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5563767208832348612}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _hudView: {fileID: 6250410782170815527}
 --- !u!64 &4038037104488601648
 MeshCollider:
@@ -383,8 +398,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2874304489409965433}
   - component: {fileID: 8423483442810501339}
-  - component: {fileID: 110489326125998510}
   - component: {fileID: -6451329845446121523}
+  - component: {fileID: 110489326125998510}
   - component: {fileID: 5563767208832348612}
   - component: {fileID: 8254223609894997543}
   - component: {fileID: 7822123977495879398}
@@ -438,6 +453,18 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &-6451329845446121523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8826096940076894113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &110489326125998510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,18 +496,6 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &-6451329845446121523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8826096940076894113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5563767208832348612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,7 +508,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a66306fa4dce88f42babc14b5d15638e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 4.5
   _rigidbody: {fileID: 2787314762436721399}
   _groundCheckDot: {fileID: 2943392045248195899}
   _groundLayer:

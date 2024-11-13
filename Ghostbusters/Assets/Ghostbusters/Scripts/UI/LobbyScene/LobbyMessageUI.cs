@@ -33,12 +33,12 @@ public class LobbyMessageUI : MonoBehaviour
 
     private void LobbyMessage_OnJoinStarted()
     {
-        ShowMessage("Joining Lobby...");
+        ShowMessage("Присоединение к лобби...");
     }
 
     private void LobbyMessage_OnCreateLobbyFailed()
     {
-        ShowMessage("Присоединение к лобби...");
+        ShowMessage("Ошибка создания лобби. Попробуйте ещё раз.");
     }
 
     private void LobbyMessage_OnCreateLobbyStarted()

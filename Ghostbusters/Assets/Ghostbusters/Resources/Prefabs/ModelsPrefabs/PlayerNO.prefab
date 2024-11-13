@@ -249,6 +249,21 @@ MonoBehaviour:
   _bodyTransform: {fileID: 5173266347649546689}
   _bodyRigidbody: {fileID: 1874786418358173608}
   _fireObj: {fileID: 7155014602679406567}
+  OnSpectatorStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 131683806190917558}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _hudView: {fileID: 9014929157552778291}
 --- !u!33 &627271985527512015
 MeshFilter:

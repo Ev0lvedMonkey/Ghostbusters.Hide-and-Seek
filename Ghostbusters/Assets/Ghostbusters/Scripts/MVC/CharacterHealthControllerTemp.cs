@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CharacterHealthControllerTemp : NetworkBehaviour
 {
@@ -8,6 +9,7 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     [SerializeField] private Transform _bodyTransform;
     [SerializeField] private Rigidbody _bodyRigidbody;
     [SerializeField] private RayFiringObject _fireObj;
+    [SerializeField] private UnityEvent OnSpectatorStart;
     [SerializeField] private HealthView _hudView;
 
     private const int SELF_DAMAGE = 10;
@@ -18,6 +20,7 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     private void Awake()
     {
         _currentHealth = _maxHealth;
+        GameOverWinUI.Instance.PlayerExit.AddListener(() => { MomentKillClientRpc();});
     }
 
     private void Start()
@@ -26,11 +29,6 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
             EnableHUD();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-            TakeDamageServerRpc(true);
-    }
 
     public void EnableHUD()
     {
@@ -61,6 +59,22 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
         int currentDamage = isSelfDamage ? SELF_DAMAGE : GHOST_DAMAGE;
 
         _currentHealth -= currentDamage;
+        _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
+
+        if (_currentHealth <= 0)
+        {
+            HandleDeathServerRpc();
+        }
+        else
+        {
+            UpdateHUDClientRpc(_currentHealth);
+        }
+    }
+    
+    [ClientRpc]
+    public void MomentKillClientRpc()
+    {
+        _currentHealth -= _maxHealth;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
 
         if (_currentHealth <= 0)
@@ -106,10 +120,10 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
         DisableHUD();
         _bodyTransform.gameObject.SetActive(false);
 
+        OnSpectatorStart.Invoke();
         _bodyRigidbody.isKinematic = true;
         _bodyRigidbody.useGravity = false;
         _fireObj.enabled = false;
-
         SpawnDeathEffectClientRpc();
         UpdateHUDClientRpc(_currentHealth);
         Debug.Log($"{gameObject.name} entered spectator mode on client.");

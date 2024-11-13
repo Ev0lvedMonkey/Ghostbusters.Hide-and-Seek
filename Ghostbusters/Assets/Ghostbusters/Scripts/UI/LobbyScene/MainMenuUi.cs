@@ -43,6 +43,7 @@ public class MainMenuUi : MonoBehaviour
         _createLobbyBtn.gameObject.SetActive(true);
         _joinLobbyBtn.gameObject.SetActive(true);
         _quickJoinLobbyBtn.gameObject.SetActive(true);
+        _lobbyCodeInputField.gameObject.SetActive(true);
     }
 
     private void DeactivateButtons()
@@ -50,6 +51,7 @@ public class MainMenuUi : MonoBehaviour
         _createLobbyBtn.gameObject.SetActive(false);
         _joinLobbyBtn.gameObject.SetActive(false);
         _quickJoinLobbyBtn.gameObject.SetActive(false);
+        _lobbyCodeInputField.gameObject.SetActive(false);
     }
 
     private async void TestQuickJoin()
