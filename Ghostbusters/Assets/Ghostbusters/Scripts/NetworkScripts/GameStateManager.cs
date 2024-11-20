@@ -183,7 +183,18 @@ public class GameStateManager : NetworkBehaviour
                 else continue;
             }
         }
-        else if (_playerStatusList.Count >= 2)
+        else if (_playerStatusList.Count == 3)
+        {
+            for (int i = 0; i < _playerStatusList.Count; i++)
+            {
+                if (_playerStatusList[0] == true && _playerStatusList[2] == true)
+                    allGhostsLost = true;
+                else if (_playerStatusList[1] == true)
+                    allBustersLost = true;
+                else continue;
+
+            }
+        }else if (_playerStatusList.Count == 4)
         {
             for (int i = 0; i < _playerStatusList.Count; i++)
             {

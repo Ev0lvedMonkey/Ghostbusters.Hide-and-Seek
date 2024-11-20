@@ -3347,6 +3347,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd6160ed5d3f9446a77dcfdb546d54f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
   _gameOverWinText: {fileID: 1919788777}
   _playAgainButton: {fileID: 541540649}
 --- !u!65 &1299499651
@@ -5758,6 +5761,10 @@ PrefabInstance:
     - target: {fileID: 8819514119855612463, guid: 113bb9a613fd354458db24f6142f99a2, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849232305249051880, guid: 113bb9a613fd354458db24f6142f99a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.759
       objectReference: {fileID: 0}
     - target: {fileID: 9092709846095206797, guid: 113bb9a613fd354458db24f6142f99a2, type: 3}
       propertyPath: m_LocalPosition.x

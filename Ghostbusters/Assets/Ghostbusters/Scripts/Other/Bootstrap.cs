@@ -7,7 +7,6 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private LobbyRelayManager _lobbyRelayManager;
     [SerializeField] private MultiplayerStorage _multiplayerStorage;
 
-
     private void Awake()
     {
         _multiplayerStorage.Init();
