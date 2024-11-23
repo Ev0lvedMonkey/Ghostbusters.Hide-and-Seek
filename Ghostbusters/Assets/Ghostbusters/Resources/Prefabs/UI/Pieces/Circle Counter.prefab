@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3923685438236569773}
   - component: {fileID: 6627499386606320245}
   - component: {fileID: 6109420803191415861}
-  - component: {fileID: 7109244368971843684}
   m_Layer: 5
   m_Name: Circle Counter
   m_TagString: Untagged
@@ -139,40 +138,3 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   m_GradientDegreeOffset: 266
---- !u!114 &7109244368971843684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4201473456747042551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fef5807beb7e76428c3d544135e12ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.32849863
-      outSlope: 0.32849863
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 3.0441527
-      value: 1
-      inSlope: 0.32849863
-      outSlope: 0.32849863
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 0
-    m_RotationOrder: 4
-  _circle: {fileID: 6109420803191415861}

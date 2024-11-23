@@ -1,6 +1,6 @@
-using Mirror;
 using Zenject;
 using UnityEngine;
+using Unity.Netcode;
 
 public class CustomNetworkManager : NetworkManager
 {

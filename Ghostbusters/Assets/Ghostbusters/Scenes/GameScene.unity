@@ -2850,8 +2850,7 @@ PrefabInstance:
       propertyPath: m_SegmentsCount
       value: 60
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7109244368971843684, guid: 3498c738fd7c2a74293568e43c61bbdd, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
