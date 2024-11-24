@@ -1,7 +1,6 @@
-using System;
+using System.Globalization;
 using TMPro;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -15,7 +14,7 @@ public class GameOverWinUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _gameOverWinText;
     [SerializeField] private Button _playAgainButton;
 
-   
+
     private void Awake()
     {
         Instance = this;
@@ -23,6 +22,13 @@ public class GameOverWinUI : MonoBehaviour
         {
             NetworkManager.Singleton.Shutdown();
             SceneLoader.Load(SceneLoader.Scene.MenuScene);
+            try
+            {
+                ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
+                GameStateManager.Instance.ReportPlayerLostServerRpc(clientID);
+
+            }
+            catch { }
             PlayerExit.Invoke();
         });
     }
@@ -32,7 +38,7 @@ public class GameOverWinUI : MonoBehaviour
         GameStateManager.Instance.OnStateChanged.AddListener(GameManager_OnStateChanged);
         GameStateManager.Instance.OnOpenHUD.AddListener(() => { Show(); });
         GameStateManager.Instance.OnCloseHUD.AddListener(() => { Hide(); });
-        _playAgainButton.gameObject.SetActive(false);
+        //_playAgainButton.gameObject.SetActive(false);
         Hide();
     }
 
@@ -68,7 +74,6 @@ public class GameOverWinUI : MonoBehaviour
         gameObject.SetActive(true);
         CursorController.EnableCursor();
         Debug.Log($"{gameObject.name} SHOW");
-        _playAgainButton.Select();
     }
 
     private void Hide()

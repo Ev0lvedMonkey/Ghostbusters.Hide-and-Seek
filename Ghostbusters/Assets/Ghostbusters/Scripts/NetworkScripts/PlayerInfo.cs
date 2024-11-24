@@ -33,7 +33,7 @@ public class PlayerInfo : MonoBehaviour
 
     private void CheckKickButton(PlayerData playerData)
     {
-            kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
+        kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
     }
 
     private void CharacterSelectReady_OnReadyChanged()
@@ -71,6 +71,12 @@ public class PlayerInfo : MonoBehaviour
             }
             else
                 readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+            ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
+
+            if (playerData.clientId == clientID)
+                playerNameText.color = Color.green;
+            else
+                playerNameText.color = Color.white;
             playerNameText.text = playerData.playerName.ToString();
             //CheckKickButton(playerData);
         }
