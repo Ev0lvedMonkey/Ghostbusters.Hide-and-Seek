@@ -6,13 +6,11 @@ public static class CursorController
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        Debug.Log("EnableCursor !!!!!!!!!!!!!!");
     }
 
     public static void DisableCursor()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log("DisableCursor !!!!!!!!!!!!!!");
     }
 }

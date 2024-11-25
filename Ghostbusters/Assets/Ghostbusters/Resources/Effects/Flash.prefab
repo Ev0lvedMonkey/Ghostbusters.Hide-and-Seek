@@ -9306,7 +9306,7 @@ GameObject:
   - component: {fileID: 7177991128484655658}
   - component: {fileID: 7177991128484655639}
   m_Layer: 0
-  m_Name: CFXR Flash
+  m_Name: Flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

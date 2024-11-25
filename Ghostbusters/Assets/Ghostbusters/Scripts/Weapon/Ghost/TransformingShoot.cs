@@ -51,23 +51,23 @@ public class TransformingShoot : RayFiringObject
             return;
         }
 
-        ApplyTransformServerRpc(targetNetworkObject, OwnerClientId);
+        ApplyTransformServerRpc(targetNetworkObject);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void ApplyTransformServerRpc(NetworkObjectReference targetObjectRef, ulong clientId)
+    private void ApplyTransformServerRpc(NetworkObjectReference targetObjectRef)
     {
         if (targetObjectRef.TryGet(out NetworkObject targetObject))
         {
             Transform targetTransform = targetObject.transform;
             ApplyTransformLocally(targetTransform);
 
-            ApplyTransformClientRpc(targetObjectRef, clientId);
+            ApplyTransformClientRpc(targetObjectRef);
         }
     }
 
     [ClientRpc]
-    private void ApplyTransformClientRpc(NetworkObjectReference targetObjectRef, ulong initiatorClientId)
+    private void ApplyTransformClientRpc(NetworkObjectReference targetObjectRef)
     {
         if (targetObjectRef.TryGet(out NetworkObject targetObject))
         {
@@ -89,7 +89,6 @@ public class TransformingShoot : RayFiringObject
         bodyRenderer.materials = targetRenderer.materials;
         _bodyObject.transform.localScale = targetTransform.localScale;
 
-        // Устанавливаем mesh для MeshCollider
         bodyMeshCollider.sharedMesh = targetMeshCollider.sharedMesh;
         bodyMeshCollider.convex = targetMeshCollider.convex;
         bodyMeshCollider.isTrigger = targetMeshCollider.isTrigger;

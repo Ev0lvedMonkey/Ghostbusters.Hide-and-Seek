@@ -1,23 +1,24 @@
 using UnityEngine;
 
-public class GhostMover : CharacterMover
+public abstract class GhostMover : CharacterMover
 {
-   [SerializeField] private Transform _groundCheckDot;
+    [SerializeField] private Transform _groundCheckDot;
     [SerializeField] private LayerMask _groundLayer;
 
     private bool _isGrounded;
-    public bool IsRotationLocked { get; private set; } = false;
+    public bool IsRotationLocked { get; private set; }
 
     private readonly Vector3 JumpDir = Vector3.up;
-    private const KeyCode Jumpkey = KeyCode.Space;
+    private const KeyCode JumpKey = KeyCode.Space;
     private const float JumpHeight = 5.5f;
+    private const float GroundCheckRadius = 0.3f;
 
-    private void Start()
+    protected virtual void Start()
     {
-        GameStateManager.Instance.OnOpenHUD.AddListener(() => { IsRotationLocked = true; }) ;
+        GameStateManager.Instance.OnOpenHUD.AddListener(() => { IsRotationLocked = true; });
     }
 
-    private void Update()
+    protected void GhostMove()
     {
         if (!IsOwner) return;
 
@@ -29,13 +30,13 @@ public class GhostMover : CharacterMover
     {
         if (!IsOwner) return;
 
-        base.Move();
+        Move();
     }
 
     private void TryJump()
     {
-        _isGrounded = Physics.CheckSphere(_groundCheckDot.position, 0.3f, _groundLayer);
-        if (Input.GetKeyDown(Jumpkey) && _isGrounded)
+        _isGrounded = Physics.CheckSphere(_groundCheckDot.position, GroundCheckRadius, _groundLayer);
+        if (Input.GetKeyDown(JumpKey) && _isGrounded)
         {
             Jump();
         }
@@ -58,5 +59,25 @@ public class GhostMover : CharacterMover
         {
             IsRotationLocked = true;
         }
+    }
+
+    protected virtual float GetModifiedSpeed()
+    {
+        return 1.0f; // ѕо умолчанию базовый множитель скорости
+    }
+
+    public override void Move()
+    {
+        if (!IsOwner) return;
+
+        _input = GetInput();
+
+        float horizontalInput = _input.x;
+        float verticalInput = _input.y;
+
+        _direction = transform.forward * verticalInput + transform.right * horizontalInput;
+        Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * GetModifiedSpeed() * Time.deltaTime;
+        _rigidbody.MovePosition(targetPosition);
+        UpdatePositionServerRpc(targetPosition);
     }
 }

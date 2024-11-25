@@ -73,14 +73,12 @@ public class GameOverWinUI : MonoBehaviour
     {
         gameObject.SetActive(true);
         CursorController.EnableCursor();
-        Debug.Log($"{gameObject.name} SHOW");
     }
 
     private void Hide()
     {
         CursorController.DisableCursor();
         gameObject.SetActive(false);
-        Debug.Log($"{gameObject.name} HIDE");
     }
 
 }

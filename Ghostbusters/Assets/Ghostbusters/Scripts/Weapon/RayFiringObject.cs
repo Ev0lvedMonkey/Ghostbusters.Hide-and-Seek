@@ -42,6 +42,7 @@ public abstract class RayFiringObject : NetworkBehaviour
 
         return _actionTimer >= _fireRate && Input.GetKeyDown(LMB); ;
     }
+
     protected virtual void Fire()
     {
         ResetActionTimer();

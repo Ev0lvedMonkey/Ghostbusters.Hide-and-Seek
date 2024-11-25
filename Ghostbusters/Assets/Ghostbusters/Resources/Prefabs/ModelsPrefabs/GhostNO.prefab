@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837486399027911881}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.3279998, y: 1.62, z: -2.263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -309,7 +309,7 @@ MonoBehaviour:
   OnSpectatorStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5563767208832348612}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -400,7 +400,8 @@ GameObject:
   - component: {fileID: 8423483442810501339}
   - component: {fileID: -6451329845446121523}
   - component: {fileID: 110489326125998510}
-  - component: {fileID: 5563767208832348612}
+  - component: {fileID: 8792964584127564083}
+  - component: {fileID: 78950453516318046}
   - component: {fileID: 8254223609894997543}
   - component: {fileID: 7822123977495879398}
   - component: {fileID: 8119963331742901446}
@@ -496,7 +497,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &5563767208832348612
+--- !u!114 &8792964584127564083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -505,7 +506,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 8826096940076894113}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a66306fa4dce88f42babc14b5d15638e, type: 3}
+  m_Script: {fileID: 11500000, guid: 2015d098dc326f44387745d222cb29e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxRayDistance: 250
+  _crosshairImage: {fileID: 3566705680762294818}
+--- !u!114 &78950453516318046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8826096940076894113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750082c9dd15c9c4198edad5ec8d62a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 2787314762436721399}
@@ -573,7 +588,7 @@ MonoBehaviour:
   _mouseSenseConfig: {fileID: 11400000, guid: b95d8db789e061c4e925b5dd5b707af2, type: 2}
   _camFollowPosition: {fileID: 6165201409464766203}
   _torseObj: {fileID: 2874304489409965433}
-  _ghostMover: {fileID: 5563767208832348612}
+  _ghostMover: {fileID: 78950453516318046}
   OnSetDeafaultStats:
     m_PersistentCalls:
       m_Calls:
@@ -722,6 +737,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+--- !u!114 &3566705680762294818 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6988606847659363538, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+  m_PrefabInstance: {fileID: 5873818774442680048}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &5436549999773034439 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1941471892027357495, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}

@@ -30,6 +30,12 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     }
 
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+            TakeDamageServerRpc(true);
+    }
+
     public void EnableHUD()
     {
         _hudView.gameObject.SetActive(true);
@@ -49,6 +55,7 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     {
         _currentHealth += 20;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
+        Debug.Log($"Health UPPPPP");
 
         UpdateHUDClientRpc(_currentHealth);
     }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
-using Zenject;
 
 public class GameStateManager : NetworkBehaviour
 {
@@ -239,7 +238,7 @@ public class GameStateManager : NetworkBehaviour
     private void State_OnValueChanged(State previousValue, State newValue)
     {
         OnStateChanged?.Invoke();
-        Debug.LogError($"State changed from {previousValue} to {newValue}");
+        Debug.Log($"State changed from {previousValue} to {newValue}");
     }
 
     [ServerRpc(RequireOwnership = false)]

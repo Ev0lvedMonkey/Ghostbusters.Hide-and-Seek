@@ -66,14 +66,12 @@ public abstract class MouseInput : NetworkBehaviour
     {
         angle = Mathf.Clamp(angle, MinMinusAngleLimit, MaxMinusAngleLimit);
         MinusAngleLimit = angle;
-        Debug.Log($"SetMinusAngleLimit MinusAngleLimit: {MinusAngleLimit}  angle: {angle} ");
     }
 
     protected void SetPlusAngleLimit(float angle)
     {
         angle = Mathf.Clamp(angle, MinPlusAngleLimit, MaxPlusAngleLimit);
         PlusAngleLimit = angle;
-        Debug.Log($"SetPlusAngleLimit PlusAngleLimit: {PlusAngleLimit}  angle: {angle} ");
     }
 
     protected virtual void ApplyRotation()

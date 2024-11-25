@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class CharacterMover : NetworkBehaviour
 {
     [SerializeField] internal Rigidbody _rigidbody;
-    private Vector3 _direction;
+    protected Vector3 _direction;
     protected Vector2 _input;
     protected const string Horizontal = "Horizontal";
     protected const string Vertical = "Vertical";
@@ -34,7 +34,7 @@ public abstract class CharacterMover : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void UpdatePositionServerRpc(Vector3 targetPosition)
+    protected void UpdatePositionServerRpc(Vector3 targetPosition)
     {
         UpdatePositionClientRpc(targetPosition);
     }
@@ -46,12 +46,12 @@ public abstract class CharacterMover : NetworkBehaviour
         _rigidbody.MovePosition(targetPosition);
     }
 
-    private float GetMoveSpeed()
+    protected float GetMoveSpeed()
     {
         return _input.y < 0 ? BackMoveSpeed : MovementSpeed;
     }
 
-    private Vector2 GetInput()
+    protected Vector2 GetInput()
     {
         return new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
     }
