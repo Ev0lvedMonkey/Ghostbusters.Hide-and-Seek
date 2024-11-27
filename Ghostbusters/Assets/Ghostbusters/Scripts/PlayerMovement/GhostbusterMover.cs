@@ -1,11 +1,14 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GhostbusterMover : CharacterMover
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private GameObject _blockingSphere;
     [SerializeField] private GameObject _blockingSphereSpawnEffect;
+    [SerializeField] private UnityEvent OnDisableAbility;
+
 
     private bool _isWasCreate;
 
@@ -16,6 +19,7 @@ public class GhostbusterMover : CharacterMover
         {
             SpawnSphereServerRpc();
             Instantiate(_blockingSphere, transform.position, Quaternion.identity);
+            OnDisableAbility.Invoke();
             _isWasCreate = true;
         }
         SetAnimState();

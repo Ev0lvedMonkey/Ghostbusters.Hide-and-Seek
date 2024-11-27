@@ -63,7 +63,7 @@ public abstract class GhostMover : CharacterMover
 
     protected virtual float GetModifiedSpeed()
     {
-        return 1.0f; // ѕо умолчанию базовый множитель скорости
+        return 1.0f; 
     }
 
     public override void Move()

@@ -1,8 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GhostSpeedUp : GhostMover
 {
+    [SerializeField] private UnityEvent OnEnableAbility;
+    [SerializeField] private UnityEvent OnDisableAbility;
+
+
     private const float SpeedBoostMultiplier = 1.5f;
     private const float SpeedBoostDuration = 4f;
     private const float SpeedBoostCooldown = 9f;
@@ -30,7 +35,7 @@ public class GhostSpeedUp : GhostMover
     private void ActivateSpeedBoost()
     {
         if (_isSpeedBoostActive) return;
-
+        OnDisableAbility.Invoke();
         _isSpeedBoostActive = true;
         _canUseSpeedBoost = false;
         StartCoroutine(SpeedBoostCoroutine());
@@ -47,6 +52,7 @@ public class GhostSpeedUp : GhostMover
         yield return new WaitForSeconds(SpeedBoostCooldown - SpeedBoostDuration);
         Debug.Log("Speed Boost Ready");
         _canUseSpeedBoost = true;
+        OnEnableAbility.Invoke();
     }
 
     protected override float GetModifiedSpeed()

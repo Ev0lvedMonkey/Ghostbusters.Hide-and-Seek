@@ -28,7 +28,7 @@ public class GhostMouseInput : MouseInput
         {
             OnSetDeafaultStats.Invoke();
             base.CustomCamRotation();
-                SetDefaultBodyRotation();
+            SetDefaultBodyRotation();
 
             _isFirstFrame = false;
             return;

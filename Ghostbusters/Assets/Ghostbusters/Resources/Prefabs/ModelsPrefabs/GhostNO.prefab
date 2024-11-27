@@ -528,6 +528,36 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1
+  OnEnableAbility:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3317878131529014239}
+        m_TargetAssemblyTypeName: CharacterAbilityStateChanger, Assembly-CSharp
+        m_MethodName: EnableAbility
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDisableAbility:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3317878131529014239}
+        m_TargetAssemblyTypeName: CharacterAbilityStateChanger, Assembly-CSharp
+        m_MethodName: DisableAbility
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8254223609894997543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,6 +767,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+--- !u!114 &3317878131529014239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9189744131260269871, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+  m_PrefabInstance: {fileID: 5873818774442680048}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e6afe67b3029e4ea8296c3de87d56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3566705680762294818 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6988606847659363538, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}

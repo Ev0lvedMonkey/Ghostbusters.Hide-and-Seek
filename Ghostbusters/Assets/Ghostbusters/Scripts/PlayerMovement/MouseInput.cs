@@ -17,7 +17,6 @@ public abstract class MouseInput : NetworkBehaviour
     private const string MouseY = "Mouse Y";
     private const float AngleLimit = 25f;
 
-
     private const float MinMinusAngleLimit = 0;
     private const float MaxMinusAngleLimit = -AngleLimit;
     private const float MinPlusAngleLimit = 0f;
@@ -34,7 +33,7 @@ public abstract class MouseInput : NetworkBehaviour
     [ServerRpc]
     protected virtual void UpdateRotationServerRpc(float xAxis, float yAxis) =>
         UpdateRotationClientRpc(xAxis, yAxis);
-    
+
 
     [ClientRpc]
     private void UpdateRotationClientRpc(float xAxis, float yAxis)
@@ -58,7 +57,8 @@ public abstract class MouseInput : NetworkBehaviour
     {
         if (IsOwner)
         {
-            transform.eulerAngles = Vector3.zero;
+            transform.eulerAngles = new Vector3(0, _torseObj.eulerAngles.y, 0);
+            //transform.rotation = Quaternion.identity;
         }
     }
 

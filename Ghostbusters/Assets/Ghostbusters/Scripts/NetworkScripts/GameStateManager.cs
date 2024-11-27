@@ -327,13 +327,11 @@ public class GameStateManager : NetworkBehaviour
         {
             if (playerPausedDictionary.ContainsKey(clientId) && playerPausedDictionary[clientId])
             {
-                // This player is paused
                 isGamePaused.Value = true;
                 return;
             }
         }
 
-        // All players are unpaused
         isGamePaused.Value = false;
     }
 }
