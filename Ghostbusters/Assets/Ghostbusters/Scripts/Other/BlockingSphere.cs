@@ -10,7 +10,7 @@ public class BlockingSphere : MonoBehaviour
 
     private void OnValidate()
     {
-        if(_sphereCollider == null)
+        if (_sphereCollider == null)
             _sphereCollider = GetComponent<SphereCollider>();
     }
 
@@ -22,15 +22,14 @@ public class BlockingSphere : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Transform enterColiderTransform = other.gameObject.transform.parent;
-        if (enterColiderTransform.TryGetComponent(out TransformingShoot transformingShootComponent))
-        {
-            Debug.LogError($"TransformingShoot {enterColiderTransform.name} entered the sphere");
-            trappedTransformingShoots.Add(enterColiderTransform.gameObject);
-        }
-        else
-        {
-            Debug.LogError($"Something wrong {enterColiderTransform.name} ");
-        }
+        if (enterColiderTransform == null)
+            return;
+
+        if (!enterColiderTransform.TryGetComponent(out TransformingShoot transformingShootComponent))
+            return;
+        Debug.LogError($"TransformingShoot {enterColiderTransform.name} entered the sphere");
+        trappedTransformingShoots.Add(enterColiderTransform.gameObject);
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -39,25 +38,20 @@ public class BlockingSphere : MonoBehaviour
         if (exitColiderTransform == null)
             return;
 
-        if (exitColiderTransform.TryGetComponent(out TransformingShoot transformingShootComponent) 
+        if (!exitColiderTransform.TryGetComponent(out TransformingShoot transformingShootComponent)
             && trappedTransformingShoots.Contains(exitColiderTransform.gameObject))
-        {
+            return;
+        
             Debug.LogError($"TransformingShoot {exitColiderTransform.name} tried to exit the sphere but was blocked");
             Vector3 center = transform.position;
             Vector3 ghostPosition = exitColiderTransform.position;
 
             Vector3 directionFromCenter = (ghostPosition - center).normalized;
 
-            float radius = _sphereCollider.radius - 0.1f; 
+            float radius = _sphereCollider.radius - 0.1f;
             Vector3 boundaryPoint = center + directionFromCenter * radius;
 
             exitColiderTransform.transform.position = boundaryPoint;
-        }
-        else
-        {
-            Debug.LogError($"Something wrong {exitColiderTransform.name} EXIT ");
-        }
-
     }
 
     private void OnDisable()

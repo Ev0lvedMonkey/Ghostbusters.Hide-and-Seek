@@ -58,7 +58,6 @@ public abstract class MouseInput : NetworkBehaviour
         if (IsOwner)
         {
             transform.eulerAngles = new Vector3(0, _torseObj.eulerAngles.y, 0);
-            //transform.rotation = Quaternion.identity;
         }
     }
 

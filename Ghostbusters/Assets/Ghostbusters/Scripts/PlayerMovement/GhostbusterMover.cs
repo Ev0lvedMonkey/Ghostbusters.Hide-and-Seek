@@ -18,7 +18,7 @@ public class GhostbusterMover : CharacterMover
         if (Input.GetKeyDown(KeyCode.E))
         {
             SpawnSphereServerRpc();
-            Instantiate(_blockingSphere, transform.position, Quaternion.identity);
+            SpawnEffectServerRpc();
             OnDisableAbility.Invoke();
             _isWasCreate = true;
         }
@@ -45,8 +45,6 @@ public class GhostbusterMover : CharacterMover
         var instanceNetworkObject = instance.GetComponent<NetworkObject>();
         instanceNetworkObject.Spawn(true);
     }
-
-
 
     [ServerRpc]
     private void SpawnEffectServerRpc()

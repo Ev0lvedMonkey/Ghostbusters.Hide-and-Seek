@@ -54,7 +54,7 @@ public class LobbyRelayManager : MonoBehaviour
         HandlePeriodicListLobbies();
     }
 
-    public async Task CreateLobby(string lobbyName)
+    public async Task CreateLobby(string lobbyName, bool isPrivate)
     {
         OnCreateLobbyStarted?.Invoke();
         try
@@ -64,9 +64,11 @@ public class LobbyRelayManager : MonoBehaviour
                 Debug.LogError("NO AUTH");
                 return;
             }
+            if (string.IsNullOrEmpty(lobbyName))
+                lobbyName = $"Lobby_{UnityEngine.Random.Range(100, 1000)}";
             _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerStorage.MAX_PLAYER_AMOUNT, new CreateLobbyOptions
             {
-                IsPrivate = false,
+                IsPrivate = isPrivate,
             });
 
             Allocation allocation = await AllocateRelay();
@@ -139,6 +141,30 @@ public class LobbyRelayManager : MonoBehaviour
         }
     }
 
+    public async void JoinWithId(string lobbyId)
+    {
+        OnJoinStarted?.Invoke();
+        try
+        {
+            _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
+
+            string relayJoinCode = _joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+
+            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+
+            NetworkManager.Singleton.GetComponent<UnityTransport>().
+                SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+            Debug.Log($"{gameObject.name}: joined by ID");
+
+            MultiplayerStorage.Instance.StartClient();
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            OnJoinFailed?.Invoke();
+        }
+    }
+
     public async void DeleteLobby()
     {
         if (_joinedLobby != null)
@@ -193,6 +219,7 @@ public class LobbyRelayManager : MonoBehaviour
             }
         }
     }
+
     public Lobby GetJoinedLobby()
     {
         return _joinedLobby;
@@ -207,17 +234,13 @@ public class LobbyRelayManager : MonoBehaviour
     {
         if (UnityServices.State != ServicesInitializationState.Initialized)
         {
-            _playerName = "Player" + UnityEngine.Random.Range(0, 1000);
-            MultiplayerStorage.Instance.SetPlayerName(_playerName);
             InitializationOptions initializationOptions = new();
-            initializationOptions.SetProfile(_playerName);
 
             await UnityServices.InitializeAsync(initializationOptions);
 
             AuthenticationService.Instance.SignedIn += () =>
             {
                 Debug.Log($"{gameObject.name} Signed in! " + AuthenticationService.Instance.PlayerId);
-                Debug.Log($"{gameObject.name} Player name: " + _playerName);
             };
 
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
