@@ -255,7 +255,7 @@ public class LobbyRelayManager : MonoBehaviour
         if (_joinedLobby == null &&
             UnityServices.State == ServicesInitializationState.Initialized &&
             AuthenticationService.Instance.IsSignedIn &&
-            SceneManager.GetActiveScene().name == SceneLoader.Scene.MenuScene.ToString())
+            SceneManager.GetActiveScene().name == SceneLoader.Scene.LobbyScene.ToString())
         {
 
             _lobbyPollTimer -= Time.deltaTime;
