@@ -1,20 +1,11 @@
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PlayerInfo : MonoBehaviour
+public abstract class PlayerInfo : MonoBehaviour
 {
-    [SerializeField] private int playerIndex;
-    [SerializeField] private GameObject readyGameObject;
-    [SerializeField] private Button kickButton;
-    [SerializeField] private TextMeshProUGUI playerNameText;
-
-
-    private void Awake()
-    {
-        kickButton.onClick.AddListener(KickPlayer);
-    }
+    [SerializeField] private int _playerIndex;
+    [SerializeField] private GameObject _readyGameObject;
+    [SerializeField] private TextMeshProUGUI _playerNameText;
 
 
     private void Start()
@@ -30,23 +21,9 @@ public class PlayerInfo : MonoBehaviour
         UpdatePlayer();
     }
 
-
-    private void CheckKickButton(PlayerData playerData)
-    {
-        kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
-    }
-
     private void CharacterSelectReady_OnReadyChanged()
     {
         UpdatePlayer();
-    }
-
-    private void KickPlayer()
-    {
-        PlayerData playerData = MultiplayerStorage.Instance.GetPlayerData();
-        Debug.Log($"pressed kick {playerData.playerId} {LobbyRelayManager.Instance.GetJoinedLobby().HostId}");
-        LobbyRelayManager.Instance.KickPlayer(playerData.playerId.ToString());
-        MultiplayerStorage.Instance.KickPlayerServerRpc(playerData.clientId);
     }
 
 
@@ -57,33 +34,42 @@ public class PlayerInfo : MonoBehaviour
 
     private void UpdatePlayer()
     {
-        if (MultiplayerStorage.Instance.IsPlayerIndexConnected(playerIndex))
+        if (MultiplayerStorage.Instance.IsPlayerIndexConnected(_playerIndex))
         {
-            Show();
-
-            PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
-            if (Application.isEditor)
-            {
-                if (LobbyRelayManager.Instance.IsLobbyHost())
-                    readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(0));
-                else
-                    readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
-            }
-            else
-                readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
-            ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
-
-            if (playerData.clientId == clientID)
-                playerNameText.color = Color.green;
-            else
-                playerNameText.color = Color.white;
-            playerNameText.text = playerData.playerName.ToString();
-            //CheckKickButton(playerData);
+            UpdatePlayerInfo();
         }
         else
         {
             Hide();
         }
+    }
+
+    protected int GetPlayerIndex()
+    {
+        return _playerIndex;
+    }
+
+    protected virtual void UpdatePlayerInfo()
+    {
+        Show();
+
+        PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(_playerIndex);
+        if (Application.isEditor)
+        {
+            if (LobbyRelayManager.Instance.IsLobbyHost())
+                _readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(0));
+            else
+                _readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+        }
+        else
+            _readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+        ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
+
+        if (playerData.clientId == clientID)
+            _playerNameText.color = Color.green;
+        else
+            _playerNameText.color = Color.white;
+        _playerNameText.text = playerData.playerName.ToString();
     }
 
     private void Show()

@@ -1,0 +1,1 @@
+public class HostPlayerInfo : PlayerInfo{}

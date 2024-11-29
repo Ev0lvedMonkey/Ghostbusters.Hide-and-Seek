@@ -206,12 +206,7 @@ public class LobbyRelayManager : MonoBehaviour
         {
             try
             {
-                Debug.Log($"!!!!!!!!!!!!!! Kicked {playerId} {Instance.GetJoinedLobby().HostId}");
                 await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, playerId);
-
-                NetworkManager.Singleton.Shutdown();
-                _joinedLobby = null;
-                Debug.Log("!!!!!!!!!!!!!!!!!!!!! Shutdown !!!!!!!!!!!!!!!!!!!!!");
             }
             catch (LobbyServiceException e)
             {
@@ -234,13 +229,28 @@ public class LobbyRelayManager : MonoBehaviour
     {
         if (UnityServices.State != ServicesInitializationState.Initialized)
         {
+            //InitializationOptions initializationOptions = new();
+
+            //await UnityServices.InitializeAsync(initializationOptions);
+
+            //AuthenticationService.Instance.SignedIn += () =>
+            //{
+            //    Debug.Log($"{gameObject.name} Signed in! " + AuthenticationService.Instance.PlayerId);
+            //};
+
+            //await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            //OnSignIn.Invoke();
+            _playerName = "Player" + UnityEngine.Random.Range(0, 1000);
+            MultiplayerStorage.Instance.SetPlayerName(_playerName);
             InitializationOptions initializationOptions = new();
+            initializationOptions.SetProfile(_playerName);
 
             await UnityServices.InitializeAsync(initializationOptions);
 
             AuthenticationService.Instance.SignedIn += () =>
             {
                 Debug.Log($"{gameObject.name} Signed in! " + AuthenticationService.Instance.PlayerId);
+                Debug.Log($"{gameObject.name} Player name: " + _playerName);
             };
 
             await AuthenticationService.Instance.SignInAnonymouslyAsync();

@@ -25,7 +25,7 @@ public class MultiplayerStorage : NetworkBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        _playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
+        //_playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
 
         _playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
     }
@@ -112,27 +112,10 @@ public class MultiplayerStorage : NetworkBehaviour
     }
 
 
-    [ServerRpc(RequireOwnership = false)]
-    public void KickPlayerServerRpc(ulong clientId, ServerRpcParams serverRpcParams = default)
+    public void KickPlayer(ulong clientId)
     {
         NetworkManager.Singleton.DisconnectClient(clientId);
         NetworkManager_Server_OnClientDisconnectCallback(clientId);
-
-        KickPlayerClientRpc(clientId);
-    }
-
-    [ClientRpc(RequireOwnership = false)]
-    private void KickPlayerClientRpc(ulong clientId)
-    {
-
-        for (int i = 0; i < _playerDataNetworkList.Count; i++)
-        {
-            PlayerData playerData = _playerDataNetworkList[i];
-            if (playerData.clientId == clientId)
-            {
-                _playerDataNetworkList.RemoveAt(i);
-            }
-        }
     }
 
     private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
