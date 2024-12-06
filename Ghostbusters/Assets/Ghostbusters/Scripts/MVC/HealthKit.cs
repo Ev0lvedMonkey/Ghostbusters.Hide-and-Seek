@@ -8,6 +8,11 @@ public class HealthKit : MonoBehaviour
             return;
         if (component.TryGetComponent(out CharacterHealthControllerTemp healthController))
         {
+            if (!healthController.IsNeedHealth())
+            {
+                Debug.Log("Dont need");
+                return;
+            }
             healthController.Heal();
             Destroy(gameObject);
         }

@@ -51,6 +51,12 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
         UpdateHUDClientRpc(_currentHealth);
     }
 
+    public bool IsNeedHealth()
+    {
+        Debug.Log($"_currentHealth  {_currentHealth} _maxHealth {_maxHealth}");
+        return _currentHealth < _maxHealth;
+    }
+
     public void Heal()
     {
         _currentHealth += 20;

@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &40876239134595146
 RectTransform:
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.4
+  m_fontSize: 34.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -145,6 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6512075535203830023}
   - component: {fileID: 5891168385665924964}
+  - component: {fileID: 2149372564085386367}
   m_Layer: 5
   m_Name: ScreenModeChanger
   m_TagString: Untagged
@@ -187,6 +188,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullscreenToggle: {fileID: 5258698649167628699}
   toggleController: {fileID: 2186720621500572837}
+--- !u!222 &2149372564085386367
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9185526441323599071}
+  m_CullTransparentMesh: 1
 --- !u!1001 &6222314086287470643
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -205,19 +214,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5391653401097937498, guid: 45da3bbef4bbd65418fa583a19298597, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.20169136
+      value: 0.19960803
       objectReference: {fileID: 0}
     - target: {fileID: 5391653401097937498, guid: 45da3bbef4bbd65418fa583a19298597, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.8781148
       objectReference: {fileID: 0}
     - target: {fileID: 5391653401097937498, guid: 45da3bbef4bbd65418fa583a19298597, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.052
       objectReference: {fileID: 0}
     - target: {fileID: 5391653401097937498, guid: 45da3bbef4bbd65418fa583a19298597, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.12188522
       objectReference: {fileID: 0}
     - target: {fileID: 5391653401097937498, guid: 45da3bbef4bbd65418fa583a19298597, type: 3}
       propertyPath: m_SizeDelta.x
