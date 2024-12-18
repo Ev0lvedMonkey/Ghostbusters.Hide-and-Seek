@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Core;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,28 +10,39 @@ public class MainMenuUi : MonoBehaviour
 {
     [SerializeField] private Button _createLobbyBtn;
     [SerializeField] private Button _quickJoinLobbyBtn;
-    [SerializeField] private Button _joinLobbyBtn;
+    [SerializeField] private Button _joinLobbyByCodeBtn;
     [SerializeField] private Button _menuBtn;
     [SerializeField] private TMP_InputField _lobbyCodeInputField;
     [SerializeField] private TMP_InputField _playerNameInputField;
-    [SerializeField] private Transform lobbyContainer;
-    [SerializeField] private Transform lobbyTemplate;
-    [SerializeField] private CreateLobbyUI lobbyCreateUI;
-
+    [SerializeField] private Transform _lobbyContainer;
+    [SerializeField] private Transform _lobbyTemplate;
+    [SerializeField] private CreateLobbyUI _lobbyCreateUI;
 
     public void Init()
     {
-        Dispose();
+        DeactivateButtons();
         UpdateLobbyList(new List<Lobby>());
         LobbyRelayManager.Instance.OnLobbyListChanged += OnLobbyListChanged;
-        LobbyRelayManager.Instance.OnSignIn.AddListener(InitButton);
+        LobbyRelayManager.Instance.OnSignIn.AddListener(ActivateButtons);
+        LobbyRelayManager.Instance.OnSignIn.AddListener(AddButtonsListeners);
+        ActivateButtons();
+        AddButtonsListeners();
+        Show();
     }
 
-    private void OnDisable()
+    public void Uninit()
     {
-        Dispose();
+        LobbyRelayManager.Instance.OnLobbyListChanged -= OnLobbyListChanged;
+        LobbyRelayManager.Instance.OnSignIn.RemoveListener(ActivateButtons);
+        LobbyRelayManager.Instance.OnSignIn.RemoveListener(AddButtonsListeners);
+        RemoveButtonsListeners();
     }
 
+    private void Show() =>
+        this.gameObject.SetActive(true);
+
+    private void Hide() =>
+        gameObject.SetActive(false);
     private void OnLobbyListChanged(object sender, LobbyRelayManager.OnLobbyListChangedEventArgs e)
     {
         UpdateLobbyList(e.lobbyList);
@@ -37,63 +50,72 @@ public class MainMenuUi : MonoBehaviour
 
     private void UpdateLobbyList(List<Lobby> lobbyList)
     {
-        foreach (Transform child in lobbyContainer)
+        foreach (Transform child in _lobbyContainer)
         {
-            if (child == lobbyTemplate) continue;
+            if (child == _lobbyTemplate) continue;
             Destroy(child.gameObject);
         }
 
         foreach (Lobby lobby in lobbyList)
         {
-            Transform lobbyTransform = Instantiate(lobbyTemplate, lobbyContainer);
+            Transform lobbyTransform = Instantiate(_lobbyTemplate, _lobbyContainer);
             lobbyTransform.gameObject.SetActive(true);
             lobbyTransform.GetComponent<LobbyTemplateUI>().SetLobby(lobby);
         }
     }
 
-    private void InitButton()
+    private void AddButtonsListeners()
     {
-        ActivateButtons();
-        _playerNameInputField.text = MultiplayerStorage.Instance.GetPlayerName();
-        _playerNameInputField.onValueChanged.AddListener((string newText) => {
-            MultiplayerStorage.Instance.SetPlayerName(newText);
-        });
-        _createLobbyBtn.onClick.AddListener(lobbyCreateUI.Show); 
-        _joinLobbyBtn.onClick.AddListener(TestJoinWithCode);
-        _quickJoinLobbyBtn.onClick.AddListener(TestQuickJoin);
-        _menuBtn.onClick.AddListener(() => { SceneLoader.Load(SceneLoader.Scene.MenuScene);});
+            _playerNameInputField.text = MultiplayerStorage.Instance.GetPlayerName();
+        if (UnityServices.State == ServicesInitializationState.Initialized)
+        {
+            _playerNameInputField.onValueChanged.AddListener((string newText) =>
+                MultiplayerStorage.Instance.SetPlayerName(newText));
+            _createLobbyBtn.onClick.AddListener(_lobbyCreateUI.Show);
+            _joinLobbyByCodeBtn.onClick.AddListener(JoinWithCode);
+            _quickJoinLobbyBtn.onClick.AddListener(QuickJoin);
+            _menuBtn.onClick.AddListener(() => SceneLoader.Load(SceneLoader.Scene.MenuScene));
+        }
     }
 
-    private void Dispose()
+    private void RemoveButtonsListeners()
     {
-        DeactivateButtons();
-        _joinLobbyBtn.onClick.RemoveListener(TestJoinWithCode);
+        _playerNameInputField.onValueChanged.RemoveListener((string newText) =>
+            MultiplayerStorage.Instance.SetPlayerName(newText));
+        _createLobbyBtn.onClick.RemoveListener(_lobbyCreateUI.Show);
+        _joinLobbyByCodeBtn.onClick.RemoveListener(JoinWithCode);
+        _quickJoinLobbyBtn.onClick.RemoveListener(QuickJoin);
+        _menuBtn.onClick.RemoveListener(() => SceneLoader.Load(SceneLoader.Scene.MenuScene));
     }
 
     private void ActivateButtons()
     {
-        _createLobbyBtn.gameObject.SetActive(true);
-        _joinLobbyBtn.gameObject.SetActive(true);
-        _quickJoinLobbyBtn.gameObject.SetActive(true);
-        _lobbyCodeInputField.gameObject.SetActive(true);
+        if (UnityServices.State == ServicesInitializationState.Initialized)
+        {
+            _createLobbyBtn.gameObject.SetActive(true);
+            _joinLobbyByCodeBtn.gameObject.SetActive(true);
+            _quickJoinLobbyBtn.gameObject.SetActive(true);
+            _lobbyCodeInputField.gameObject.SetActive(true);
+        }
     }
 
     private void DeactivateButtons()
     {
         _createLobbyBtn.gameObject.SetActive(false);
-        _joinLobbyBtn.gameObject.SetActive(false);
+        _joinLobbyByCodeBtn.gameObject.SetActive(false);
         _quickJoinLobbyBtn.gameObject.SetActive(false);
         _lobbyCodeInputField.gameObject.SetActive(false);
-        lobbyTemplate.gameObject.SetActive(false);
+        _lobbyTemplate.gameObject.SetActive(false);
     }
 
-    private async void TestQuickJoin()
-    {
+    private async void QuickJoin() =>
         await LobbyRelayManager.Instance.QuickJoin();
-    }
 
-    private async void TestJoinWithCode()
+    private async void JoinWithCode()
     {
-        await LobbyRelayManager.Instance.JoinByCode(_lobbyCodeInputField.text);
+        string lobbyCode = _lobbyCodeInputField.text;
+        if (string.IsNullOrWhiteSpace(lobbyCode))
+            return;
+        await LobbyRelayManager.Instance.JoinByCode(lobbyCode);
     }
 }

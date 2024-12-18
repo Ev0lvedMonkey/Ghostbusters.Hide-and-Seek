@@ -7,4 +7,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NetworkObject))]
 
-public class TransformableObject : MonoBehaviour{}
+public class TransformableObject : MonoBehaviour{
+
+    private void Awake()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Transformable");
+        GetComponent<Rigidbody>().isKinematic = true;
+    }
+}

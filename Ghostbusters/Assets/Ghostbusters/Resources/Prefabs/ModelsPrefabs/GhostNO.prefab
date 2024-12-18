@@ -751,7 +751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4952168160158066209, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
       propertyPath: m_fontSize
-      value: 33.8
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 7673520849597746340, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
       propertyPath: m_Name
@@ -759,7 +759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7673520849597746340, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

@@ -9,40 +9,27 @@ public class CreateLobbyUI : MonoBehaviour
     [SerializeField] private Button createPrivateButton;
     [SerializeField] private TMP_InputField lobbyNameInputField;
 
-    private void Awake()
+    public void Init()
     {
-        createPublicButton.onClick.AddListener(() =>
-        {
-            CreateLobby(false);
-        });
-        createPrivateButton.onClick.AddListener(() =>
-        {
-            CreateLobby(true);
-        });
-
-        closeButton.onClick.AddListener(() =>
-        {
-            Hide();
-        });
-    }
-
-    private void Start()
-    {
+        createPublicButton.onClick.AddListener(() => CreateLobby(false));
+        createPrivateButton.onClick.AddListener(() => CreateLobby(true));
+        closeButton.onClick.AddListener(() =>Hide());
         Hide();
+    } 
+
+    public void Uninit()
+    {
+        createPublicButton.onClick.RemoveListener(() => CreateLobby(false));
+        createPrivateButton.onClick.RemoveListener(() => CreateLobby(true));
+        closeButton.onClick.RemoveListener(() =>Hide());
     }
+
+    public void Show() =>
+        gameObject.SetActive(true);
+
+    private void Hide() =>
+        this.gameObject.SetActive(false);
 
     private async void CreateLobby(bool isPrivate) =>
                  await LobbyRelayManager.Instance.CreateLobby(lobbyNameInputField.text, isPrivate);
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-
-        createPublicButton.Select();
-    }
-
-    private void Hide()
-    {
-        gameObject.SetActive(false);
-    }
 }

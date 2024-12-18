@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MouseSenceScriptableObject", menuName = "MouseSence", order = 51)]
+[CreateAssetMenu(fileName = "MouseSenceScriptableObject", menuName = "MouseSence")]
 public class MouseSenceConfiguration : ScriptableObject
 {
     public float MaxMouseSense { get; } = 5f;

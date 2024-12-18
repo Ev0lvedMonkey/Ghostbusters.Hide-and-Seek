@@ -3403,9 +3403,9 @@ RectTransform:
   - {fileID: 1679381455}
   m_Father: {fileID: 1460701381}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 215, y: -50}
   m_SizeDelta: {x: 430, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &964483340
@@ -4273,7 +4273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1240617922
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4310,13 +4310,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _createLobbyBtn: {fileID: 1279070790}
   _quickJoinLobbyBtn: {fileID: 1837913640}
-  _joinLobbyBtn: {fileID: 692624870}
+  _joinLobbyByCodeBtn: {fileID: 692624870}
   _menuBtn: {fileID: 412095617}
   _lobbyCodeInputField: {fileID: 1228228280}
   _playerNameInputField: {fileID: 369316001}
-  lobbyContainer: {fileID: 1460701381}
-  lobbyTemplate: {fileID: 964483339}
-  lobbyCreateUI: {fileID: 1432841383}
+  _lobbyContainer: {fileID: 1460701381}
+  _lobbyTemplate: {fileID: 964483339}
+  _lobbyCreateUI: {fileID: 1432841383}
 --- !u!1 &1243334047
 GameObject:
   m_ObjectHideFlags: 0
@@ -4874,7 +4874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1432841382
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5528,6 +5528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lobbyMessageUI: {fileID: 1666674674}
+  _createLobbyUI: {fileID: 1432841383}
   _mainMenuUi: {fileID: 1240617923}
   _lobbyRelayManager: {fileID: 1284037496}
   _multiplayerStorage: {fileID: 1283400950}
@@ -5562,7 +5563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1666674673
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5597,7 +5598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 780d2af99b891484b9a5d5da012cd649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameConnectionHandler: {fileID: 0}
   messageText: {fileID: 1176438320}
   closeButton: {fileID: 1086210882}
 --- !u!1 &1679381454

@@ -3,18 +3,25 @@ using UnityEngine.UI;
 
 public class ScreenModeChanger : MonoBehaviour
 {
+    private const string FullscreenKey = "FullscreenMode";
+
     [SerializeField] private Toggle fullscreenToggle; 
     [SerializeField] private Toggle1 toggleController; 
 
-    private const string FullscreenKey = "FullscreenMode";
 
-    private void Start()
+    public void DetermineScreenMode()
     {
         bool isFullscreen = PlayerPrefs.GetInt(FullscreenKey, 0) == 1;
         SetScreenMode(isFullscreen);
+    }
+
+    public void AddComponentsListeners() =>
 
         fullscreenToggle.onValueChanged.AddListener(OnToggleChanged);
-    }
+
+    public void RemoveComponentsListeners() =>
+
+        fullscreenToggle.onValueChanged.RemoveListener(OnToggleChanged);
 
     private void OnToggleChanged(bool isFullscreen)
     {
@@ -37,10 +44,5 @@ public class ScreenModeChanger : MonoBehaviour
         {
             Screen.fullScreen = isFullscreen;
         }
-    }
-
-    private void OnDestroy()
-    {
-        fullscreenToggle.onValueChanged.RemoveListener(OnToggleChanged);
     }
 }

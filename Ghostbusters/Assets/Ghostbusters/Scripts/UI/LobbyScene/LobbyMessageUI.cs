@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class LobbyMessageUI : MonoBehaviour
 {
-    [SerializeField] private GameConnectionHandler _gameConnectionHandler;
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Button closeButton;
 
@@ -20,6 +19,18 @@ public class LobbyMessageUI : MonoBehaviour
         MultiplayerStorage.Instance.OnFailedToJoinGame.AddListener(KitchenGameMultiplayer_OnFailedToJoinGame);
         Hide();
     }
+
+    public void Uninit()
+    {
+        closeButton.onClick.RemoveListener(Hide);
+        LobbyRelayManager.Instance.OnCreateLobbyStarted.RemoveListener(LobbyMessage_OnCreateLobbyStarted);
+        LobbyRelayManager.Instance.OnCreateLobbyFailed.RemoveListener(LobbyMessage_OnCreateLobbyFailed);
+        LobbyRelayManager.Instance.OnJoinStarted.RemoveListener(LobbyMessage_OnJoinStarted);
+        LobbyRelayManager.Instance.OnJoinFailed.RemoveListener(LobbyMessage_OnJoinFailed);
+        LobbyRelayManager.Instance.OnQuickJoinFailed.RemoveListener(LobbyMessage_OnQuickJoinFailed);
+        MultiplayerStorage.Instance.OnFailedToJoinGame.RemoveListener(KitchenGameMultiplayer_OnFailedToJoinGame);
+    }
+
 
     private void LobbyMessage_OnQuickJoinFailed()
     {

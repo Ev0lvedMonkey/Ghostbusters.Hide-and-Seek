@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,15 +8,21 @@ public class MouseSenceSettingUI : MonoBehaviour
     [SerializeField] private Slider _mouseSenseSlider;
     [SerializeField] private TMP_Text _mouseSenseText;
 
-    private void OnEnable()
+    public void SetSenseValues()
     {
         _mouseSenseSlider.minValue = _mouseSenseConfig.MinMouseSense;
         _mouseSenseSlider.maxValue = _mouseSenseConfig.MaxMouseSense;
         _mouseSenseSlider.value = _mouseSenseConfig.GetMouseSense();
-        UpdateMouseSenseText(_mouseSenseSlider.value);
-
-        _mouseSenseSlider.onValueChanged.AddListener(OnMouseSenseSliderChanged);
     }
+
+    public void AddComponentsListeners() =>
+        _mouseSenseSlider.onValueChanged.AddListener(OnMouseSenseSliderChanged);
+
+    public void RemoveComponentsListeners() =>
+        _mouseSenseSlider.onValueChanged.RemoveListener(OnMouseSenseSliderChanged);
+
+    public void UpdateMouseSenseText() =>
+        UpdateMouseSenseText(_mouseSenseSlider.value);
 
     private void OnMouseSenseSliderChanged(float newSense)
     {

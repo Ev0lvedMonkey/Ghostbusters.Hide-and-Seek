@@ -90,8 +90,7 @@ public class TransformingShoot : RayFiringObject
         _bodyObject.transform.localScale = targetTransform.localScale;
 
         bodyMeshCollider.sharedMesh = targetMeshCollider.sharedMesh;
-        bodyMeshCollider.convex = targetMeshCollider.convex;
-        bodyMeshCollider.isTrigger = targetMeshCollider.isTrigger;
+        bodyMeshCollider.convex = true;
 
         AdjustBodyPosition();
     }
