@@ -1,4 +1,3 @@
-using System.Globalization;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -14,32 +13,39 @@ public class GameOverWinUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _gameOverWinText;
     [SerializeField] private Button _playAgainButton;
 
-
-    private void Awake()
+    public void Init()
     {
-        Instance = this;
-        _playAgainButton.onClick.AddListener(() =>
-        {
-            NetworkManager.Singleton.Shutdown();
-            SceneLoader.Load(SceneLoader.Scene.MenuScene);
-            try
-            {
-                ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
-                GameStateManager.Instance.ReportPlayerLostServerRpc(clientID);
-
-            }
-            catch { }
-            PlayerExit.Invoke();
-        });
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(this);
+        _playAgainButton.onClick.AddListener(LeaveGame);
+        GameStateManager.Instance.OnStateChanged.AddListener(GameManager_OnStateChanged);
+        GameStateManager.Instance.OnOpenHUD.AddListener(Show);
+        GameStateManager.Instance.OnCloseHUD.AddListener(Hide);
+        Hide();
     }
 
-    private void Start()
+    public void Uninit()
     {
-        GameStateManager.Instance.OnStateChanged.AddListener(GameManager_OnStateChanged);
-        GameStateManager.Instance.OnOpenHUD.AddListener(() => { Show(); });
-        GameStateManager.Instance.OnCloseHUD.AddListener(() => { Hide(); });
-        //_playAgainButton.gameObject.SetActive(false);
-        Hide();
+        _playAgainButton.onClick.RemoveListener(LeaveGame);
+        GameStateManager.Instance.OnStateChanged.RemoveListener(GameManager_OnStateChanged);
+        GameStateManager.Instance.OnOpenHUD.RemoveListener(Show);
+        GameStateManager.Instance.OnCloseHUD.RemoveListener(Hide);
+    }
+
+    private void LeaveGame()
+    {
+        NetworkManager.Singleton.Shutdown();
+        SceneLoader.Load(SceneLoader.Scene.MenuScene);
+        try
+        {
+            ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
+            GameStateManager.Instance.ReportPlayerLostServerRpc(clientID);
+
+        }
+        catch { }
+        PlayerExit.Invoke();
     }
 
     private void GameManager_OnStateChanged()

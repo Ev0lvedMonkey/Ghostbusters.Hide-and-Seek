@@ -42,12 +42,52 @@ public class GameStateManager : NetworkBehaviour
     private Dictionary<ulong, bool> playerPausedDictionary;
     private bool autoTestGamePausedState;
 
-    private void Awake()
-    {
-        Instance = this;
 
-        playerReadyDictionary = new Dictionary<ulong, bool>();
-        playerPausedDictionary = new Dictionary<ulong, bool>();
+    private void Update()
+    {
+        if (!IsServer)
+        {
+            return;
+        }
+
+        switch (state.Value)
+        {
+            case State.WaitingToStart:
+                break;
+            case State.CountdownToStart:
+                countdownToStartTimer.Value -= Time.deltaTime;
+                if (countdownToStartTimer.Value < 0f)
+                {
+                    state.Value = State.GamePlaying;
+                    gamePlayingTimer.Value = gamePlayingTimerMax;
+                }
+                break;
+            case State.GamePlaying:
+                gamePlayingTimer.Value -= Time.deltaTime;
+                if (gamePlayingTimer.Value < 0f)
+                {
+                    state.Value = State.WinGhost;
+                }
+                break;
+
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (autoTestGamePausedState)
+        {
+            autoTestGamePausedState = false;
+            TestGamePausedState();
+        }
+    }
+
+    public void Init()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(this);
     }
 
     public override void OnNetworkSpawn()
@@ -62,10 +102,12 @@ public class GameStateManager : NetworkBehaviour
         }
     }
 
-    private void Start()
+    public void StartCountdown()
     {
-        SetPlayerReadyServerRpc();
+        state.Value = State.CountdownToStart;
+        Debug.LogWarning($"CountdownToStart started");
     }
+
 
     public void InvokeStartGameEvent() =>
         OnStartGame.Invoke();
@@ -245,6 +287,9 @@ public class GameStateManager : NetworkBehaviour
    
     private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
     {
+        playerReadyDictionary = new Dictionary<ulong, bool>();
+        playerPausedDictionary = new Dictionary<ulong, bool>();
+
         playerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
 
         bool allClientsReady = true;
@@ -261,46 +306,6 @@ public class GameStateManager : NetworkBehaviour
         {
             state.Value = State.CountdownToStart;
             Debug.Log($"CountdownToStart started");
-        }
-    }
-
-
-    private void Update()
-    {
-        if (!IsServer)
-        {
-            return;
-        }
-
-        switch (state.Value)
-        {
-            case State.WaitingToStart:
-                break;
-            case State.CountdownToStart:
-                countdownToStartTimer.Value -= Time.deltaTime;
-                if (countdownToStartTimer.Value < 0f)
-                {
-                    state.Value = State.GamePlaying;
-                    gamePlayingTimer.Value = gamePlayingTimerMax;
-                }
-                break;
-            case State.GamePlaying:
-                gamePlayingTimer.Value -= Time.deltaTime;
-                if (gamePlayingTimer.Value < 0f)
-                {
-                    state.Value = State.WinGhost;
-                }
-                break;
-
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (autoTestGamePausedState)
-        {
-            autoTestGamePausedState = false;
-            TestGamePausedState();
         }
     }
 

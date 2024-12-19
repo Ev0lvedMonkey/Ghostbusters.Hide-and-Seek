@@ -8,17 +8,15 @@ public class GameStartCountdownUI : MonoBehaviour
     private int previousCountdownNumber;
 
 
-    private void Start()
+    public void Init()
     {
-        GameStateManager.Instance.OnStateChanged.AddListener(KitchenGameManager_OnStateChanged);
-        Hide();
+        GameStateManager.Instance.OnStateChanged.AddListener(GameManager_OnStateChanged);
+        Show();
     }
 
-    private void KitchenGameManager_OnStateChanged()
+    private void GameManager_OnStateChanged()
     {
-        if (GameStateManager.Instance.IsCountdownToStartActive())
-            Show();
-        else
+        if (!GameStateManager.Instance.IsCountdownToStartActive())
         {
             GameStateManager.Instance.OnStartGame.Invoke();
             Hide();

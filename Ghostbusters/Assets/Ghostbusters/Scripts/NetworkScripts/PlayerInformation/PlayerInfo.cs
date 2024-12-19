@@ -8,7 +8,7 @@ public abstract class PlayerInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _playerNameText;
 
 
-    private void Start()
+    public virtual void Init()
     {
         if (MultiplayerStorage.Instance != null)
         {
@@ -19,6 +19,18 @@ public abstract class PlayerInfo : MonoBehaviour
             CharacterSelectReady.Instance.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
         }
         UpdatePlayer();
+    }
+    
+    public virtual void Uninit()
+    {
+        if (MultiplayerStorage.Instance != null)
+        {
+            MultiplayerStorage.Instance.OnPlayerDataNetworkListChanged.RemoveListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
+        }
+        if (CharacterSelectReady.Instance != null)
+        {
+            CharacterSelectReady.Instance.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
+        }
     }
 
     private void CharacterSelectReady_OnReadyChanged()
