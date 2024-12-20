@@ -25,8 +25,8 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
 
     private void Start()
     {
-        if (IsOwner)
-            EnableHUD();
+        if (!IsOwner)
+            DisableHUD();
     }
 
 

@@ -6,20 +6,24 @@ public class ClientPlayerInfo : PlayerInfo
 {
     [SerializeField] private Button _kickButton;
 
+    private void OnDisable()
+    {
+        _kickButton.gameObject.SetActive(false);
+    }
 
     public override void Init()
     {
         base.Init();
         _kickButton.onClick.AddListener(KickPlayer);
-        Debug.Log("INITED CLIENT PD");
+        _kickButton.onClick.AddListener(() => _kickButton.gameObject.SetActive(false));
     }
 
     public override void Uninit()
     {
         base.Uninit();
         _kickButton.onClick.RemoveListener(KickPlayer);
+        _kickButton.onClick.RemoveListener(() => _kickButton.gameObject.SetActive(false));
         _kickButton.gameObject.SetActive(false);
-
     }
 
     private void KickPlayer()

@@ -8,16 +8,14 @@ public class HostDisconnectUI : MonoBehaviour
 
     public void Init()
     {
-        _playAgainButton.onClick.AddListener(() =>
-            SceneLoader.Load(SceneLoader.Scene.MenuScene));
+        _playAgainButton.onClick.AddListener(BackToMenu);
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
         Hide();
     }
 
     public void Uninit()
     {
-        _playAgainButton.onClick.RemoveListener(() =>
-            SceneLoader.Load(SceneLoader.Scene.MenuScene));
+        _playAgainButton.onClick.RemoveListener(BackToMenu);
         NetworkManager.Singleton.OnClientDisconnectCallback -= NetworkManager_OnClientDisconnectCallback;
         Hide();
     }
@@ -28,12 +26,20 @@ public class HostDisconnectUI : MonoBehaviour
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             if (NetworkManager.Singleton.IsHost)
+            {
                 SceneLoader.Load(SceneLoader.Scene.MenuScene);
+            }
             else
                 Show();
         }
     }
 
+    private static void BackToMenu()
+    {
+        LobbyRelayManager.Instance.LeaveLobby();
+        NetworkManager.Singleton.Shutdown();
+        SceneLoader.Load(SceneLoader.Scene.MenuScene);
+    }
     private void Show()
     {
         gameObject.SetActive(true);

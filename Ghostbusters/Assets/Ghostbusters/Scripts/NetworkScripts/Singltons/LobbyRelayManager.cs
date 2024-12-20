@@ -180,6 +180,7 @@ public class LobbyRelayManager : MonoBehaviour
             {
                 Debug.Log(e);
             }
+            Debug.Log($"NOT delete lobby");
         }
 
     }
@@ -207,6 +208,7 @@ public class LobbyRelayManager : MonoBehaviour
             try
             {
                 await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, playerId);
+                Debug.Log($"Removed {playerId}");
             }
             catch (LobbyServiceException e)
             {
@@ -260,7 +262,7 @@ public class LobbyRelayManager : MonoBehaviour
             _lobbyPollTimer -= Time.deltaTime;
             if (_lobbyPollTimer <= 0f)
             {
-                float listLobbiesTimerMax = 3f;
+                float listLobbiesTimerMax = 2.5f;
                 _lobbyPollTimer = listLobbiesTimerMax;
                 Debug.Log($"{gameObject.name}: HandlePeriodicListLobbies");
                 ListLobbies();

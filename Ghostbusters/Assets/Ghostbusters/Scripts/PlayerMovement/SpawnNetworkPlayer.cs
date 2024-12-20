@@ -10,13 +10,17 @@ public class SpawnNetworkPlayer : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner)
-            return;
+        try
+        {
+            if (!IsOwner)
+                return;
 
-        LocalInstance = this;
+            LocalInstance = this;
 
-        ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
-        int playerIndex = MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(clientID);
-        transform.position = spawnPositionList[playerIndex];
+            ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
+            int playerIndex = MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(clientID);
+            transform.position = spawnPositionList[playerIndex];
+        }
+        catch { Debug.LogError("Bug here"); }
     }
 }

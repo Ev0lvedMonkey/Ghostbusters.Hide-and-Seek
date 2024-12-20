@@ -18,6 +18,7 @@ public class MultiplayerStorage : NetworkBehaviour
 
     private NetworkList<PlayerData> _playerDataNetworkList;
     private string _playerName;
+
     public void Init()
     {
         _playerDataNetworkList = new NetworkList<PlayerData>();
@@ -112,9 +113,21 @@ public class MultiplayerStorage : NetworkBehaviour
     }
 
 
+    public void KickAllPlayers()
+    {
+        foreach (var item in _playerDataNetworkList)
+        {
+            if (NetworkManager.Singleton.IsHost)
+                return;
+            LobbyRelayManager.Instance.KickPlayer(item.playerId.ToString());
+            KickPlayer(item.clientId);
+        }
+    }
+
     public void KickPlayer(ulong clientId)
     {
         NetworkManager.Singleton.DisconnectClient(clientId);
+        Debug.Log($"DisconnectClient {clientId}");
         NetworkManager_Server_OnClientDisconnectCallback(clientId);
     }
 

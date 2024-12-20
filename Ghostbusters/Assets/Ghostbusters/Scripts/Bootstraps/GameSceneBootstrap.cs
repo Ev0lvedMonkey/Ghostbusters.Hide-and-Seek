@@ -10,6 +10,7 @@ public class GameSceneBootstrap : MonoBehaviour
     [SerializeField] private GameStartCountdownUI _gameStartCountdownUI;
     [SerializeField] private GamePlayingClockUI _gamePlayingClockUI;
     [SerializeField] private GameOverWinUI _gameOverWinUI;
+    [SerializeField] private MouseSenceSettingUI _mouseSenceSettingUI;
 
     private void Awake()
     {
@@ -24,6 +25,9 @@ public class GameSceneBootstrap : MonoBehaviour
         _gameStartCountdownUI.Init();
         _gamePlayingClockUI.Init();
         _gamePlayingClockUI.Hide();
+        _mouseSenceSettingUI.SetSenseValues();
+        _mouseSenceSettingUI.UpdateMouseSenseText();
+        _mouseSenceSettingUI.AddComponentsListeners();
     }
 
 
@@ -31,6 +35,7 @@ public class GameSceneBootstrap : MonoBehaviour
     {
         _gameStateManager.OnStartGame.RemoveAllListeners();
         _gameOverWinUI.Uninit();
+        _mouseSenceSettingUI.RemoveComponentsListeners();
     }
 
     private void RegisterServiceLocatorServices()

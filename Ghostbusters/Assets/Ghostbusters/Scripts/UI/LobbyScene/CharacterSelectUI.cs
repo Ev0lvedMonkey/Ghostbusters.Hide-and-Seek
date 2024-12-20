@@ -1,7 +1,6 @@
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,8 +43,11 @@ public class CharacterSelectUI : MonoBehaviour
 
     private static void BackToMenu()
     {
-        LobbyRelayManager.Instance.LeaveLobby();
         NetworkManager.Singleton.Shutdown();
+        if (NetworkManager.Singleton.IsHost)
+            LobbyRelayManager.Instance.DeleteLobby();
+        else
+            LobbyRelayManager.Instance.LeaveLobby();
         SceneLoader.Load(SceneLoader.Scene.MenuScene);
     }
 

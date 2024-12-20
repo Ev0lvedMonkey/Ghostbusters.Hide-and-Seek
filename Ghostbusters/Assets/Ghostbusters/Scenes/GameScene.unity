@@ -1804,6 +1804,7 @@ MonoBehaviour:
   _gameStartCountdownUI: {fileID: 1123111052}
   _gamePlayingClockUI: {fileID: 12628857}
   _gameOverWinUI: {fileID: 1296789133}
+  _mouseSenceSettingUI: {fileID: 1683249806}
 --- !u!1 &969271100
 GameObject:
   m_ObjectHideFlags: 0
@@ -2070,7 +2071,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1065535322
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3481,6 +3482,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 322971028867009310, guid: b57f8b11b1549ec4aa18fee000b12d80, type: 3}
   m_PrefabInstance: {fileID: 1683249804}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1683249806 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5859508026834266552, guid: b57f8b11b1549ec4aa18fee000b12d80, type: 3}
+  m_PrefabInstance: {fileID: 1683249804}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d1ec129cb0a6b44daa79cfac6e72c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &1754086352
 BoxCollider:
   m_ObjectHideFlags: 0
