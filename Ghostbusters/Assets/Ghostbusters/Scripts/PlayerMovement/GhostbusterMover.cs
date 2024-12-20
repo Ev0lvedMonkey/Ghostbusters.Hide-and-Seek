@@ -10,17 +10,15 @@ public class GhostbusterMover : CharacterMover
     [SerializeField] private UnityEvent OnDisableAbility;
 
 
-    private bool _isWasCreate;
-
     private void Update()
     {
         if (!IsOwner) return;
+        if (GameOverWinUI.Instance.IsOpened()) return;
         if (Input.GetKeyDown(KeyCode.E))
         {
             SpawnSphereServerRpc();
             SpawnEffectServerRpc();
             OnDisableAbility.Invoke();
-            _isWasCreate = true;
         }
         SetAnimState();
     }

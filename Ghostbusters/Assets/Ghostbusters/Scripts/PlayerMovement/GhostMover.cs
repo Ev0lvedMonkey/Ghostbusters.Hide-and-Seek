@@ -15,7 +15,7 @@ public abstract class GhostMover : CharacterMover
 
     protected virtual void Start()
     {
-        GameStateManager.Instance.OnOpenHUD.AddListener(() => { IsRotationLocked = true; });
+        GameStateManager.Instance.OnOpenHUD.AddListener(() => IsRotationLocked = true);
     }
 
     protected void GhostMove()
@@ -53,6 +53,8 @@ public abstract class GhostMover : CharacterMover
     {
         if (_input != Vector2.zero)
         {
+            if (GameOverWinUI.Instance.IsOpened())
+                return;
             IsRotationLocked = false;
         }
         else if (Input.GetKeyDown(KeyCode.Q))
@@ -63,7 +65,7 @@ public abstract class GhostMover : CharacterMover
 
     protected virtual float GetModifiedSpeed()
     {
-        return 1.0f; 
+        return 1.0f;
     }
 
     public override void Move()

@@ -48,7 +48,8 @@ public abstract class CharacterMover : NetworkBehaviour
 
     protected float GetMoveSpeed()
     {
-        return _input.y < 0 ? BackMoveSpeed : MovementSpeed;
+        if (GameOverWinUI.Instance.IsOpened()) return 0f;
+        else return _input.y < 0 ? BackMoveSpeed : MovementSpeed;
     }
 
     protected Vector2 GetInput()

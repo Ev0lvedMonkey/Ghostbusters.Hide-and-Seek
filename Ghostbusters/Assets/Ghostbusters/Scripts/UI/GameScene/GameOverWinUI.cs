@@ -13,6 +13,9 @@ public class GameOverWinUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _gameOverWinText;
     [SerializeField] private Button _playAgainButton;
 
+    private bool _isOpened;
+    private bool _winnnerWasDetermined;
+
     public void Init()
     {
         if (Instance == null)
@@ -34,35 +37,39 @@ public class GameOverWinUI : MonoBehaviour
         GameStateManager.Instance.OnCloseHUD.RemoveListener(Hide);
     }
 
+    public bool IsOpened()
+    {
+        return _isOpened;
+    }
+
     private void LeaveGame()
     {
         NetworkManager.Singleton.Shutdown();
         SceneLoader.Load(SceneLoader.Scene.MenuScene);
-        try
-        {
-            ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
-            GameStateManager.Instance.ReportPlayerLostServerRpc(clientID);
-
-        }
-        catch { }
+        ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
+        GameStateManager.Instance.ReportPlayerLostServerRpc(clientID);
         PlayerExit.Invoke();
     }
 
     private void GameManager_OnStateChanged()
     {
-        switch (GameStateManager.Instance.IsGameOver().ToString())
+        if (_winnnerWasDetermined)
+            return;
+        switch (GameStateManager.Instance.GetGameState().ToString())
         {
             case "WinBusters":
                 _gameOverWinText.text = "Охотники победили!";
                 _playAgainButton.gameObject.SetActive(true);
                 RemoveListeners();
                 Show();
+                _winnnerWasDetermined = true;
                 break;
             case "WinGhost":
                 _gameOverWinText.text = "Призраки победили!";
                 _playAgainButton.gameObject.SetActive(true);
                 RemoveListeners();
                 Show();
+                _winnnerWasDetermined = true;
                 break;
             default:
                 break;
@@ -78,12 +85,14 @@ public class GameOverWinUI : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
+        _isOpened = true;
         CursorController.EnableCursor();
     }
 
     private void Hide()
     {
         CursorController.DisableCursor();
+        _isOpened = false;
         gameObject.SetActive(false);
     }
 
