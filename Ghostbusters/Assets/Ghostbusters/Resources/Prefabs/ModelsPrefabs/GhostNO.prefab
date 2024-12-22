@@ -353,7 +353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6165201409464766203}
-  - component: {fileID: 7498242714500724640}
+  - component: {fileID: 815552867357321300}
   m_Layer: 6
   m_Name: CamFollowPos
   m_TagString: Untagged
@@ -376,7 +376,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2874304489409965433}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7498242714500724640
+--- !u!114 &815552867357321300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7413153348805525786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72f74519ca0cf5d45a4fae34e0c63892, type: 3}
+  m_Script: {fileID: 11500000, guid: 92a8405d7fc6e9c4da0251bd554d4a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8826096940076894113
@@ -585,11 +585,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b297c91d2eb5984788fabcb348d5b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPositionList:
-  - {x: -1, y: 0, z: 12}
-  - {x: 3, y: 0, z: -8}
-  - {x: -2, y: 0, z: 2}
-  - {x: -3, y: 0, z: -8}
 --- !u!114 &8119963331742901446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,7 +617,7 @@ MonoBehaviour:
   OnSetDeafaultStats:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7498242714500724640}
+      - m_Target: {fileID: 815552867357321300}
         m_TargetAssemblyTypeName: DeafaultCamPos, Assembly-CSharp
         m_MethodName: SetDeafaultStats
         m_Mode: 1

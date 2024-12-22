@@ -12,8 +12,8 @@ public class MenuSceneBootstrap : MonoBehaviour
     private void Awake()
     {
         _singltonCleanUp.CleanUp();
-        _camRotateAround.InitHeight();
         _camRotateAround.DefinitionOfRotateDirection();
+        _camRotateAround.InitHeight();
         CursorController.EnableCursor();
         _menuUI.Init();
         _mouseSenceSettingUI.SetSenseValues();

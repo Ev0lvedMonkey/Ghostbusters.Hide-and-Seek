@@ -13,11 +13,8 @@ public class CamRotateAround : MonoBehaviour
     
     public void DefinitionOfRotateDirection()
     {
-        int randomNumber = Random.Range(0, 1);
-        if (randomNumber == 0)
-            _rotateDirection = -1;
-        else
-            _rotateDirection = 1;
+        int randomNumber = Random.Range(0, 2);
+        _rotateDirection = randomNumber == 0 ? -1 : 1;
     }
 
     public void InitHeight() =>
