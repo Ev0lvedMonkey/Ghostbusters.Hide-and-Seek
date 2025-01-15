@@ -11,8 +11,7 @@ public class CharactersSceneBootstrap : MonoBehaviour
 
     private void Awake()
     {
-        _characterSelectReady.Init();
-        _characterSelectUI.Init();
+        _characterSelectUI.Init(_characterSelectReady);
     }
 
     private void OnEnable()
@@ -39,11 +38,11 @@ public class CharactersSceneBootstrap : MonoBehaviour
     {
         if (_listPlayerInfo == null || _listPlayerInfo.Count == 0)
             return;
-        foreach (var item in _listPlayerInfo)
+        foreach (var playerInfo in _listPlayerInfo)
         {
-            if (item.TryGetComponent(out ClientPlayerInfo component))
-                component.Init();
-            item.Init();
+            if (playerInfo.TryGetComponent(out ClientPlayerInfo clientInfo))
+                clientInfo.Init(_characterSelectReady);
+            playerInfo.Init(_characterSelectReady);
         }
     }
 

@@ -11,14 +11,6 @@ public class CharacterSelectReady : NetworkBehaviour
     private Dictionary<ulong, bool> playerReadyDictionary;
 
 
-    public void Init()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(this);
-    }
-
     public void MakeNewPlayerReadyDictionary()
     {
         playerReadyDictionary = new Dictionary<ulong, bool>();

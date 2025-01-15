@@ -7,30 +7,26 @@ public abstract class PlayerInfo : MonoBehaviour
     [SerializeField] private GameObject _readyGameObject;
     [SerializeField] private TextMeshProUGUI _playerNameText;
 
+    private CharacterSelectReady _characterSelectReady;
 
-    public virtual void Init()
+    public virtual void Init(CharacterSelectReady characterSelectReady)
     {
+        _characterSelectReady = characterSelectReady;
         if (MultiplayerStorage.Instance != null)
         {
             MultiplayerStorage.Instance.OnPlayerDataNetworkListChanged.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
         }
-        if (CharacterSelectReady.Instance != null)
-        {
-            CharacterSelectReady.Instance.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
-        }
+        _characterSelectReady?.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
         UpdatePlayer();
     }
-    
+
     public virtual void Uninit()
     {
         if (MultiplayerStorage.Instance != null)
         {
             MultiplayerStorage.Instance.OnPlayerDataNetworkListChanged.RemoveListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
         }
-        if (CharacterSelectReady.Instance != null)
-        {
-            CharacterSelectReady.Instance.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
-        }
+        _characterSelectReady.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
     }
 
     private void CharacterSelectReady_OnReadyChanged()
@@ -69,12 +65,12 @@ public abstract class PlayerInfo : MonoBehaviour
         if (Application.isEditor)
         {
             if (LobbyRelayManager.Instance.IsLobbyHost())
-                _readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(0));
+                _readyGameObject.SetActive(_characterSelectReady.IsPlayerReady(0));
             else
-                _readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+                _readyGameObject.SetActive(_characterSelectReady.IsPlayerReady(playerData.clientId));
         }
         else
-            _readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+            _readyGameObject.SetActive(_characterSelectReady.IsPlayerReady(playerData.clientId));
         ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
 
         if (playerData.clientId == clientID)

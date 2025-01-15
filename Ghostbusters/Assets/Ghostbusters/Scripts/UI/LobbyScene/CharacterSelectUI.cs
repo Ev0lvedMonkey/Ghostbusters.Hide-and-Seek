@@ -12,8 +12,12 @@ public class CharacterSelectUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _lobbyNameText;
     [SerializeField] private TextMeshProUGUI _lobbyCodeText;
 
-    public void Init()
+    private CharacterSelectReady _characterSelectReady;
+
+
+    public void Init(CharacterSelectReady characterSelectReady)
     {
+        _characterSelectReady = characterSelectReady;
         _mainMenuButton.onClick.AddListener(BackToMenu);
         _readyButton.onClick.AddListener(SetReady);
         _copyCodeButton.onClick.AddListener(CopyLobbyCode);
@@ -39,7 +43,7 @@ public class CharacterSelectUI : MonoBehaviour
         GUIUtility.systemCopyBuffer = _lobbyCodeText.text;
 
     private void SetReady() =>
-        CharacterSelectReady.Instance.SetPlayerReady();
+        _characterSelectReady.SetPlayerReady();
 
     private static void BackToMenu()
     {

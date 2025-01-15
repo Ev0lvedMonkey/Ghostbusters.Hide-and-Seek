@@ -11,9 +11,9 @@ public class ClientPlayerInfo : PlayerInfo
         _kickButton.gameObject.SetActive(false);
     }
 
-    public override void Init()
+    public override void Init(CharacterSelectReady characterSelectReady)
     {
-        base.Init();
+        base.Init(characterSelectReady);
         _kickButton.onClick.AddListener(KickPlayer);
         _kickButton.onClick.AddListener(() => _kickButton.gameObject.SetActive(false));
     }

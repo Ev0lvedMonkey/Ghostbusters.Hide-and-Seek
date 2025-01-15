@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3035442843
+  GlobalObjectIdHash: 1829906515
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 1874786418358173608}
   _animator: {fileID: 1237098469879964603}
-  _blockingSphere: {fileID: 4814684917461445608, guid: 3e3a5aec954a9234187474507963b477, type: 3}
+  _blockingSphere: {fileID: 4814684917461445608, guid: 8888e61f2e667094b9d8a5495545c1b9, type: 3}
   _blockingSphereSpawnEffect: {fileID: 7177991128484655659, guid: 59a35ab9f68edff40b6e5332bed330f5, type: 3}
   OnDisableAbility:
     m_PersistentCalls:
@@ -216,11 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b297c91d2eb5984788fabcb348d5b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPositionList:
-  - {x: 1, y: 0, z: 12}
-  - {x: 3, y: 0, z: -8}
-  - {x: -2, y: 0, z: 2}
-  - {x: -3, y: 0, z: -8}
 --- !u!114 &289307720369143025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,7 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3035442843
+  GlobalObjectIdHash: 3525692195
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

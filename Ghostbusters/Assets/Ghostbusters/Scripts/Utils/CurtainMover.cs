@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,15 +7,23 @@ public class CurtainMover : MonoBehaviour
     [SerializeField] private List<Transform> _curtainsParts;
     [SerializeField] private bool _isSecretRoomCurtain;
 
+    private bool _isMade;
+
     private void Start()
     {
-        if(_isSecretRoomCurtain)
+        if (_isSecretRoomCurtain)
+        {
+            GameStateManager.Instance.OnSecretRoomOpen.AddListener(Open);
             return;
+        }
         GameStateManager.Instance.OnStartGame.AddListener(Open);
     }
 
     private void Open()
     {
+        if (_isMade)
+            return;
+        
         Sequence curtainSequence = DOTween.Sequence();
         Vector3 finalTargetPosition;
         for (int i = 0; i <= _curtainsParts.Count; i++)
@@ -27,7 +33,7 @@ public class CurtainMover : MonoBehaviour
                 Transform finalCurtainPart = _curtainsParts[i];
                 BoxCollider collider = finalCurtainPart.GetComponent<BoxCollider>();
                 finalTargetPosition =
-                    new(finalCurtainPart.position.x, collider.bounds.max.y, finalCurtainPart.position.z); 
+                    new(finalCurtainPart.position.x, collider.bounds.max.y, finalCurtainPart.position.z);
                 curtainSequence.Append(_curtainsParts[i].DOMove(finalTargetPosition, 0.5f));
                 curtainSequence.Append(_curtainsParts[i].DOScale(0, 0.01f));
                 break;
@@ -35,5 +41,6 @@ public class CurtainMover : MonoBehaviour
             curtainSequence.Append(_curtainsParts[i].DOMove(_curtainsParts[i + 1].position, 0.5f));
             curtainSequence.Append(_curtainsParts[i].DOScale(0, 0.01f));
         }
+        _isMade = true;
     }
 }

@@ -16,6 +16,7 @@ public class GameStateManager : NetworkBehaviour
     internal UnityEvent OnStartGame = new();
     internal UnityEvent OnCloseHUD = new();
     internal UnityEvent OnOpenHUD = new();
+    internal UnityEvent OnSecretRoomOpen = new();
 
 
     public enum State
@@ -64,6 +65,8 @@ public class GameStateManager : NetworkBehaviour
                 break;
             case State.GamePlaying:
                 gamePlayingTimer.Value -= Time.deltaTime;
+                if (gamePlayingTimer.Value <= gamePlayingTimerMax / 2)
+                    OnSecretRoomOpen.Invoke();
                 if (gamePlayingTimer.Value < 0f)
                 {
                     state.Value = State.WinGhost;
@@ -205,7 +208,7 @@ public class GameStateManager : NetworkBehaviour
     {
         int idPlayer =
             MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
-        if (idPlayer == 0 || idPlayer == 2) return true;
+        if (idPlayer == 1 || idPlayer == 2) return true;
         else return false;
     }
 
@@ -235,7 +238,8 @@ public class GameStateManager : NetworkBehaviour
                 else continue;
 
             }
-        }else if (_playerStatusList.Count == 4)
+        }
+        else if (_playerStatusList.Count == 4)
         {
             for (int i = 0; i < _playerStatusList.Count; i++)
             {
@@ -284,7 +288,7 @@ public class GameStateManager : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-   
+
     private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
     {
         playerReadyDictionary = new Dictionary<ulong, bool>();

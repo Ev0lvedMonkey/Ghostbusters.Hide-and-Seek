@@ -5,11 +5,17 @@ using UnityEngine;
 public class GameSceneConfiguration : ScriptableObject
 {
     [SerializeField] private GameObject _level;
+    [SerializeField] private GameObject _terrain;
     [SerializeField] private List<GameObject> _enviromentType;
 
     public GameObject GetLevelObject()
     {
         return _level;
+    }
+
+    public GameObject GetTerrainObject()
+    {
+        return _terrain;
     }
 
     public GameObject GetEnviroment()

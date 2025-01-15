@@ -18,7 +18,7 @@ public class GhostbusterMover : CharacterMover
         {
             SpawnSphereServerRpc();
             SpawnEffectServerRpc();
-            OnDisableAbility.Invoke();
+            //OnDisableAbility.Invoke();
         }
         SetAnimState();
     }
