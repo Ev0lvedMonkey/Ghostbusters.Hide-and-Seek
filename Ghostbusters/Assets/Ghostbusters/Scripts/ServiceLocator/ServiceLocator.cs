@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class ServiceLocator 
+public class ServiceLocator
 {
     private ServiceLocator() { }
 
@@ -13,6 +13,15 @@ public class ServiceLocator
     public static void Inizialize()
     {
         Current = new ServiceLocator();
+    }
+
+    public void MakeNull()
+    {
+        if (Current != null)
+        {
+            Current = null;
+            _services.Clear();
+        }
     }
 
     public T Get<T>() where T : IService

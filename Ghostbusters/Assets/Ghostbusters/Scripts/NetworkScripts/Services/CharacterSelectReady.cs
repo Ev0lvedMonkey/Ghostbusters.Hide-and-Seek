@@ -4,16 +4,14 @@ using UnityEngine.Events;
 
 public class CharacterSelectReady : NetworkBehaviour
 {
-    public static CharacterSelectReady Instance { get; private set; }
 
     internal UnityEvent OnReadyChanged = new();
 
     private Dictionary<ulong, bool> playerReadyDictionary;
 
-
     public void MakeNewPlayerReadyDictionary()
     {
-        playerReadyDictionary = new Dictionary<ulong, bool>();
+        playerReadyDictionary = new();
     }
 
     public void SetPlayerReady()
@@ -41,7 +39,7 @@ public class CharacterSelectReady : NetworkBehaviour
 
         if (allClientsReady)
         {
-            LobbyRelayManager.Instance.DeleteLobby();
+            ServiceLocator.Current.Get<LobbyRelayManager>().DeleteLobby();
             SceneLoader.LoadNetwork(SceneLoader.Scene.GameScene);
             CursorController.DisableCursor();
         }

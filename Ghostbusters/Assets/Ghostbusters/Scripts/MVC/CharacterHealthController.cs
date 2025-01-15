@@ -2,7 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CharacterHealthControllerTemp : NetworkBehaviour
+public class CharacterHealthController : NetworkBehaviour
 {
     [SerializeField, Range(100, 150)] private float _maxHealth;
     [SerializeField] private GameObject _deathEffect;
@@ -20,7 +20,7 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     private void Awake()
     {
         _currentHealth = _maxHealth;
-        GameOverWinUI.Instance.PlayerExit.AddListener(() => { MomentKillClientRpc();});
+        ServiceLocator.Current.Get<GameOverWinUI>().PlayerExit.AddListener(() => { MomentKillClientRpc();});
     }
 
     private void Start()
@@ -127,8 +127,8 @@ public class CharacterHealthControllerTemp : NetworkBehaviour
     {
         if (IsOwner)
         {
-            ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
-            GameStateManager.Instance.ReportPlayerLostServerRpc(clientID);
+            ulong clientID = ServiceLocator.Current.Get<MultiplayerStorage>().GetPlayerData().clientId;
+            ServiceLocator.Current.Get<GameStateManager>().ReportPlayerLostServerRpc(clientID);
         }
         DisableHUD();
         _bodyTransform.gameObject.SetActive(false);

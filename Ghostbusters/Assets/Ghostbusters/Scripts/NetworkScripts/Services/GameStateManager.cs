@@ -3,10 +3,8 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameStateManager : NetworkBehaviour
+public class GameStateManager : NetworkBehaviour, IService
 {
-    public static GameStateManager Instance { get; private set; }
-
     internal UnityEvent OnStateChanged = new();
     internal UnityEvent OnLocalGamePaused = new();
     internal UnityEvent OnLocalGameUnpaused = new();
@@ -42,6 +40,7 @@ public class GameStateManager : NetworkBehaviour
     private Dictionary<ulong, bool> playerReadyDictionary;
     private Dictionary<ulong, bool> playerPausedDictionary;
     private bool autoTestGamePausedState;
+    private ServiceLocator _serviceLocator;
 
 
     private void Update()
@@ -87,10 +86,7 @@ public class GameStateManager : NetworkBehaviour
 
     public void Init()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(this);
+        _serviceLocator = ServiceLocator.Current;
     }
 
     public override void OnNetworkSpawn()
@@ -170,7 +166,7 @@ public class GameStateManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void ReportPlayerLostServerRpc(ulong clientId)
     {
-        int playerIndex = MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(clientId);
+        int playerIndex = _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataIndexFromClientId(clientId);
         Debug.Log($"ReportPlayerLostServerRpc invoke player with clientID {clientId}, his index {playerIndex}");
         if (playerIndex != -1) _playerStatusList[playerIndex] = true;
         int index = 0;
@@ -207,7 +203,7 @@ public class GameStateManager : NetworkBehaviour
     private bool IsGhost(ulong clientId)
     {
         int idPlayer =
-            MultiplayerStorage.Instance.GetPlayerDataIndexFromClientId(MultiplayerStorage.Instance.GetPlayerDataFromClientId(clientId).clientId);
+            _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataIndexFromClientId(_serviceLocator.Get<MultiplayerStorage>().GetPlayerDataFromClientId(clientId).clientId);
         if (idPlayer == 1 || idPlayer == 2) return true;
         else return false;
     }

@@ -13,7 +13,7 @@ public class GhostbusterMover : CharacterMover
     private void Update()
     {
         if (!IsOwner) return;
-        if (GameOverWinUI.Instance.IsOpened()) return;
+        if (ServiceLocator.Current.Get<GameOverWinUI>().IsOpened()) return;
         if (Input.GetKeyDown(KeyCode.E))
         {
             SpawnSphereServerRpc();

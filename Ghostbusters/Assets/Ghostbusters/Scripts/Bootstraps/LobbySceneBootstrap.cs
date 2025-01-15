@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbySceneBootstrap : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class LobbySceneBootstrap : MonoBehaviour
 
     private void Awake()
     {
+        ServiceLocator.Inizialize();
+        ServiceLocator.Current.Register(_lobbyRelayManager);
+        ServiceLocator.Current.Register(_multiplayerStorage);
         _multiplayerStorage.Init();
         _lobbyRelayManager.Init();
     }

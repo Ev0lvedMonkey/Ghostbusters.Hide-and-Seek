@@ -28,10 +28,10 @@ public class ClientPlayerInfo : PlayerInfo
 
     private void KickPlayer()
     {
-        PlayerData playerData = MultiplayerStorage.Instance.GetPlayerDataFromPlayerIndex(GetPlayerIndex());
-        Debug.Log($"pressed kick {MultiplayerStorage.Instance.GetPlayerData().playerId} host: {LobbyRelayManager.Instance.GetJoinedLobby().HostId} k");
-        LobbyRelayManager.Instance.KickPlayer(playerData.playerId.ToString());
-        MultiplayerStorage.Instance.KickPlayer(playerData.clientId);
+        PlayerData playerData = _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataFromPlayerIndex(GetPlayerIndex());
+        Debug.Log($"pressed kick {_serviceLocator.Get<MultiplayerStorage>().GetPlayerData().playerId} host: {_serviceLocator.Get<LobbyRelayManager>().GetJoinedLobby().HostId} k");
+        _serviceLocator.Get<LobbyRelayManager>().KickPlayer(playerData.playerId.ToString());
+        _serviceLocator.Get<MultiplayerStorage>().KickPlayer(playerData.clientId);
     }
 
     protected override void UpdatePlayerInfo()

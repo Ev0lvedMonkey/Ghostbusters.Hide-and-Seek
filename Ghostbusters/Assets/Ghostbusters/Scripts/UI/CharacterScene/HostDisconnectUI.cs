@@ -36,7 +36,7 @@ public class HostDisconnectUI : MonoBehaviour
 
     private static void BackToMenu()
     {
-        LobbyRelayManager.Instance.LeaveLobby();
+        ServiceLocator.Current.Get<LobbyRelayManager>().LeaveLobby();
         NetworkManager.Singleton.Shutdown();
         SceneLoader.Load(SceneLoader.Scene.MenuScene);
     }

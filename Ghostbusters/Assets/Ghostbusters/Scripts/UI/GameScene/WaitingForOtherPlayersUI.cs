@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class WaitingForOtherPlayersUI : MonoBehaviour
 {
+    private GameStateManager _gameStateManager;
     private void Start()
     {
-        GameStateManager.Instance.OnLocalPlayerReadyChanged.AddListener(KitchenGameManager_OnLocalPlayerReadyChanged);
-        GameStateManager.Instance.OnStateChanged.AddListener(KitchenGameManager_OnStateChanged);
+        _gameStateManager = ServiceLocator.Current.Get<GameStateManager>();
+        _gameStateManager.OnLocalPlayerReadyChanged.AddListener(KitchenGameManager_OnLocalPlayerReadyChanged);
+        _gameStateManager.OnStateChanged.AddListener(KitchenGameManager_OnStateChanged);
 
         Hide();
     }
 
     private void KitchenGameManager_OnStateChanged()
     {
-        if (GameStateManager.Instance.IsCountdownToStartActive())
+        if (_gameStateManager.IsCountdownToStartActive())
         {
             Hide();
         }
@@ -20,7 +22,7 @@ public class WaitingForOtherPlayersUI : MonoBehaviour
 
     private void KitchenGameManager_OnLocalPlayerReadyChanged()
     {
-        if (GameStateManager.Instance.IsLocalPlayerReady())
+        if (_gameStateManager.IsLocalPlayerReady())
         {
             Show();
         }

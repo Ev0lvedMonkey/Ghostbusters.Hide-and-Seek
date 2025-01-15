@@ -6,7 +6,7 @@ public class HealthKit : MonoBehaviour
     {
         if (!other.TryGetComponent(out WeaponFire component))
             return;
-        if (component.TryGetComponent(out CharacterHealthControllerTemp healthController))
+        if (component.TryGetComponent(out CharacterHealthController healthController))
         {
             if (!healthController.IsNeedHealth())
                 return;

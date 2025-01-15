@@ -6,26 +6,27 @@ public class GameStartCountdownUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText;
 
     private int previousCountdownNumber;
+    private GameStateManager _gameStateManager;
 
-
-    public void Init()
+    public void Init(GameStateManager gameStateManager)
     {
-        GameStateManager.Instance.OnStateChanged.AddListener(GameManager_OnStateChanged);
+        _gameStateManager = gameStateManager;
+        _gameStateManager.OnStateChanged.AddListener(GameManager_OnStateChanged);
         Show();
     }
 
     private void GameManager_OnStateChanged()
     {
-        if (!GameStateManager.Instance.IsCountdownToStartActive())
+        if (!_gameStateManager.IsCountdownToStartActive())
         {
-            GameStateManager.Instance.OnStartGame.Invoke();
+            _gameStateManager.OnStartGame.Invoke();
             Hide();
         }
     }
 
     private void Update()
     {
-        int countdownNumber = Mathf.CeilToInt(GameStateManager.Instance.GetCountdownToStartTimer());
+        int countdownNumber = Mathf.CeilToInt(_gameStateManager.GetCountdownToStartTimer());
         countdownText.text = $"{countdownNumber}";
 
         if (previousCountdownNumber != countdownNumber)

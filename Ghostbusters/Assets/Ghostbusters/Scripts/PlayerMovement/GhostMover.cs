@@ -15,7 +15,7 @@ public abstract class GhostMover : CharacterMover
 
     protected virtual void Start()
     {
-        GameStateManager.Instance.OnOpenHUD.AddListener(() => IsRotationLocked = true);
+        ServiceLocator.Current.Get<GameStateManager>().OnOpenHUD.AddListener(() => IsRotationLocked = true);
     }
 
     protected void GhostMove()
@@ -53,7 +53,7 @@ public abstract class GhostMover : CharacterMover
     {
         if (_input != Vector2.zero)
         {
-            if (GameOverWinUI.Instance.IsOpened())
+            if (ServiceLocator.Current.Get<GameOverWinUI>().IsOpened())
                 return;
             IsRotationLocked = false;
         }

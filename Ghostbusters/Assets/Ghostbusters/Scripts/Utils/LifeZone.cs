@@ -6,7 +6,7 @@ public class LifeZone : MonoBehaviour
 {
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out CharacterHealthControllerTemp component))
+        if (other.TryGetComponent(out CharacterHealthController component))
         {      
             component.MomentKillClientRpc();
         }

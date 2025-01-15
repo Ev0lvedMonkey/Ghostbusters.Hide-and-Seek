@@ -9,14 +9,11 @@ public class CharactersSceneBootstrap : MonoBehaviour
     [SerializeField] private HostDisconnectUI _hostDisconnectUI;
     [SerializeField] private List<PlayerInfo> _listPlayerInfo;
 
-    private void Awake()
-    {
-        _characterSelectUI.Init(_characterSelectReady);
-    }
 
     private void OnEnable()
     {
         _characterSelectReady.MakeNewPlayerReadyDictionary();
+        _characterSelectUI.Init(_characterSelectReady);
         _characterSelectUI.SetLobbyData();
         _hostDisconnectUI.Init();
         InitPlayersData();

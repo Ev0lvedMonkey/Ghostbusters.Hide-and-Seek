@@ -3,14 +3,13 @@ using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MultiplayerStorage : NetworkBehaviour
+public class MultiplayerStorage : NetworkBehaviour, IService
 {
     [SerializeField] private NetworkManager _networkManager;
 
     public const int MAX_PLAYER_AMOUNT = 4;
     private const string PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER = "PlayerNameMultiplayer";
 
-    public static MultiplayerStorage Instance { get; private set; }
 
     internal UnityEvent OnTryingToJoinGame = new();
     internal UnityEvent OnFailedToJoinGame = new();
@@ -21,9 +20,9 @@ public class MultiplayerStorage : NetworkBehaviour
 
     public void Init()
     {
-        _playerDataNetworkList = new NetworkList<PlayerData>();
+        _playerDataNetworkList = new();
 
-        Instance = this;
+        //Instance = this;
         DontDestroyOnLoad(gameObject);
 
         //_playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
@@ -66,6 +65,12 @@ public class MultiplayerStorage : NetworkBehaviour
 
     public bool IsPlayerIndexConnected(int playerIndex)
     {
+        if (_playerDataNetworkList == null)
+        {
+            Debug.LogError("_playerDataNetworkList is null.");
+            return false;
+        }
+
         return playerIndex < _playerDataNetworkList.Count;
     }
 
@@ -119,7 +124,7 @@ public class MultiplayerStorage : NetworkBehaviour
         {
             if (NetworkManager.Singleton.IsHost)
                 return;
-            LobbyRelayManager.Instance.KickPlayer(item.playerId.ToString());
+            ServiceLocator.Current.Get<LobbyRelayManager>().KickPlayer(item.playerId.ToString());
             KickPlayer(item.clientId);
         }
     }
@@ -171,6 +176,7 @@ public class MultiplayerStorage : NetworkBehaviour
             return;
         }
         _playerDataNetworkList.Add(newPlayer);
+        Debug.Log($"PlayerDataNetworkList added new player {newPlayer.playerName}\n{_playerDataNetworkList.Count}");
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -227,4 +233,4 @@ public class MultiplayerStorage : NetworkBehaviour
     {
         OnFailedToJoinGame?.Invoke();
     }
-}
+}   

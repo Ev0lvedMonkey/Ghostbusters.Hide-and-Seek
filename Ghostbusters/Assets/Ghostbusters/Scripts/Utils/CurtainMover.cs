@@ -8,15 +8,18 @@ public class CurtainMover : MonoBehaviour
     [SerializeField] private bool _isSecretRoomCurtain;
 
     private bool _isMade;
+    private GameStateManager _gameStateManager;
 
     private void Start()
     {
+        _gameStateManager = ServiceLocator.Current.Get<GameStateManager>();
+
         if (_isSecretRoomCurtain)
         {
-            GameStateManager.Instance.OnSecretRoomOpen.AddListener(Open);
+            _gameStateManager.OnSecretRoomOpen.AddListener(Open);
             return;
         }
-        GameStateManager.Instance.OnStartGame.AddListener(Open);
+        _gameStateManager.OnStartGame.AddListener(Open);
     }
 
     private void Open()

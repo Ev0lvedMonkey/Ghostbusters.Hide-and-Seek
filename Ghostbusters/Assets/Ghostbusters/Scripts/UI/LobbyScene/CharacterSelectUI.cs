@@ -13,11 +13,13 @@ public class CharacterSelectUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _lobbyCodeText;
 
     private CharacterSelectReady _characterSelectReady;
+    private ServiceLocator _serviceLocator;
 
 
     public void Init(CharacterSelectReady characterSelectReady)
     {
         _characterSelectReady = characterSelectReady;
+        _serviceLocator = ServiceLocator.Current;
         _mainMenuButton.onClick.AddListener(BackToMenu);
         _readyButton.onClick.AddListener(SetReady);
         _copyCodeButton.onClick.AddListener(CopyLobbyCode);
@@ -33,7 +35,7 @@ public class CharacterSelectUI : MonoBehaviour
 
     public void SetLobbyData()
     {
-        Lobby lobby = LobbyRelayManager.Instance.GetJoinedLobby();
+        Lobby lobby = _serviceLocator.Get<LobbyRelayManager>().GetJoinedLobby();
 
         _lobbyNameText.text = lobby.Name;
         _lobbyCodeText.text = lobby.LobbyCode;
@@ -45,13 +47,13 @@ public class CharacterSelectUI : MonoBehaviour
     private void SetReady() =>
         _characterSelectReady.SetPlayerReady();
 
-    private static void BackToMenu()
+    private void BackToMenu()
     {
         NetworkManager.Singleton.Shutdown();
         if (NetworkManager.Singleton.IsHost)
-            LobbyRelayManager.Instance.DeleteLobby();
+            _serviceLocator.Get<LobbyRelayManager>().DeleteLobby();
         else
-            LobbyRelayManager.Instance.LeaveLobby();
+            _serviceLocator.Get<LobbyRelayManager>().LeaveLobby();
         SceneLoader.Load(SceneLoader.Scene.MenuScene);
     }
 

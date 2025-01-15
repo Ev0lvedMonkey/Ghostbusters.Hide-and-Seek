@@ -966,6 +966,7 @@ MonoBehaviour:
   _gamePlayingClockUI: {fileID: 12628857}
   _gameOverWinUI: {fileID: 1296789133}
   _mouseSenceSettingUI: {fileID: 1683249806}
+  _keyboardInput: {fileID: 0}
   _numberOfConfigType: 1
 --- !u!1 &969271100
 GameObject:
@@ -2538,8 +2539,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1991110627}
   - {fileID: 934452651}
+  - {fileID: 1991110627}
   - {fileID: 1902179623}
   - {fileID: 35563363}
   m_Father: {fileID: 0}

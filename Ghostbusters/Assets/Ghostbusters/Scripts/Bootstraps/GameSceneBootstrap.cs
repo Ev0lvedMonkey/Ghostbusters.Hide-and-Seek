@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSceneBootstrap : MonoBehaviour
 {
@@ -11,12 +12,13 @@ public class GameSceneBootstrap : MonoBehaviour
     [SerializeField] private GamePlayingClockUI _gamePlayingClockUI;
     [SerializeField] private GameOverWinUI _gameOverWinUI;
     [SerializeField] private MouseSenceSettingUI _mouseSenceSettingUI;
+    [SerializeField] private KeyboardInput _keyboardInput;
 
     [Header("GameScene Config Type")]
     [SerializeField] private int _numberOfConfigType;
 
-
     private GameSceneConfiguration _gameSceneConfiguration;
+
     private const string LoadPath = "ScriptableObjects/GameSceneConfig";
 
     private void Awake()
@@ -27,16 +29,19 @@ public class GameSceneBootstrap : MonoBehaviour
 
     private void OnEnable()
     {
+        ServiceLocator.Current.Register(_gameStateManager);    
+        ServiceLocator.Current.Register(_gameOverWinUI);    
         LoadLevelConfig();
         _gameStateManager.Init();
-        _gameOverWinUI.Init();
+        _gameOverWinUI.Init(_gameStateManager);
         _gameStateManager.StartCountdown();
-        _gameStartCountdownUI.Init();
+        _gameStartCountdownUI.Init(_gameStateManager);
         _gamePlayingClockUI.Init();
         _gamePlayingClockUI.Hide();
         _mouseSenceSettingUI.SetSenseValues();
         _mouseSenceSettingUI.UpdateMouseSenseText();
         _mouseSenceSettingUI.AddComponentsListeners();
+        _keyboardInput.Init(_gameStateManager);
     }
 
 
@@ -57,7 +62,6 @@ public class GameSceneBootstrap : MonoBehaviour
 
     private void RegisterServiceLocatorServices()
     {
-        ServiceLocator.Inizialize();
         ServiceLocator.Current.Register(_firePositionService);
     }
 }

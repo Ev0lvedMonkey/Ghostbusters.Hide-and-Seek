@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuSceneBootstrap : MonoBehaviour
 {
@@ -21,6 +22,10 @@ public class MenuSceneBootstrap : MonoBehaviour
         _mouseSenceSettingUI.AddComponentsListeners();
         _screenModeChanger.DetermineScreenMode();
         _screenModeChanger.AddComponentsListeners();
+        if (ServiceLocator.Current == null)
+            Debug.LogWarning($"Service locator is null on scene {SceneManager.GetActiveScene().name}");
+        else
+            Debug.LogWarning($"Service locator is OK on scene {SceneManager.GetActiveScene().name}");
     }
 
     private void OnDisable()

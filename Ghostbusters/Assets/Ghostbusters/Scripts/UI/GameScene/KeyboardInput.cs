@@ -3,6 +3,11 @@ using UnityEngine;
 public class KeyboardInput : MonoBehaviour
 {
     private bool _isMenuOpen;
+    private GameStateManager _gameStateManager;
+    public void Init(GameStateManager gameStateManager)
+    {
+        _gameStateManager = gameStateManager;
+    }
 
     private void Update()
     {
@@ -10,11 +15,11 @@ public class KeyboardInput : MonoBehaviour
         {
             if (_isMenuOpen == false)
             {
-                GameStateManager.Instance.OnOpenHUD.Invoke();
+                _gameStateManager.OnOpenHUD.Invoke();
             }
             else
             {
-                GameStateManager.Instance.OnCloseHUD.Invoke();
+                _gameStateManager.OnCloseHUD.Invoke();
             }
             _isMenuOpen = !_isMenuOpen;
         }

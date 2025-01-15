@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -22,7 +20,7 @@ public class LobbyTemplateUI : MonoBehaviour
     private void Awake()
     {
         _lobbyButton.onClick.AddListener(() => {
-            LobbyRelayManager.Instance.JoinWithId(lobby.Id);
+            ServiceLocator.Current.Get<LobbyRelayManager>().JoinWithId(lobby.Id);
         });
     }
 

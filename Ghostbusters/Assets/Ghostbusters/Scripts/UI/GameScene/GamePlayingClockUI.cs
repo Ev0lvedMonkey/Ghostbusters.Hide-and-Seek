@@ -8,12 +8,12 @@ public class GamePlayingClockUI : MonoBehaviour
 
     private void Update()
     {
-        timerImage.fillAmount = GameStateManager.Instance.GetGamePlayingTimerNormalized();
+        timerImage.fillAmount = ServiceLocator.Current.Get<GameStateManager>().GetGamePlayingTimerNormalized();
     }
     
     public void Init()
     {
-        GameStateManager.Instance.OnStartGame.AddListener(Show);
+        ServiceLocator.Current.Get<GameStateManager>().OnStartGame.AddListener(Show);
     }
 
     public void Show()=>

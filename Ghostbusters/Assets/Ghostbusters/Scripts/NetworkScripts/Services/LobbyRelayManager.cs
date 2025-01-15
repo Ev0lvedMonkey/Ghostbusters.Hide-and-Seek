@@ -14,7 +14,7 @@ using UnityEngine.Events;
 using System;
 using UnityEngine.SceneManagement;
 
-public class LobbyRelayManager : MonoBehaviour
+public class LobbyRelayManager : MonoBehaviour, IService
 {
     internal UnityEvent OnCreateLobbyStarted = new();
     internal UnityEvent OnCreateLobbyFailed = new();
@@ -23,8 +23,6 @@ public class LobbyRelayManager : MonoBehaviour
     internal UnityEvent OnJoinFailed = new();
     internal UnityEvent OnSignIn = new();
 
-    public static LobbyRelayManager Instance { get; private set; }
-
     private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
     public const string KEY_PLAYER_NAME = "PlayerName";
 
@@ -32,10 +30,12 @@ public class LobbyRelayManager : MonoBehaviour
     private float _lobbyPollTimer;
     private Lobby _joinedLobby;
     private string _playerName;
+    private ServiceLocator _serviceLocator;
 
     public void Init()
     {
-        Instance = this;
+        _serviceLocator = ServiceLocator.Current;
+        //Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -84,7 +84,7 @@ public class LobbyRelayManager : MonoBehaviour
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
 
-            MultiplayerStorage.Instance.StartHost();
+           _serviceLocator.Get<MultiplayerStorage>().StartHost();
             SceneLoader.LoadNetwork(SceneLoader.Scene.CharactersScene);
         }
         catch (LobbyServiceException e)
@@ -108,7 +108,7 @@ public class LobbyRelayManager : MonoBehaviour
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
             Debug.Log($"{gameObject.name}: quick joined");
 
-            MultiplayerStorage.Instance.StartClient();
+           _serviceLocator.Get<MultiplayerStorage>().StartClient();
         }
         catch (LobbyServiceException e)
         {
@@ -132,7 +132,7 @@ public class LobbyRelayManager : MonoBehaviour
                 SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
             Debug.Log($"{gameObject.name}: joined by code");
 
-            MultiplayerStorage.Instance.StartClient();
+           _serviceLocator.Get<MultiplayerStorage>().StartClient();
         }
         catch (LobbyServiceException e)
         {
@@ -156,7 +156,7 @@ public class LobbyRelayManager : MonoBehaviour
                 SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
             Debug.Log($"{gameObject.name}: joined by ID");
 
-            MultiplayerStorage.Instance.StartClient();
+           _serviceLocator.Get<MultiplayerStorage>().StartClient();
         }
         catch (LobbyServiceException e)
         {
@@ -230,7 +230,7 @@ public class LobbyRelayManager : MonoBehaviour
     private async void InitializeUnityAuthentication()
     {
         _playerName = "Player" + UnityEngine.Random.Range(0, 1000);
-        MultiplayerStorage.Instance.SetPlayerName(_playerName);
+       _serviceLocator.Get<MultiplayerStorage>().SetPlayerName(_playerName);
         if (UnityServices.State != ServicesInitializationState.Initialized)
         {
             InitializationOptions initializationOptions = new();
@@ -240,7 +240,8 @@ public class LobbyRelayManager : MonoBehaviour
 
             AuthenticationService.Instance.SignedIn += () =>
             {
-                Debug.Log($"{gameObject.name} Signed in! " + AuthenticationService.Instance.PlayerId);
+                Debug.Log($"{gameObject.name} Signed in! " + AuthenticationService.Instance.PlayerId); 
+
                 Debug.Log($"{gameObject.name} Player name: " + _playerName);
             };
 

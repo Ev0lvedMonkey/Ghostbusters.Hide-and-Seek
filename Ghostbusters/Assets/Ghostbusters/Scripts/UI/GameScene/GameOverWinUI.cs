@@ -4,10 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class GameOverWinUI : MonoBehaviour
+public class GameOverWinUI : MonoBehaviour, IService
 {
-    public static GameOverWinUI Instance;
-
     public UnityEvent PlayerExit = new();
 
     [SerializeField] private TextMeshProUGUI _gameOverWinText;
@@ -15,26 +13,24 @@ public class GameOverWinUI : MonoBehaviour
 
     private bool _isOpened;
     private bool _winnnerWasDetermined;
+    private GameStateManager _gameStateManager;
 
-    public void Init()
+    public void Init(GameStateManager gameStateManager)
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(this);
+        _gameStateManager = gameStateManager;
         _playAgainButton.onClick.AddListener(LeaveGame);
-        GameStateManager.Instance.OnStateChanged.AddListener(GameManager_OnStateChanged);
-        GameStateManager.Instance.OnOpenHUD.AddListener(Show);
-        GameStateManager.Instance.OnCloseHUD.AddListener(Hide);
+        _gameStateManager.OnStateChanged.AddListener(GameManager_OnStateChanged);
+        _gameStateManager.OnOpenHUD.AddListener(Show);
+        _gameStateManager.OnCloseHUD.AddListener(Hide);
         Hide();
     }
 
     public void Uninit()
     {
         _playAgainButton.onClick.RemoveListener(LeaveGame);
-        GameStateManager.Instance.OnStateChanged.RemoveListener(GameManager_OnStateChanged);
-        GameStateManager.Instance.OnOpenHUD.RemoveListener(Show);
-        GameStateManager.Instance.OnCloseHUD.RemoveListener(Hide);
+        _gameStateManager.OnStateChanged.RemoveListener(GameManager_OnStateChanged);
+        _gameStateManager.OnOpenHUD.RemoveListener(Show);
+        _gameStateManager.OnCloseHUD.RemoveListener(Hide);
     }
 
     public bool IsOpened()
@@ -46,8 +42,8 @@ public class GameOverWinUI : MonoBehaviour
     {
         NetworkManager.Singleton.Shutdown();
         SceneLoader.Load(SceneLoader.Scene.MenuScene);
-        ulong clientID = MultiplayerStorage.Instance.GetPlayerData().clientId;
-        GameStateManager.Instance.ReportPlayerLostServerRpc(clientID);
+        ulong clientID = ServiceLocator.Current.Get<MultiplayerStorage>().GetPlayerData().clientId;
+        _gameStateManager.ReportPlayerLostServerRpc(clientID);
         PlayerExit.Invoke();
     }
 
@@ -55,7 +51,7 @@ public class GameOverWinUI : MonoBehaviour
     {
         if (_winnnerWasDetermined)
             return;
-        switch (GameStateManager.Instance.GetGameState().ToString())
+        switch (_gameStateManager.GetGameState().ToString())
         {
             case "WinBusters":
                 _gameOverWinText.text = "Охотники победили!";
@@ -78,8 +74,8 @@ public class GameOverWinUI : MonoBehaviour
 
     private void RemoveListeners()
     {
-        GameStateManager.Instance.OnCloseHUD.RemoveAllListeners();
-        GameStateManager.Instance.OnOpenHUD.RemoveAllListeners();
+        _gameStateManager.OnCloseHUD.RemoveAllListeners();
+        _gameStateManager.OnOpenHUD.RemoveAllListeners();
     }
 
     private void Show()

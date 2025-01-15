@@ -17,14 +17,16 @@ public class MainMenuUi : MonoBehaviour
     [SerializeField] private Transform _lobbyContainer;
     [SerializeField] private Transform _lobbyTemplate;
     [SerializeField] private CreateLobbyUI _lobbyCreateUI;
+    private ServiceLocator _serviceLocator;
 
     public void Init()
     {
+        _serviceLocator = ServiceLocator.Current;
         DeactivateButtons();
         UpdateLobbyList(new List<Lobby>());
-        LobbyRelayManager.Instance.OnLobbyListChanged += OnLobbyListChanged;
-        LobbyRelayManager.Instance.OnSignIn.AddListener(ActivateButtons);
-        LobbyRelayManager.Instance.OnSignIn.AddListener(AddButtonsListeners);
+       _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged += OnLobbyListChanged;
+       _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(ActivateButtons);
+       _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(AddButtonsListeners);
         ActivateButtons();
         AddButtonsListeners();
         Show();
@@ -32,9 +34,9 @@ public class MainMenuUi : MonoBehaviour
 
     public void Uninit()
     {
-        LobbyRelayManager.Instance.OnLobbyListChanged -= OnLobbyListChanged;
-        LobbyRelayManager.Instance.OnSignIn.RemoveListener(ActivateButtons);
-        LobbyRelayManager.Instance.OnSignIn.RemoveListener(AddButtonsListeners);
+       _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged -= OnLobbyListChanged;
+       _serviceLocator.Get<LobbyRelayManager>().OnSignIn.RemoveListener(ActivateButtons);
+       _serviceLocator.Get<LobbyRelayManager>().OnSignIn.RemoveListener(AddButtonsListeners);
         RemoveButtonsListeners();
     }
 
@@ -66,11 +68,11 @@ public class MainMenuUi : MonoBehaviour
 
     private void AddButtonsListeners()
     {
-            _playerNameInputField.text = MultiplayerStorage.Instance.GetPlayerName();
+            _playerNameInputField.text =_serviceLocator.Get<MultiplayerStorage>().GetPlayerName();
         if (UnityServices.State == ServicesInitializationState.Initialized)
         {
             _playerNameInputField.onValueChanged.AddListener((string newText) =>
-                MultiplayerStorage.Instance.SetPlayerName(newText));
+               _serviceLocator.Get<MultiplayerStorage>().SetPlayerName(newText));
             _createLobbyBtn.onClick.AddListener(_lobbyCreateUI.Show);
             _joinLobbyByCodeBtn.onClick.AddListener(JoinWithCode);
             _quickJoinLobbyBtn.onClick.AddListener(QuickJoin);
@@ -81,7 +83,7 @@ public class MainMenuUi : MonoBehaviour
     private void RemoveButtonsListeners()
     {
         _playerNameInputField.onValueChanged.RemoveListener((string newText) =>
-            MultiplayerStorage.Instance.SetPlayerName(newText));
+           _serviceLocator.Get<MultiplayerStorage>().SetPlayerName(newText));
         _createLobbyBtn.onClick.RemoveListener(_lobbyCreateUI.Show);
         _joinLobbyByCodeBtn.onClick.RemoveListener(JoinWithCode);
         _quickJoinLobbyBtn.onClick.RemoveListener(QuickJoin);
@@ -109,13 +111,13 @@ public class MainMenuUi : MonoBehaviour
     }
 
     private async void QuickJoin() =>
-        await LobbyRelayManager.Instance.QuickJoin();
+        await _serviceLocator.Get<LobbyRelayManager>().QuickJoin();
 
     private async void JoinWithCode()
     {
         string lobbyCode = _lobbyCodeInputField.text;
         if (string.IsNullOrWhiteSpace(lobbyCode))
             return;
-        await LobbyRelayManager.Instance.JoinByCode(lobbyCode);
+        await _serviceLocator.Get<LobbyRelayManager>().JoinByCode(lobbyCode);
     }
 }

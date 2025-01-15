@@ -6,7 +6,7 @@ using Zenject.SpaceFighter;
 public class WeaponFire : RayFiringObject
 {
     [SerializeField] private GameObject _hitEffect;
-    [SerializeField] private CharacterHealthControllerTemp _characterHealth;
+    [SerializeField] private CharacterHealthController _characterHealth;
 
     private LayerMask _targetLayerMask;
     private LayerMask _transformableLayerMask;
@@ -28,7 +28,7 @@ public class WeaponFire : RayFiringObject
     {
         if (_characterHealth == null)
         {
-            if (TryGetComponent(out CharacterHealthControllerTemp controller))
+            if (TryGetComponent(out CharacterHealthController controller))
                 _characterHealth = controller;
         }
     }
@@ -47,7 +47,7 @@ public class WeaponFire : RayFiringObject
 
             if (((1 << hitLayer) & _targetLayerMask) != 0)
             {
-                if (hit.collider.TryGetComponent(out CharacterHealthControllerTemp controller))
+                if (hit.collider.TryGetComponent(out CharacterHealthController controller))
                 {
                     controller.TakeDamageServerRpc(false);
                     Debug.Log("Hit ghost object");

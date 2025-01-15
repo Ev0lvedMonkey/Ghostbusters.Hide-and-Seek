@@ -31,5 +31,5 @@ public class CreateLobbyUI : MonoBehaviour
         this.gameObject.SetActive(false);
 
     private async void CreateLobby(bool isPrivate) =>
-                 await LobbyRelayManager.Instance.CreateLobby(lobbyNameInputField.text, isPrivate);
+                 await ServiceLocator.Current.Get<LobbyRelayManager>().CreateLobby(lobbyNameInputField.text, isPrivate);
 }
