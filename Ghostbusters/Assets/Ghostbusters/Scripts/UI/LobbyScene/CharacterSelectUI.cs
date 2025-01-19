@@ -54,7 +54,7 @@ public class CharacterSelectUI : MonoBehaviour
             _serviceLocator.Get<LobbyRelayManager>().DeleteLobby();
         else
             _serviceLocator.Get<LobbyRelayManager>().LeaveLobby();
-        SceneLoader.Load(SceneLoader.Scene.MenuScene);
+        SceneLoader.Load(SceneLoader.ScenesEnum.MenuScene);
     }
 
     private void Show() =>

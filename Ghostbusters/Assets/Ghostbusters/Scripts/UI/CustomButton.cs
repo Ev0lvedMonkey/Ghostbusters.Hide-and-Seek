@@ -6,11 +6,13 @@ using LitMotion.Extensions;
 
 namespace UGUIAnimationSamples
 {
+    [RequireComponent(typeof(AudioSource))]
     public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
         [Header("Components")]
         [SerializeField] Image hover;
         [SerializeField] Image fill;
+        [SerializeField] private AudioSource _pressAudioSource;
 
         [Header("Settings")]
         [SerializeField] Ease ease = Ease.OutSine;
@@ -27,10 +29,15 @@ namespace UGUIAnimationSamples
             hoverMotionHandles.Cancel();
         }
 
+        private void OnValidate()
+        {
+            _pressAudioSource = GetComponent<AudioSource>();
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             hoverMotionHandles.Cancel();
-
+            _pressAudioSource.Play();
             LMotion.Create(0f, 1f, hoverDuration)
                 .WithEase(ease)
                 .BindToColorA(hover)

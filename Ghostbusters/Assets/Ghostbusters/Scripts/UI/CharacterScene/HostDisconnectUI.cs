@@ -27,7 +27,7 @@ public class HostDisconnectUI : MonoBehaviour
         {
             if (NetworkManager.Singleton.IsHost)
             {
-                SceneLoader.Load(SceneLoader.Scene.MenuScene);
+                SceneLoader.Load(SceneLoader.ScenesEnum.MenuScene);
             }
             else
                 Show();
@@ -38,7 +38,7 @@ public class HostDisconnectUI : MonoBehaviour
     {
         ServiceLocator.Current.Get<LobbyRelayManager>().LeaveLobby();
         NetworkManager.Singleton.Shutdown();
-        SceneLoader.Load(SceneLoader.Scene.MenuScene);
+        SceneLoader.Load(SceneLoader.ScenesEnum.MenuScene);
     }
     private void Show()
     {

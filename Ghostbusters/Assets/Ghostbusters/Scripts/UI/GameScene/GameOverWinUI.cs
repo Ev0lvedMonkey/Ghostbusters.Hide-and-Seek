@@ -8,8 +8,11 @@ public class GameOverWinUI : MonoBehaviour, IService
 {
     public UnityEvent PlayerExit = new();
 
+    [SerializeField] private SettingUI _settingUI;
     [SerializeField] private TextMeshProUGUI _gameOverWinText;
     [SerializeField] private Button _playAgainButton;
+    [SerializeField] private Button _settingsButton;
+    [SerializeField] private AudioSource _audioSource;
 
     private bool _isOpened;
     private bool _winnnerWasDetermined;
@@ -22,6 +25,8 @@ public class GameOverWinUI : MonoBehaviour, IService
         _gameStateManager.OnStateChanged.AddListener(GameManager_OnStateChanged);
         _gameStateManager.OnOpenHUD.AddListener(Show);
         _gameStateManager.OnCloseHUD.AddListener(Hide);
+        _settingUI.Init(gameStateManager);
+        _settingsButton.onClick.AddListener(()=> _settingUI.Show());
         Hide();
     }
 
@@ -41,10 +46,9 @@ public class GameOverWinUI : MonoBehaviour, IService
     private void LeaveGame()
     {
         NetworkManager.Singleton.Shutdown();
-        SceneLoader.Load(SceneLoader.Scene.MenuScene);
+        SceneLoader.Load(SceneLoader.ScenesEnum.MenuScene);
         ulong clientID = ServiceLocator.Current.Get<MultiplayerStorage>().GetPlayerData().clientId;
         _gameStateManager.ReportPlayerLostServerRpc(clientID);
-        PlayerExit.Invoke();
     }
 
     private void GameManager_OnStateChanged()
@@ -59,6 +63,7 @@ public class GameOverWinUI : MonoBehaviour, IService
                 RemoveListeners();
                 Show();
                 _winnnerWasDetermined = true;
+                _audioSource.Play();
                 break;
             case "WinGhost":
                 _gameOverWinText.text = "Призраки победили!";
@@ -66,6 +71,7 @@ public class GameOverWinUI : MonoBehaviour, IService
                 RemoveListeners();
                 Show();
                 _winnnerWasDetermined = true;
+                _audioSource.Play();
                 break;
             default:
                 break;

@@ -23,7 +23,7 @@ public class MouseSenceConfiguration : ScriptableObject
     public void SetMouseSense(float mouseSense)
     {
         _mouseSense = Mathf.Clamp(mouseSense, MinMouseSense, MaxMouseSense);
-        PlayerPrefs.SetFloat(MouseSenseKey, _mouseSense);
+        CustomPlayerPrefs.SetFloat(MouseSenseKey, _mouseSense);
         PlayerPrefs.Save();
     }
 
@@ -34,9 +34,9 @@ public class MouseSenceConfiguration : ScriptableObject
 
     private void LoadMouseSense()
     {
-        if (PlayerPrefs.HasKey(MouseSenseKey))
+        if (CustomPlayerPrefs.HasKey(MouseSenseKey))
         {
-            _mouseSense = PlayerPrefs.GetFloat(MouseSenseKey);
+            _mouseSense = CustomPlayerPrefs.GetFloat(MouseSenseKey);
             _mouseSense = Mathf.Clamp(_mouseSense, MinMouseSense, MaxMouseSense);
         }
         else

@@ -22,7 +22,6 @@ public class MultiplayerStorage : NetworkBehaviour, IService
     {
         _playerDataNetworkList = new();
 
-        //Instance = this;
         DontDestroyOnLoad(gameObject);
 
         //_playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
@@ -205,7 +204,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
     {
-        if (SceneLoader.GetTargetScene().ToString() != SceneLoader.Scene.CharactersScene.ToString())
+        if (SceneLoader.GetTargetScene().ToString() != SceneLoader.ScenesEnum.CharactersScene.ToString())
         {
             connectionApprovalResponse.Approved = false;
             connectionApprovalResponse.Reason = "Game has already started";

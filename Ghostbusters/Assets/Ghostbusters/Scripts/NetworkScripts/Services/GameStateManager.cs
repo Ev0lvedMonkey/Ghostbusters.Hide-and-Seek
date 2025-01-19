@@ -204,7 +204,7 @@ public class GameStateManager : NetworkBehaviour, IService
     {
         int idPlayer =
             _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataIndexFromClientId(_serviceLocator.Get<MultiplayerStorage>().GetPlayerDataFromClientId(clientId).clientId);
-        if (idPlayer == 1 || idPlayer == 2) return true;
+        if (idPlayer == 0 || idPlayer == 2) return true;
         else return false;
     }
 

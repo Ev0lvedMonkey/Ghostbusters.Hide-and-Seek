@@ -11,7 +11,6 @@ public class LobbySceneBootstrap : MonoBehaviour
 
     private void Awake()
     {
-        ServiceLocator.Inizialize();
         ServiceLocator.Current.Register(_lobbyRelayManager);
         ServiceLocator.Current.Register(_multiplayerStorage);
         _multiplayerStorage.Init();

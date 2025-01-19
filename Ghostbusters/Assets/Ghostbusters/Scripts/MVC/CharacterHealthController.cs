@@ -11,6 +11,7 @@ public class CharacterHealthController : NetworkBehaviour
     [SerializeField] private RayFiringObject _fireObj;
     [SerializeField] private UnityEvent OnSpectatorStart;
     [SerializeField] private HealthView _hudView;
+    [SerializeField] private AudioSource _deathAudioSource;
 
     private const int SELF_DAMAGE = 10;
     private const int GHOST_DAMAGE = 20;
@@ -148,6 +149,7 @@ public class CharacterHealthController : NetworkBehaviour
         if (_deathEffect != null)
         {
             Instantiate(_deathEffect, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
+            _deathAudioSource.Play();
         }
     }
 

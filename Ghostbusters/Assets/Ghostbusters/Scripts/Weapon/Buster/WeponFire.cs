@@ -1,12 +1,11 @@
 using Unity.Netcode;
 using UnityEngine;
-using Zenject;
-using Zenject.SpaceFighter;
 
 public class WeaponFire : RayFiringObject
 {
     [SerializeField] private GameObject _hitEffect;
     [SerializeField] private CharacterHealthController _characterHealth;
+    [SerializeField] private AudioSource _shootSource;
 
     private LayerMask _targetLayerMask;
     private LayerMask _transformableLayerMask;
@@ -41,6 +40,7 @@ public class WeaponFire : RayFiringObject
 
         Debug.DrawRay(firePosition.position, firePosition.forward * _maxRayDistance, Color.red, 3);
 
+        _shootSource.Play();
         if (Physics.Raycast(ray, out RaycastHit hit, _maxRayDistance))
         {
             int hitLayer = hit.collider.gameObject.layer;

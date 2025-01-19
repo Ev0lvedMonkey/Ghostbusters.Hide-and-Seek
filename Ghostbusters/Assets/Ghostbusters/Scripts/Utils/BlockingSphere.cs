@@ -5,7 +5,7 @@ public class BlockingSphere : MonoBehaviour
 {
     [SerializeField] private SphereCollider _sphereCollider;
 
-    private HashSet<GameObject> trappedTransformingShoots = new HashSet<GameObject>();
+    private HashSet<GameObject> trappedTransformingShoots = new();
     private const float DestroyTime = 6f;
 
     private void OnValidate()

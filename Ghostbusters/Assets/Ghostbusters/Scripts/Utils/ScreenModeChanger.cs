@@ -11,7 +11,7 @@ public class ScreenModeChanger : MonoBehaviour
 
     public void DetermineScreenMode()
     {
-        bool isFullscreen = PlayerPrefs.GetInt(FullscreenKey, 0) == 1;
+        bool isFullscreen = CustomPlayerPrefs.GetInt(FullscreenKey, 0) == 1;
         SetScreenMode(isFullscreen);
     }
 
@@ -27,7 +27,7 @@ public class ScreenModeChanger : MonoBehaviour
     {
         SetScreenMode(isFullscreen);
 
-        PlayerPrefs.SetInt(FullscreenKey, isFullscreen ? 1 : 0);
+        CustomPlayerPrefs.SetInt(FullscreenKey, isFullscreen ? 1 : 0);
         PlayerPrefs.Save();
     }
 

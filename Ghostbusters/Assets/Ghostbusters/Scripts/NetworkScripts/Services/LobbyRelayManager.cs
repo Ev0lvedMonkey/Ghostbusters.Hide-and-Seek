@@ -85,7 +85,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
 
            _serviceLocator.Get<MultiplayerStorage>().StartHost();
-            SceneLoader.LoadNetwork(SceneLoader.Scene.CharactersScene);
+            SceneLoader.LoadNetwork(SceneLoader.ScenesEnum.CharactersScene);
         }
         catch (LobbyServiceException e)
         {
@@ -257,7 +257,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
         if (_joinedLobby == null &&
             UnityServices.State == ServicesInitializationState.Initialized &&
             AuthenticationService.Instance.IsSignedIn &&
-            SceneManager.GetActiveScene().name == SceneLoader.Scene.LobbyScene.ToString())
+            SceneManager.GetActiveScene().name == SceneLoader.ScenesEnum.LobbyScene.ToString())
         {
 
             _lobbyPollTimer -= Time.deltaTime;

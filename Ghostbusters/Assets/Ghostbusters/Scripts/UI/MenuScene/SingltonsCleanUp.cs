@@ -15,6 +15,8 @@ public class SingltonsCleanUp : MonoBehaviour
                 Destroy(_serviceLocator.Get<MultiplayerStorage>().gameObject);
             if (_serviceLocator.Get<LobbyRelayManager>() != null)
                 Destroy(_serviceLocator.Get<LobbyRelayManager>().gameObject);
+            if (_serviceLocator.Get<AudioManager>() != null)
+                Destroy(_serviceLocator.Get<AudioManager>().gameObject);
             _serviceLocator.MakeNull();
         }
     }

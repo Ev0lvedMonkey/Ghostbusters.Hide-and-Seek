@@ -76,7 +76,7 @@ public class MainMenuUi : MonoBehaviour
             _createLobbyBtn.onClick.AddListener(_lobbyCreateUI.Show);
             _joinLobbyByCodeBtn.onClick.AddListener(JoinWithCode);
             _quickJoinLobbyBtn.onClick.AddListener(QuickJoin);
-            _menuBtn.onClick.AddListener(() => SceneLoader.Load(SceneLoader.Scene.MenuScene));
+            _menuBtn.onClick.AddListener(() => SceneLoader.Load(SceneLoader.ScenesEnum.MenuScene));
         }
     }
 
@@ -87,7 +87,7 @@ public class MainMenuUi : MonoBehaviour
         _createLobbyBtn.onClick.RemoveListener(_lobbyCreateUI.Show);
         _joinLobbyByCodeBtn.onClick.RemoveListener(JoinWithCode);
         _quickJoinLobbyBtn.onClick.RemoveListener(QuickJoin);
-        _menuBtn.onClick.RemoveListener(() => SceneLoader.Load(SceneLoader.Scene.MenuScene));
+        _menuBtn.onClick.RemoveListener(() => SceneLoader.Load(SceneLoader.ScenesEnum.MenuScene));
     }
 
     private void ActivateButtons()

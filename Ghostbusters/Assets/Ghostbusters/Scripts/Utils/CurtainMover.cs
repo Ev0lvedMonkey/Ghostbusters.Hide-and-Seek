@@ -6,6 +6,7 @@ public class CurtainMover : MonoBehaviour
 {
     [SerializeField] private List<Transform> _curtainsParts;
     [SerializeField] private bool _isSecretRoomCurtain;
+    [SerializeField] private AudioSource _audioSource;
 
     private bool _isMade;
     private GameStateManager _gameStateManager;
@@ -26,7 +27,8 @@ public class CurtainMover : MonoBehaviour
     {
         if (_isMade)
             return;
-        
+        if(_isSecretRoomCurtain)
+            _audioSource.Play();
         Sequence curtainSequence = DOTween.Sequence();
         Vector3 finalTargetPosition;
         for (int i = 0; i <= _curtainsParts.Count; i++)

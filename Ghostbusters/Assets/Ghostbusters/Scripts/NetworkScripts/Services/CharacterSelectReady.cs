@@ -40,7 +40,7 @@ public class CharacterSelectReady : NetworkBehaviour
         if (allClientsReady)
         {
             ServiceLocator.Current.Get<LobbyRelayManager>().DeleteLobby();
-            SceneLoader.LoadNetwork(SceneLoader.Scene.GameScene);
+            SceneLoader.LoadNetwork(SceneLoader.ScenesEnum.GameScene);
             CursorController.DisableCursor();
         }
     }

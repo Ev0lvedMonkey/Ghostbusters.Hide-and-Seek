@@ -4,10 +4,11 @@ using UnityEngine;
 public class TransformingShoot : RayFiringObject
 {
     [SerializeField] private GameObject _bodyObject;
+    [SerializeField] private AudioSource _audioSource;
 
-    private MeshFilter bodyMeshFilter;
-    private MeshRenderer bodyRenderer;
-    private MeshCollider bodyMeshCollider;
+    private MeshFilter _bodyMeshFilter;
+    private MeshRenderer _bodyRenderer;
+    private MeshCollider _bodyMeshCollider;
 
     protected override void Start()
     {
@@ -17,9 +18,9 @@ public class TransformingShoot : RayFiringObject
 
     private void InitializeComponents()
     {
-        bodyMeshFilter = _bodyObject.GetComponent<MeshFilter>();
-        bodyRenderer = _bodyObject.GetComponent<MeshRenderer>();
-        bodyMeshCollider = _bodyObject.GetComponent<MeshCollider>();
+        _bodyMeshFilter = _bodyObject.GetComponent<MeshFilter>();
+        _bodyRenderer = _bodyObject.GetComponent<MeshRenderer>();
+        _bodyMeshCollider = _bodyObject.GetComponent<MeshCollider>();
     }
 
     protected override void HandleFire()
@@ -85,14 +86,15 @@ public class TransformingShoot : RayFiringObject
         if (targetMeshFilter == null && targetRenderer == null && targetMeshCollider == null)
             return;
 
-        bodyMeshFilter.mesh = targetMeshFilter.mesh;
-        bodyRenderer.materials = targetRenderer.materials;
+        _bodyMeshFilter.mesh = targetMeshFilter.mesh;
+        _bodyRenderer.materials = targetRenderer.materials;
         _bodyObject.transform.localScale = targetTransform.localScale;
 
-        bodyMeshCollider.sharedMesh = targetMeshCollider.sharedMesh;
-        bodyMeshCollider.convex = true;
+        _bodyMeshCollider.sharedMesh = targetMeshCollider.sharedMesh;
+        _bodyMeshCollider.convex = true;
 
         AdjustBodyPosition();
+        _audioSource.Play();
     }
 
 

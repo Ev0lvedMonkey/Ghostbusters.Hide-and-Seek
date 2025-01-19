@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public static class SceneLoader
 {
-    public enum Scene
+    public enum ScenesEnum
     {
         CharactersScene,
         MenuScene,
@@ -13,21 +13,21 @@ public static class SceneLoader
         LobbyScene
     }
 
-    private static Scene _targetScene;
+    private static ScenesEnum _targetScene;
 
-    public static void Load(Scene targetScene)
+    public static void Load(ScenesEnum targetScene)
     {
         _targetScene = targetScene;
 
-        SceneManager.LoadScene(Scene.LoadingScene.ToString());
+        SceneManager.LoadScene(ScenesEnum.LoadingScene.ToString());
     }
 
-    public static Scene GetTargetScene()
+    public static ScenesEnum GetTargetScene()
     {
         return _targetScene;
     }
 
-    public static void LoadNetwork(Scene targetScene)
+    public static void LoadNetwork(ScenesEnum targetScene)
     {
         NetworkManager.Singleton.SceneManager.LoadScene(targetScene.ToString(), LoadSceneMode.Single);
     }
