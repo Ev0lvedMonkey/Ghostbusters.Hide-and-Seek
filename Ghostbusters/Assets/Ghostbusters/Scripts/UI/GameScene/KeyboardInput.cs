@@ -3,7 +3,10 @@ using UnityEngine;
 public class KeyboardInput : MonoBehaviour
 {
     private bool _isMenuOpen;
+    private bool _isChatOpen;
+
     private GameStateManager _gameStateManager;
+
     public void Init(GameStateManager gameStateManager)
     {
         _gameStateManager = gameStateManager;
@@ -22,6 +25,18 @@ public class KeyboardInput : MonoBehaviour
                 _gameStateManager.OnCloseHUD.Invoke();
             }
             _isMenuOpen = !_isMenuOpen;
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (_isChatOpen == false)
+            {
+                _gameStateManager.OnChatOpen.Invoke();
+            }
+            else
+            {
+                _gameStateManager.OnChatClose.Invoke();
+            }
+            _isChatOpen = !_isChatOpen;
         }
     }
 }

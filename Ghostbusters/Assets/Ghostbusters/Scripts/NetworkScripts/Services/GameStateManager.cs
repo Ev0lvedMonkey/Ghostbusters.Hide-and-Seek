@@ -15,6 +15,8 @@ public class GameStateManager : NetworkBehaviour, IService
     internal UnityEvent OnCloseHUD = new();
     internal UnityEvent OnOpenHUD = new();
     internal UnityEvent OnSecretRoomOpen = new();
+    internal UnityEvent OnChatOpen = new();
+    internal UnityEvent OnChatClose = new();
 
 
     public enum State

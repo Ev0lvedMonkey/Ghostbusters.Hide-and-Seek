@@ -30,7 +30,7 @@ public class GameSceneBootstrap : MonoBehaviour
     private void OnEnable()
     {
         ServiceLocator.Current.Register(_gameStateManager);    
-        ServiceLocator.Current.Register(_gameOverWinUI);    
+        ServiceLocator.Current.Register(_gameOverWinUI);
         LoadLevelConfig();
         _gameStateManager.Init();
         _gameOverWinUI.Init(_gameStateManager);

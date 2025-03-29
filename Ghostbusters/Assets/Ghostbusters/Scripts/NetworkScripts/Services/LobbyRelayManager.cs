@@ -165,6 +165,11 @@ public class LobbyRelayManager : MonoBehaviour, IService
         }
     }
 
+    public string GetPlayerName()
+    {
+        return _playerName;
+    }
+
     public async void DeleteLobby()
     {
         if (_joinedLobby != null)

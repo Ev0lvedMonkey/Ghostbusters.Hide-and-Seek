@@ -940,6 +940,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2270688881930270921, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4da10ad256d1f384d8325b13240c52ae, type: 3}
+    - target: {fileID: 2870208986227732858, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870208986227732858, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870208986227732858, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4952168160158066209, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
       propertyPath: m_fontSize
       value: 72
@@ -950,6 +966,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7673520849597746340, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407715600926278566, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+      propertyPath: m_text
+      value: C
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407715600926278566, guid: d6380a43466b31e42ad60577bd5ea289, type: 3}
+      propertyPath: m_HorizontalAlignment
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -115,7 +115,11 @@ public class MultiplayerStorage : NetworkBehaviour, IService
     {
         return _playerDataNetworkList[playerIndex];
     }
-
+    
+    public ulong GetLocalPlayerID()
+    {
+        return _networkManager.LocalClientId;
+    }
 
     public void KickAllPlayers()
     {

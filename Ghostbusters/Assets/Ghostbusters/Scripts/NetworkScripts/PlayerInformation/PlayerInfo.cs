@@ -22,7 +22,7 @@ public abstract class PlayerInfo : MonoBehaviour
     public virtual void Uninit()
     {
         ServiceLocator.Current.Get<MultiplayerStorage>().OnPlayerDataNetworkListChanged.RemoveListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
-        _characterSelectReady.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
+        _characterSelectReady?.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
         _characterSelectReady = null;
     }
 
