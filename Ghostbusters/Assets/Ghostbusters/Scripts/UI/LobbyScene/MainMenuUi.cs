@@ -22,11 +22,13 @@ public class MainMenuUi : MonoBehaviour
     public void Init()
     {
         _serviceLocator = ServiceLocator.Current;
+        _playerNameInputField.characterLimit = 19;
+        _lobbyCodeInputField.characterLimit = 6;
         DeactivateButtons();
         UpdateLobbyList(new List<Lobby>());
-       _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged += OnLobbyListChanged;
-       _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(ActivateButtons);
-       _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(AddButtonsListeners);
+        _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged += OnLobbyListChanged;
+        _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(ActivateButtons);
+        _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(AddButtonsListeners);
         ActivateButtons();
         AddButtonsListeners();
         Show();
@@ -34,9 +36,9 @@ public class MainMenuUi : MonoBehaviour
 
     public void Uninit()
     {
-       _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged -= OnLobbyListChanged;
-       _serviceLocator.Get<LobbyRelayManager>().OnSignIn.RemoveListener(ActivateButtons);
-       _serviceLocator.Get<LobbyRelayManager>().OnSignIn.RemoveListener(AddButtonsListeners);
+        _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged -= OnLobbyListChanged;
+        _serviceLocator.Get<LobbyRelayManager>().OnSignIn.RemoveListener(ActivateButtons);
+        _serviceLocator.Get<LobbyRelayManager>().OnSignIn.RemoveListener(AddButtonsListeners);
         RemoveButtonsListeners();
     }
 
@@ -68,7 +70,7 @@ public class MainMenuUi : MonoBehaviour
 
     private void AddButtonsListeners()
     {
-            _playerNameInputField.text =_serviceLocator.Get<MultiplayerStorage>().GetPlayerName();
+        _playerNameInputField.text = _serviceLocator.Get<MultiplayerStorage>().GetPlayerName();
         if (UnityServices.State == ServicesInitializationState.Initialized)
         {
             _playerNameInputField.onValueChanged.AddListener((string newText) =>

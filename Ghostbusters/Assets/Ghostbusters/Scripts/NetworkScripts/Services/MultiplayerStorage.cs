@@ -179,7 +179,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
             return;
         }
         _playerDataNetworkList.Add(newPlayer);
-        Debug.Log($"PlayerDataNetworkList added new player {newPlayer.playerName}\n{_playerDataNetworkList.Count}");
+        Debug.Log($"PlayerDataNetworkList added new player {newPlayer.playerName}\n Player count: {_playerDataNetworkList.Count}");
     }
 
     [ServerRpc(RequireOwnership = false)]

@@ -11,6 +11,7 @@ public class CreateLobbyUI : MonoBehaviour
 
     public void Init()
     {
+        lobbyNameInputField.characterLimit = 14;
         createPublicButton.onClick.AddListener(() => CreateLobby(false));
         createPrivateButton.onClick.AddListener(() => CreateLobby(true));
         closeButton.onClick.AddListener(() =>Hide());
