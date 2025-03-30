@@ -1,5 +1,6 @@
-using System.Diagnostics;
+using System.Collections;
 using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public static class SceneLoader
@@ -18,8 +19,7 @@ public static class SceneLoader
     public static void Load(ScenesEnum targetScene)
     {
         _targetScene = targetScene;
-
-        SceneManager.LoadScene(ScenesEnum.LoadingScene.ToString());
+        SceneManager.LoadSceneAsync(ScenesEnum.LoadingScene.ToString());
     }
 
     public static ScenesEnum GetTargetScene()
@@ -32,9 +32,24 @@ public static class SceneLoader
         NetworkManager.Singleton.SceneManager.LoadScene(targetScene.ToString(), LoadSceneMode.Single);
     }
 
-    public static void LoaderCallback()
+    public static void LoaderCallback(MonoBehaviour caller)
     {
-        SceneManager.LoadScene(_targetScene.ToString());
+        caller.StartCoroutine(LoadSceneAsync(_targetScene));
+    }
+
+    private static IEnumerator LoadSceneAsync(ScenesEnum targetScene)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(targetScene.ToString());
+        asyncLoad.allowSceneActivation = false;
+
+        while (!asyncLoad.isDone)
+        {
+            if (asyncLoad.progress >= 0.9f)
+            {
+                asyncLoad.allowSceneActivation = true;
+            }
+            yield return null;
+        }
     }
 
 }

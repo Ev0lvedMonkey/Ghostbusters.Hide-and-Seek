@@ -8,7 +8,7 @@ public class GhostSpeedUp : GhostMover
     [SerializeField] private UnityEvent OnDisableAbility;
 
 
-    private const float SpeedBoostMultiplier = 1.5f;
+    private const float SpeedBoostMultiplier = 1.75f;
     private const float SpeedBoostDuration = 4f;
     private const float SpeedBoostCooldown = 9f;
 
@@ -43,10 +43,8 @@ public class GhostSpeedUp : GhostMover
 
     private IEnumerator SpeedBoostCoroutine()
     {
-        Debug.Log("Speed Boost Activated");
         yield return new WaitForSeconds(SpeedBoostDuration);
 
-        Debug.Log("Speed Boost Deactivated");
         _isSpeedBoostActive = false;
 
         yield return new WaitForSeconds(SpeedBoostCooldown - SpeedBoostDuration);

@@ -13,6 +13,7 @@ public class GameSceneBootstrap : MonoBehaviour
     [SerializeField] private GameOverWinUI _gameOverWinUI;
     [SerializeField] private MouseSenceSettingUI _mouseSenceSettingUI;
     [SerializeField] private KeyboardInput _keyboardInput;
+    [SerializeField] private ChatManager _chatManager;
 
     [Header("GameScene Config Type")]
     [SerializeField] private int _numberOfConfigType;
@@ -31,6 +32,7 @@ public class GameSceneBootstrap : MonoBehaviour
     {
         ServiceLocator.Current.Register(_gameStateManager);    
         ServiceLocator.Current.Register(_gameOverWinUI);
+        ServiceLocator.Current.Register(_chatManager);
         LoadLevelConfig();
         _gameStateManager.Init();
         _gameOverWinUI.Init(_gameStateManager);
@@ -42,6 +44,7 @@ public class GameSceneBootstrap : MonoBehaviour
         _mouseSenceSettingUI.UpdateMouseSenseText();
         _mouseSenceSettingUI.AddComponentsListeners();
         _keyboardInput.Init(_gameStateManager);
+        _chatManager.Init();
     }
 
 

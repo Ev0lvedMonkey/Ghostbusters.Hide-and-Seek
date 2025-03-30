@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ChatManager : NetworkBehaviour
+public class ChatManager : NetworkBehaviour, IService
 {
     [SerializeField] ChatMessage chatMessagePrefab;
     [SerializeField] CanvasGroup chatContent;
@@ -21,12 +21,6 @@ public class ChatManager : NetworkBehaviour
     private const int maxMessages = 20;
     private const int maxMessageLength = 100;
 
-    private void Awake()
-    {
-        _multiplayerStorage = ServiceLocator.Current.Get<MultiplayerStorage>();
-        body.SetActive(false);
-        chatInput.characterLimit = maxMessageLength;
-    }
 
     private void Update()
     {
@@ -43,6 +37,17 @@ public class ChatManager : NetworkBehaviour
             if (_isChatOpen)
                 StartCoroutine(ScrollToBottom());
         }
+    }
+    public void Init()
+    {
+        _multiplayerStorage = ServiceLocator.Current.Get<MultiplayerStorage>();
+        body.SetActive(false);
+        chatInput.characterLimit = maxMessageLength;
+    }
+
+    public bool IsOpened()
+    {
+        return _isChatOpen;
     }
 
     public void SendChatMessage(string message, string messageOwner, ulong ownerId)
@@ -67,6 +72,7 @@ public class ChatManager : NetworkBehaviour
         ChatMessage chatMessage = Instantiate(chatMessagePrefab, chatContent.transform);
         chatMessage.SetText($"{messageOwner}: {message}");
         _chatMessages.Enqueue(chatMessage);
+
 
 
 

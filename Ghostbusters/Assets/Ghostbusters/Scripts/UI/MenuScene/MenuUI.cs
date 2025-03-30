@@ -15,7 +15,7 @@ public class MenuUI : MonoBehaviour
 
     public void Init()
     {
-        _startButton.onClick.AddListener(() => SceneLoader.Load(SceneLoader.ScenesEnum.LobbyScene));
+        _startButton.onClick.AddListener(() =>  SceneLoader.Load(SceneLoader.ScenesEnum.LobbyScene));
         _settingsButton.onClick.AddListener(() => _settingUI.Show());
         _helpButton.onClick.AddListener(() => _helpUI.Show());
         _quickButton.onClick.AddListener(() => Application.Quit());

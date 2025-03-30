@@ -971,6 +971,7 @@ MonoBehaviour:
   _gameOverWinUI: {fileID: 1296789133}
   _mouseSenceSettingUI: {fileID: 1683249806}
   _keyboardInput: {fileID: 35563362}
+  _chatManager: {fileID: 5530268196343046901}
   _numberOfConfigType: 1
 --- !u!1 &969271100
 GameObject:

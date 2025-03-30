@@ -1,11 +1,11 @@
 using Unity.Netcode;
-using Unity.Netcode.Components;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public abstract class CharacterMover : NetworkBehaviour
 {
     [SerializeField] internal Rigidbody _rigidbody;
+
     protected Vector3 _direction;
     protected Vector2 _input;
     protected const string Horizontal = "Horizontal";
@@ -48,7 +48,8 @@ public abstract class CharacterMover : NetworkBehaviour
 
     protected float GetMoveSpeed()
     {
-        if (ServiceLocator.Current.Get<GameOverWinUI>().IsOpened()) return 0f;
+        if (ServiceLocator.Current.Get<GameOverWinUI>().IsOpened()
+            || ServiceLocator.Current.Get<ChatManager>().IsOpened()) return 0f;
         else return _input.y < 0 ? BackMoveSpeed : MovementSpeed;
     }
 
