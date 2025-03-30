@@ -9,8 +9,7 @@ public class LoaderCallback : MonoBehaviour
         if (isFirstUpdate)
         {
             isFirstUpdate = false;
-
-            SceneLoader.LoaderCallback(this);
+            SceneLoader.LoaderCallback();
         }
     }
 }

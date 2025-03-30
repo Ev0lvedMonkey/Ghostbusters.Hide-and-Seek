@@ -32,24 +32,8 @@ public static class SceneLoader
         NetworkManager.Singleton.SceneManager.LoadScene(targetScene.ToString(), LoadSceneMode.Single);
     }
 
-    public static void LoaderCallback(MonoBehaviour caller)
+    public static void LoaderCallback()
     {
-        caller.StartCoroutine(LoadSceneAsync(_targetScene));
+        SceneManager.LoadScene(_targetScene.ToString());
     }
-
-    private static IEnumerator LoadSceneAsync(ScenesEnum targetScene)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(targetScene.ToString());
-        asyncLoad.allowSceneActivation = false;
-
-        while (!asyncLoad.isDone)
-        {
-            if (asyncLoad.progress >= 0.9f)
-            {
-                asyncLoad.allowSceneActivation = true;
-            }
-            yield return null;
-        }
-    }
-
 }

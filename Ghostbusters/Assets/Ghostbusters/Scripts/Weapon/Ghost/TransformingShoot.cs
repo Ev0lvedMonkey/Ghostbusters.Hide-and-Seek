@@ -26,7 +26,6 @@ public class TransformingShoot : RayFiringObject
     protected override void HandleFire()
     {
         Transform firePosition = ServiceLocator.Current.Get<FirePositionService>().FirePosition;
-
         Ray ray = new(firePosition.position, firePosition.forward);
 
         Debug.DrawRay(firePosition.position, firePosition.forward * _maxRayDistance, Color.red, 3);
@@ -64,6 +63,7 @@ public class TransformingShoot : RayFiringObject
             ApplyTransformLocally(targetTransform);
 
             ApplyTransformClientRpc(targetObjectRef);
+            PlaySoundClientRpc(transform.position);
         }
     }
 
@@ -85,7 +85,6 @@ public class TransformingShoot : RayFiringObject
 
         if (targetMeshFilter == null && targetRenderer == null && targetMeshCollider == null)
             return;
-
         _bodyMeshFilter.mesh = targetMeshFilter.mesh;
         _bodyRenderer.materials = targetRenderer.materials;
         _bodyObject.transform.localScale = targetTransform.localScale;
@@ -97,6 +96,12 @@ public class TransformingShoot : RayFiringObject
         _audioSource.Play();
     }
 
+    [ClientRpc]
+    private void PlaySoundClientRpc(Vector3 position)
+    {
+        _audioSource.transform.position = position;
+        _audioSource.Play();
+    }
 
     private void AdjustBodyPosition()
     {
