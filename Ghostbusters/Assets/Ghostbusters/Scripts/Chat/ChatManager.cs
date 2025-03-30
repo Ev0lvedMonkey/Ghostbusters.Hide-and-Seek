@@ -71,6 +71,7 @@ public class ChatManager : NetworkBehaviour
 
 
 
+
         StartCoroutine(ScrollToBottom());
     }
 
