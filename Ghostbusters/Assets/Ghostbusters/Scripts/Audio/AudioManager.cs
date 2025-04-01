@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +11,17 @@ public class AudioManager : MonoBehaviour, IService
     {
         _audioSource = GetComponent<AudioSource>();
     }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        _audioSource.mute = !hasFocus;
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        _audioSource.mute = pauseStatus;
+    }
+
 
     private void OnLevelWasLoaded(int level)
     {
