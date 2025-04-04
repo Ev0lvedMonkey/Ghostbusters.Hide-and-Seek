@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1858
     height: 1037
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Hierarchy
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 133
+  controlID: 138
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 134
+  controlID: 139
   draggingID: 0
 --- !u!114 &10
 MonoBehaviour:
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Ghostbusters/Scenes
+    - Assets/Ghostbusters/Resources/Prefabs
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -435,16 +435,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Ghostbusters/Scenes
+  - Assets/Ghostbusters/Resources/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: G:\Amirs Works\Diploma\TheGame\Ghostbusters
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 508b0000
-    m_LastClickedID: 35664
-    m_ExpandedIDs: 00000000ca8a0000d48a0000348b0000368b0000528b000000ca9a3bffffff7f
+    m_SelectedIDs: 208b0000
+    m_LastClickedID: 35616
+    m_ExpandedIDs: 000000006a8a0000748a0000d68a0000d88a00001e8b000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -472,7 +472,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ca8a0000
+    m_ExpandedIDs: 000000006a8a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -503,18 +503,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: a8efffff607e0000e07a00006a8b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Prefabs
-      m_OriginalName: Prefabs
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 35636
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 6}
     m_CreateAssetUtility:
@@ -567,21 +567,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: f677fdff7c7ffdff700bfeffdc12feff9c22feffda67feff3668fefff46dfeff306ffeffa076feff147cfeff6282feff6291feffbe91feff7c97feffb898feff28a0feff9ca5feffeaabfeff7cc8feff4ad5fefffef0feff28fefeff84fefeff4204ffff7e05ffffee0cffff6212ffffb018ffffb437ffff1038ffffce3dffff0a3fffff7a46ffffee4bffff3c52ffff1260ffffe06cffffccaeffffbad8fffffae2ffffc4f6fffffefaffffbebd0100
+      m_ExpandedIDs: 78e7fffffefaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: GhostNO
-        m_OriginalName: GhostNO
+        m_Name: Ball
+        m_OriginalName: Ball
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -69378
+        m_UserData: -6280
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 4
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 7}
       m_SearchString: 
@@ -1054,9 +1054,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -1.55705, y: -0.65663654, z: 15.180926}
+    m_Target: {x: -1.4314913, y: -0.6854617, z: -7.859031}
     speed: 2
-    m_Value: {x: -1.55705, y: -0.65663654, z: 15.180926}
+    m_Value: {x: -1.4314868, y: -0.6854616, z: -7.8590436}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1102,13 +1102,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.082772575, y: -0.03955992, z: 0.0008829233, w: 0.9965315}
+    m_Target: {x: 0.18781954, y: -0.7741879, z: 0.25946054, w: 0.5473395}
     speed: 2
-    m_Value: {x: 0.08271089, y: -0.039530437, z: 0.00088226533, w: 0.9957889}
+    m_Value: {x: 0.19009519, y: -0.77116656, z: 0.26101342, w: 0.5486693}
   m_Size:
-    m_Target: 10.45
+    m_Target: 1.9914205
     speed: 2
-    m_Value: 10.45
+    m_Value: 1.9056655
   m_Ortho:
     m_Target: 0
     speed: 2

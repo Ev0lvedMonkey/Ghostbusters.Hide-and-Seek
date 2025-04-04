@@ -12,7 +12,9 @@ public class WorldSpaceCanvasTransform : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        _camera = Camera.main;
+        
+        if(_camera == null)
+            _camera = Camera.main;
 
         if (IsOwner)
         {
@@ -28,7 +30,6 @@ public class WorldSpaceCanvasTransform : NetworkBehaviour
 
     private void RotateTowardCam(Camera cam)
     {
-        Debug.Log($"I`m {transform.parent.name} and Rotating camera to: {cam.transform.position}");
         transform.LookAt(transform.position + (cam.transform.rotation * Vector3.forward), cam. transform.rotation * Vector3.up);
     }
 

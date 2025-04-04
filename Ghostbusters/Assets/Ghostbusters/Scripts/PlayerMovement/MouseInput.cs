@@ -1,6 +1,6 @@
 using Unity.Netcode;
-using System;
 using UnityEngine;
+using static System.Single;
 
 public abstract class MouseInput : NetworkBehaviour
 {
@@ -83,6 +83,8 @@ public abstract class MouseInput : NetworkBehaviour
     protected virtual void CamRotation()
     {
         _camRotation.Rotate(_xAxis, _yAxis);
+        _camFollowPosition.transform.position
+            = new Vector3(_camFollowPosition.transform.position.x, Mathf.Clamp(_camFollowPosition.transform.position.y, 0.85f, MaxValue),_camFollowPosition.transform.position.z);
     }
 
     protected virtual void CustomCamRotation()

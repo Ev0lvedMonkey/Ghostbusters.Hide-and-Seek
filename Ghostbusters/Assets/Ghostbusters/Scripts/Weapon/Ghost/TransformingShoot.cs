@@ -5,7 +5,8 @@ public class TransformingShoot : RayFiringObject
 {
     [SerializeField] private GameObject _bodyObject;
     [SerializeField] private AudioSource _audioSource;
-
+    [SerializeField] private GameObject _transformEffect;
+    
     private MeshFilter _bodyMeshFilter;
     private MeshRenderer _bodyRenderer;
     private MeshCollider _bodyMeshCollider;
@@ -72,6 +73,10 @@ public class TransformingShoot : RayFiringObject
     {
         if (targetObjectRef.TryGet(out NetworkObject targetObject))
         {
+            if (_transformEffect != null)
+            {
+                Instantiate(_transformEffect, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
+            }
             Transform targetTransform = targetObject.transform;
             ApplyTransformLocally(targetTransform);
         }
