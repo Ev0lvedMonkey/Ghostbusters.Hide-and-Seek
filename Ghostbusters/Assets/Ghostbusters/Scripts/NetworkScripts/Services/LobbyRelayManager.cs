@@ -56,14 +56,14 @@ public class LobbyRelayManager : MonoBehaviour, IService
 
     public async Task CreateLobby(string lobbyName, bool isPrivate)
     {
+        if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
+        {
+            Debug.LogError("NO 3 AUTH");
+            return;
+        }
         OnCreateLobbyStarted?.Invoke();
         try
         {
-            if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
-            {
-                Debug.LogError("NO AUTH");
-                return;
-            }
             if (string.IsNullOrWhiteSpace(lobbyName))
                 lobbyName = $"Lobby_{UnityEngine.Random.Range(100, 1000)}";
             _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerStorage.MAX_PLAYER_AMOUNT, new CreateLobbyOptions
@@ -96,6 +96,11 @@ public class LobbyRelayManager : MonoBehaviour, IService
 
     public async Task QuickJoin()
     {
+        if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
+        {
+            Debug.LogError("NO 2 AUTH");
+            return;
+        }
         OnJoinStarted?.Invoke();
         try
         {
@@ -119,6 +124,11 @@ public class LobbyRelayManager : MonoBehaviour, IService
 
     public async Task JoinByCode(string lobbyCode)
     {
+        if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
+        {
+            Debug.LogError("NO 1 AUTH");
+            return;
+        }
         OnJoinStarted?.Invoke();
         try
         {
@@ -143,6 +153,11 @@ public class LobbyRelayManager : MonoBehaviour, IService
 
     public async void JoinWithId(string lobbyId)
     {
+        if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
+        {
+            Debug.LogError("NO 4 AUTH");
+            return;
+        }
         OnJoinStarted?.Invoke();
         try
         {

@@ -5,8 +5,7 @@ public class DecideTransformingObject : MonoBehaviour
 {
     [SerializeField, Range(1f, 250f)] protected float _maxRayDistance;
     [SerializeField] protected Image _crosshairImage;
-
-
+    
     private void Update()
     {
         Transform firePosition = ServiceLocator.Current.Get<FirePositionService>().FirePosition;
