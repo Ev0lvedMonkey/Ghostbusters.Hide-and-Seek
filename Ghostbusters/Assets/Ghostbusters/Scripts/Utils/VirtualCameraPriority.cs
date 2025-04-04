@@ -32,6 +32,11 @@ public class VirtualCameraPriority : NetworkBehaviour
 
     }
 
+    public CinemachineVirtualCamera GetCam()
+    {
+        return _virtualCamera;
+    }
+    
     private void ActivateCamera() =>
             _virtualCamera.gameObject.SetActive(true);
 

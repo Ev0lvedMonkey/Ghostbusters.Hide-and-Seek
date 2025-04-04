@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 144
+  controlID: 133
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 145
+  controlID: 134
   draggingID: 0
 --- !u!114 &10
 MonoBehaviour:
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Ghostbusters/Resources/Prefabs
+    - Assets/Ghostbusters/Scenes
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -435,16 +435,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Ghostbusters/Resources/Prefabs
+  - Assets/Ghostbusters/Scenes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: G:\Amirs Works\Diploma\TheGame\Ghostbusters
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: c6bd0000
-    m_LastClickedID: 48582
-    m_ExpandedIDs: 00000000608a0000768a0000d88a000000ca9a3bffffff7f
+    m_SelectedIDs: 508b0000
+    m_LastClickedID: 35664
+    m_ExpandedIDs: 00000000ca8a0000d48a0000348b0000368b0000528b000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -472,7 +472,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000608a0000
+    m_ExpandedIDs: 00000000ca8a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -511,7 +511,7 @@ MonoBehaviour:
         y: 0
         width: 0
         height: 0
-      m_UserData: 48582
+      m_UserData: 35636
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0
@@ -567,21 +567,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: ac34ffffbc7fffff6e83ffff0084fffff086fffffefaffffdebc0000
+      m_ExpandedIDs: f677fdff7c7ffdff700bfeffdc12feff9c22feffda67feff3668fefff46dfeff306ffeffa076feff147cfeff6282feff6291feffbe91feff7c97feffb898feff28a0feff9ca5feffeaabfeff7cc8feff4ad5fefffef0feff28fefeff84fefeff4204ffff7e05ffffee0cffff6212ffffb018ffffb437ffff1038ffffce3dffff0a3fffff7a46ffffee4bffff3c52ffff1260ffffe06cffffccaeffffbad8fffffae2ffffc4f6fffffefaffffbebd0100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Rooms
-        m_OriginalName: Rooms
+        m_Name: GhostNO
+        m_OriginalName: GhostNO
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -31740
+        m_UserData: -69378
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 4
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 7}
       m_SearchString: 
@@ -1054,9 +1054,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -11.756803, y: 6.6706266, z: 2.7694492}
+    m_Target: {x: -1.55705, y: -0.65663654, z: 15.180926}
     speed: 2
-    m_Value: {x: -11.756803, y: 6.6706266, z: 2.7694492}
+    m_Value: {x: -1.55705, y: -0.65663654, z: 15.180926}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1102,13 +1102,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.0638517, y: 0.80164677, z: -0.08539973, w: -0.58903974}
+    m_Target: {x: 0.082772575, y: -0.03955992, z: 0.0008829233, w: 0.9965315}
     speed: 2
-    m_Value: {x: -0.06382058, y: 0.801256, z: -0.085358106, w: -0.5887526}
+    m_Value: {x: 0.08271089, y: -0.039530437, z: 0.00088226533, w: 0.9957889}
   m_Size:
-    m_Target: 43.310184
+    m_Target: 10.45
     speed: 2
-    m_Value: 43.310184
+    m_Value: 10.45
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1126,7 +1126,7 @@ MonoBehaviour:
     m_FarClip: 10000
     m_DynamicClip: 1
     m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: -0.08153648, y: -0.6165431, z: 0.063911706, w: -0.7805151}
+  m_LastSceneViewRotation: {x: 0.082772575, y: -0.03955992, z: 0.0008829233, w: 0.9965315}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
