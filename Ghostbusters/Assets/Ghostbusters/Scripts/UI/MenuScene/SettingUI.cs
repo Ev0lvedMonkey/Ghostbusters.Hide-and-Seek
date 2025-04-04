@@ -2,9 +2,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.Localization.Settings;
 
 public class SettingUI : MonoBehaviour
 {
+    private enum Language { ru, en }
+
     [Header("Mixer")]
     [SerializeField] private AudioMixerGroup _mixerGroup;
 
@@ -14,18 +17,22 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private Slider _effectsSlider;
     [SerializeField] private TMP_Text _effectsText;
     [SerializeField] private Button _exitButton;
+    [SerializeField] private Button _languageButton;
 
     [Header("Config")]
     [SerializeField] private AudioVolumeConfiguration _audioConfig;
-
+    
     private GameStateManager _gameStateManager;
+    private Language _selectedLanguage;
+    private const string LanguageKey = "SelectedLanguage";
 
     public void Init(GameStateManager gameStateManager = null)
     {
         _gameStateManager = gameStateManager;
         _gameStateManager?.OnCloseHUD.AddListener(Hide);
         _exitButton.onClick.AddListener(Hide);
-
+        _languageButton.onClick.AddListener(ToggleLanguage);
+        
         float savedMusicValue = _audioConfig.MusicVolume;
         float savedEffectsValue = _audioConfig.EffectsVolume;
 
@@ -34,11 +41,13 @@ public class SettingUI : MonoBehaviour
 
         SetMusicVolume(savedMusicValue);
         SetEffectsVolume(savedEffectsValue);
-
         UpdateMusicText(savedMusicValue);
         UpdateEffectsText(savedEffectsValue);
+
         _musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
         _effectsSlider.onValueChanged.AddListener(OnEffectsSliderChanged);
+        
+        LoadLanguage();
         Hide();
     }
 
@@ -64,27 +73,37 @@ public class SettingUI : MonoBehaviour
 
     private void SetMusicVolume(float value)
     {
-        if (value <= 0.01f)
-            _mixerGroup.audioMixer.SetFloat(_audioConfig.MusicKey, -80f);
-        else
-            _mixerGroup.audioMixer.SetFloat(_audioConfig.MusicKey, Mathf.Log10(value) * 20);
+        _mixerGroup.audioMixer.SetFloat(_audioConfig.MusicKey, value <= 0.01f ? -80f : Mathf.Log10(value) * 20);
     }
 
     private void SetEffectsVolume(float value)
     {
-        if (value <= 0.01f)
-            _mixerGroup.audioMixer.SetFloat(_audioConfig.EffectsKey, -80f);
-        else
-            _mixerGroup.audioMixer.SetFloat(_audioConfig.EffectsKey, Mathf.Log10(value) * 20);
+        _mixerGroup.audioMixer.SetFloat(_audioConfig.EffectsKey, value <= 0.01f ? -80f : Mathf.Log10(value) * 20);
     }
 
-    private void UpdateMusicText(float value)
+    private void UpdateMusicText(float value) => _musicText.text = Mathf.RoundToInt(value * 100) + "%";
+    private void UpdateEffectsText(float value) => _effectsText.text = Mathf.RoundToInt(value * 100) + "%";
+
+    private void ToggleLanguage()
     {
-        _musicText.text = Mathf.RoundToInt(value * 100) + "%";
+        _selectedLanguage = _selectedLanguage == Language.ru ? Language.en : Language.ru;
+        ChangeLocale(_selectedLanguage);
+        CustomPlayerPrefs.SetInt(LanguageKey, (int)_selectedLanguage);
     }
 
-    private void UpdateEffectsText(float value)
+    private void ChangeLocale(Language localeCode)
     {
-        _effectsText.text = Mathf.RoundToInt(value * 100) + "%";
+        var locale = LocalizationSettings.AvailableLocales.GetLocale(localeCode.ToString());
+        if (locale != null)
+        {
+            LocalizationSettings.SelectedLocale = locale;
+            Debug.Log($"Localization changed to {locale}");
+        }
+    }
+
+    private void LoadLanguage()
+    {
+        _selectedLanguage = (Language)CustomPlayerPrefs.GetInt(LanguageKey, (int)Language.ru);
+        ChangeLocale(_selectedLanguage);
     }
 }

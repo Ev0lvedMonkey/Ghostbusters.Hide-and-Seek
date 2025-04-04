@@ -20,4 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Ghostbusters/Scenes/GameScene.unity
     guid: ad227d39f5cf6354baf9b40faf5c86f8
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: cfc15fb4abe6c624395e9a6544b50f27, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: fc3789b2940c85c449bbd5501871e132, type: 2}
