@@ -1,7 +1,6 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 public class AudioManager : MonoBehaviour, IService
 {
@@ -25,9 +24,9 @@ public class AudioManager : MonoBehaviour, IService
 
     private void OnLevelWasLoaded(int level)
     {
-        if(SceneManager.GetActiveScene().name == SceneLoader.ScenesEnum.MenuScene.ToString())
+        if (SceneManager.GetActiveScene().name == SceneLoader.ScenesEnum.MenuScene.ToString())
             _audioSource.Play();
-        if(SceneManager.GetActiveScene().name == SceneLoader.ScenesEnum.GameScene.ToString())
+        if (SceneManager.GetActiveScene().name == SceneLoader.ScenesEnum.GameScene.ToString())
             _audioSource.Stop();
     }
 

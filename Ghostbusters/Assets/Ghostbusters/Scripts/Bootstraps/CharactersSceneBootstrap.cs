@@ -35,7 +35,7 @@ public class CharactersSceneBootstrap : MonoBehaviour
     {
         if (_listPlayerInfo == null || _listPlayerInfo.Count == 0)
             return;
-        foreach (var playerInfo in _listPlayerInfo)
+        foreach (PlayerInfo playerInfo in _listPlayerInfo)
         {
             if (playerInfo.TryGetComponent(out ClientPlayerInfo clientInfo))
                 clientInfo.Init(_characterSelectReady);
@@ -47,7 +47,7 @@ public class CharactersSceneBootstrap : MonoBehaviour
     {
         if (_listPlayerInfo == null || _listPlayerInfo.Count == 0)
             return;
-        foreach (var item in _listPlayerInfo)
+        foreach (PlayerInfo item in _listPlayerInfo)
         {
             if (item.TryGetComponent(out ClientPlayerInfo component))
                 component.Uninit();
@@ -60,7 +60,7 @@ public class CharactersSceneBootstrap : MonoBehaviour
         if (_listPlayerInfo == null || _listPlayerInfo.Count == 0)
             return;
 
-        var duplicates = _listPlayerInfo
+        List<PlayerInfo> duplicates = _listPlayerInfo
             .GroupBy(player => player)
             .Where(group => group.Count() > 1)
             .Select(group => group.Key)

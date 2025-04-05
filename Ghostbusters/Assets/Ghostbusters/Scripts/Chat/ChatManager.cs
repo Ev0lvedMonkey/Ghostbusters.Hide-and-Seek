@@ -5,35 +5,36 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class ChatManager : NetworkBehaviour, IService
 {
-    [SerializeField] ChatMessage chatMessagePrefab;
-    [SerializeField] CanvasGroup chatContent;
-    [SerializeField] TMP_InputField chatInput;
-    [SerializeField] GameObject body;
-    [SerializeField] ScrollRect scrollRect;
-    [SerializeField] EventSystem eventSystem;
+    [SerializeField] private ChatMessage _chatMessagePrefab;
+    [SerializeField] private CanvasGroup _chatContent;
+    [SerializeField] private TMP_InputField _chatInput;
+    [SerializeField] private GameObject _body;
+    [SerializeField] private ScrollRect _scrollRect;
+    [SerializeField] private EventSystem _eventSystem;
 
     private MultiplayerStorage _multiplayerStorage;
     private bool _isChatOpen;
-    private Queue<ChatMessage> _chatMessages = new();
-    private const int maxMessages = 20;
-    private const int maxMessageLength = 100;
+    private readonly Queue<ChatMessage> _chatMessages = new();
+    private const int MaxMessages = 20;
+    private const int MaxMessageLength = 100;
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && chatInput.text.Length <= maxMessageLength)
+        if (Input.GetKeyDown(KeyCode.Return) && _chatInput.text.Length <= MaxMessageLength)
         {
-            SendChatMessage(chatInput.text, _multiplayerStorage.GetPlayerName(), _multiplayerStorage.GetLocalPlayerID());
-            chatInput.text = string.Empty;
+            SendChatMessage(_chatInput.text, _multiplayerStorage.GetPlayerName(), _multiplayerStorage.GetLocalPlayerID());
+            _chatInput.text = string.Empty;
         }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
             _isChatOpen = !_isChatOpen;
-            body.SetActive(_isChatOpen);
+            _body.SetActive(_isChatOpen);
             if (_isChatOpen)
                 StartCoroutine(ScrollToBottom());
         }
@@ -41,8 +42,8 @@ public class ChatManager : NetworkBehaviour, IService
     public void Init()
     {
         _multiplayerStorage = ServiceLocator.Current.Get<MultiplayerStorage>();
-        body.SetActive(false);
-        chatInput.characterLimit = maxMessageLength;
+        _body.SetActive(false);
+        _chatInput.characterLimit = MaxMessageLength;
     }
 
     public bool IsOpened()
@@ -52,14 +53,14 @@ public class ChatManager : NetworkBehaviour, IService
 
     public void SendChatMessage(string message, string messageOwner, ulong ownerId)
     {
-        if (string.IsNullOrWhiteSpace(message) || message.Length > maxMessageLength) return;
+        if (string.IsNullOrWhiteSpace(message) || message.Length > MaxMessageLength) return;
         SendChatMessageServerRpc(message, messageOwner, ownerId);
     }
 
     private void AddMessage(string message, string messageOwner, ulong ownerId)
     {
-        chatInput.text = string.Empty;
-        if (_chatMessages.Count > maxMessages)
+        _chatInput.text = string.Empty;
+        if (_chatMessages.Count > MaxMessages)
         {
             Destroy(_chatMessages.Dequeue().gameObject);
         }
@@ -69,23 +70,18 @@ public class ChatManager : NetworkBehaviour, IService
             messageOwner = $"<color=yellow>{messageOwner}</color>";
         }
 
-        ChatMessage chatMessage = Instantiate(chatMessagePrefab, chatContent.transform);
+        ChatMessage chatMessage = Instantiate(_chatMessagePrefab, _chatContent.transform);
         chatMessage.SetText($"{messageOwner}: {message}");
         _chatMessages.Enqueue(chatMessage);
-
-
-
-
-
         StartCoroutine(ScrollToBottom());
     }
 
     private IEnumerator ScrollToBottom()
     {
         yield return new WaitForEndOfFrame();
-        scrollRect.verticalNormalizedPosition = 0f;
-        eventSystem.SetSelectedGameObject(chatInput.gameObject);
-        chatInput.ActivateInputField();
+        _scrollRect.verticalNormalizedPosition = 0f;
+        _eventSystem.SetSelectedGameObject(_chatInput.gameObject);
+        _chatInput.ActivateInputField();
     }
 
     [ServerRpc(RequireOwnership = false)]

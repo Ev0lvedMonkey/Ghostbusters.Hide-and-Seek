@@ -1,12 +1,13 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class ChatMessage : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI messageText;
+    [SerializeField] TextMeshProUGUI _messageText;
 
     public void SetText(string message)
     { 
-        messageText.text = message; 
+        _messageText.text = message; 
     }
 }
