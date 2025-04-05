@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a85c41e335b2367498a9423e9920697d
+    m_Address: Assets/LocalizationSources/Tables/DynamicTextTable Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: df6a91d21e164024188ac87001faceee, type: 2}
   m_SchemaSet:

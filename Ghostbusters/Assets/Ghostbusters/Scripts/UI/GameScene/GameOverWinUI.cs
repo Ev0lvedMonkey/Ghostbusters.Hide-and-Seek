@@ -2,6 +2,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class GameOverWinUI : MonoBehaviour, IService
@@ -58,7 +59,7 @@ public class GameOverWinUI : MonoBehaviour, IService
         switch (_gameStateManager.GetGameState().ToString())
         {
             case "WinBusters":
-                _gameOverWinText.text = "Охотники победили!";
+                _gameOverWinText.text = LocalizationSettings.StringDatabase.GetLocalizedString("DynamicTextTable", "GhostsbustersWinText_Key");;
                 _playAgainButton.gameObject.SetActive(true);
                 RemoveListeners();
                 Show();
@@ -66,7 +67,7 @@ public class GameOverWinUI : MonoBehaviour, IService
                 _audioSource.Play();
                 break;
             case "WinGhost":
-                _gameOverWinText.text = "Призраки победили!";
+                _gameOverWinText.text = LocalizationSettings.StringDatabase.GetLocalizedString("DynamicTextTable", "GhostsWinText_Key");
                 _playAgainButton.gameObject.SetActive(true);
                 RemoveListeners();
                 Show();

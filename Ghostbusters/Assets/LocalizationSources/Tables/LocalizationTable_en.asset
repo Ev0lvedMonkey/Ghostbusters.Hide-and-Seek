@@ -22,6 +22,127 @@ MonoBehaviour:
     m_Localized: Play
     m_Metadata:
       m_Items: []
+  - m_Id: 8761312522240
+    m_Localized: Exit to desktop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9983704674304
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11816795877376
+    m_Localized: "WASD - move\r\nLMB - shoot\\transform\r\nESC - menu\r\nGhost specialty:\r\nQ
+      - freeze\r\n\rL.Shift - acceleration\r\nHunter specialty:\r\nE - sphere-cage"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12570013184000
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12820870311936
+    m_Localized: Sound settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13234625818624
+    m_Localized: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13456907153408
+    m_Localized: Effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13618866008064
+    m_Localized: Full screen mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14222636068864
+    m_Localized: Mouse sensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15533679030272
+    m_Localized: Player name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15765615652864
+    m_Localized: Create lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16039629533184
+    m_Localized: Quick game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16290054647808
+    m_Localized: Join the game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16529452937216
+    m_Localized: Enter code...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16768029143040
+    m_Localized: Go to menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17036040974336
+    m_Localized: Lobby list
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17254081867776
+    m_Localized: 'Lobby name:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17445774143488
+    m_Localized: 'Count of players:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19751810871296
+    m_Localized: Loading...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20262668709888
+    m_Localized: Creating lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20759035228160
+    m_Localized: Enter lobby name...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20970050662400
+    m_Localized: Public lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21096454402048
+    m_Localized: Private lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21594683191296
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 184488108470272
+    m_Localized: Ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 184721018171392
+    m_Localized: Copy code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 185013390520320
+    m_Localized: 'Lobby code:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 185301400793088
+    m_Localized: YOU ARE DISCONNECTED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 185615466082304
+    m_Localized: Kick out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187002765684736
+    m_Localized: Enter text...
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -19,6 +19,126 @@ MonoBehaviour:
     m_Key: "PlayKey\t"
     m_Metadata:
       m_Items: []
+  - m_Id: 8761312522240
+    m_Key: ExitGame_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9983704674304
+    m_Key: Settings_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11816795877376
+    m_Key: Help_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12570013184000
+    m_Key: GoBack_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12820870311936
+    m_Key: MusicSettings_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13234625818624
+    m_Key: MusicText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13456907153408
+    m_Key: EffectText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13618866008064
+    m_Key: FullScreenModeText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14222636068864
+    m_Key: MouseSens_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15533679030272
+    m_Key: PlayerNameText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15765615652864
+    m_Key: CreateLobby_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16039629533184
+    m_Key: QuickGameText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16290054647808
+    m_Key: JoinToGameText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16529452937216
+    m_Key: EnterCodeText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16768029143040
+    m_Key: ToMenuText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17036040974336
+    m_Key: LobbyListText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17254081867776
+    m_Key: LobbyNameText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17445774143488
+    m_Key: PlayersCountText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19751810871296
+    m_Key: LoadingText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20262668709888
+    m_Key: CreatingLlobbyText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20759035228160
+    m_Key: EnterLobbyNameText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20970050662400
+    m_Key: PublicLobbyText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21096454402048
+    m_Key: PrivateLobbyText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21594683191296
+    m_Key: CloseText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 184488108470272
+    m_Key: ReadyText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 184721018171392
+    m_Key: CopyCodeText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 185013390520320
+    m_Key: LobbyCodeText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 185301400793088
+    m_Key: UDISCONNECTEDText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 185615466082304
+    m_Key: KickoutText_Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187002765684736
+    m_Key: EnterMessageText_Key
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
