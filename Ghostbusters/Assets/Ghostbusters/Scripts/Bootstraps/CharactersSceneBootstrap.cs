@@ -14,7 +14,7 @@ public class CharactersSceneBootstrap : MonoBehaviour
     {
         _characterSelectReady.MakeNewPlayerReadyDictionary();
         _characterSelectUI.Init(_characterSelectReady);
-        _characterSelectUI.SetLobbyData();
+        _characterSelectUI.UpdateLobbyData();
         _hostDisconnectUI.Init();
         InitPlayersData();
     }

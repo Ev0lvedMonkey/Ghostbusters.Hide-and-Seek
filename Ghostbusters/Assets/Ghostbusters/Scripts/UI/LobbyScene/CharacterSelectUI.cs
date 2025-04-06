@@ -14,8 +14,7 @@ public class CharacterSelectUI : MonoBehaviour
 
     private CharacterSelectReady _characterSelectReady;
     private ServiceLocator _serviceLocator;
-
-
+    
     public void Init(CharacterSelectReady characterSelectReady)
     {
         _characterSelectReady = characterSelectReady;
@@ -33,7 +32,7 @@ public class CharacterSelectUI : MonoBehaviour
         _copyCodeButton.onClick.RemoveListener(CopyLobbyCode);
     }
 
-    public void SetLobbyData()
+    public void UpdateLobbyData()
     {
         Lobby lobby = _serviceLocator.Get<LobbyRelayManager>().GetJoinedLobby();
 
@@ -41,11 +40,15 @@ public class CharacterSelectUI : MonoBehaviour
         _lobbyCodeText.text = lobby.LobbyCode;
     }
 
-    private void CopyLobbyCode() =>
+    private void CopyLobbyCode()
+    {
         GUIUtility.systemCopyBuffer = _lobbyCodeText.text;
+    }
 
-    private void SetReady() =>
+    private void SetReady()
+    {
         _characterSelectReady.SetPlayerReady();
+    }
 
     private void BackToMenu()
     {
@@ -57,10 +60,13 @@ public class CharacterSelectUI : MonoBehaviour
         SceneLoader.Load(SceneLoader.ScenesEnum.MenuScene);
     }
 
-    private void Show() =>
+    private void Show()
+    {
         gameObject.SetActive(true);
+    }
 
-    private void Hide() =>
+    private void Hide()
+    {
         gameObject.SetActive(false);
-
+    }
 }

@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -8,6 +7,9 @@ public class LobbyMessageUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Button closeButton;
+
+    private const string DynamicTextTable = "DynamicTextTable";
+    
     private ServiceLocator _serviceLocator;
 
     public void Init()
@@ -35,32 +37,31 @@ public class LobbyMessageUI : MonoBehaviour
 
     private void LobbyMessage_OnQuickJoinFailed()
     {
-        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString("DynamicTextTable", "QuickJoinFailedText_Key"));
+        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString(DynamicTextTable, "QuickJoinFailedText_Key"));
     }
 
     private void LobbyMessage_OnJoinFailed()
     {
-        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString("DynamicTextTable", "JoinFailedText_Key"));
+        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString(DynamicTextTable, "JoinFailedText_Key"));
     }
 
     private void LobbyMessage_OnJoinStarted()
     {
-        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString("DynamicTextTable", "JoinStartedText_Key"));
+        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString(DynamicTextTable, "JoinStartedText_Key"));
     }
 
     private void LobbyMessage_OnCreateLobbyFailed()
     {
-        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString("DynamicTextTable", "CreateLobbyFailedText_Key"));
+        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString(DynamicTextTable, "CreateLobbyFailedText_Key"));
     }
 
     private void LobbyMessage_OnCreateLobbyStarted()
     {
-        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString("DynamicTextTable", "CreateLobbyStartedText_Key"));
+        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString(DynamicTextTable, "CreateLobbyStartedText_Key"));
     }
     
     private void ShowMessage(string message)
     {
-        Debug.LogWarning("show " + message);
         Show();
         messageText.text = message;
     }

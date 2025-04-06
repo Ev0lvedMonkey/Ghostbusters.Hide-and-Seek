@@ -25,8 +25,7 @@ public class GameSceneBootstrap : MonoBehaviour
     {
         RegisterServiceLocatorServices();
     }
-
-
+    
     private void OnEnable()
     {
         ServiceLocator.Current.Register(_gameStateManager);    

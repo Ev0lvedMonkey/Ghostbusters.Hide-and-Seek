@@ -4,14 +4,13 @@ using UnityEngine.Events;
 
 public class CharacterSelectReady : NetworkBehaviour
 {
-
     internal UnityEvent OnReadyChanged = new();
 
     private Dictionary<ulong, bool> playerReadyDictionary;
 
     public void MakeNewPlayerReadyDictionary()
     {
-        playerReadyDictionary = new();
+        playerReadyDictionary = new Dictionary<ulong, bool>();
     }
 
     public void SetPlayerReady()

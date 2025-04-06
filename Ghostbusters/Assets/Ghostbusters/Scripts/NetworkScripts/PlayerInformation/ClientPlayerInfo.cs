@@ -29,7 +29,8 @@ public class ClientPlayerInfo : PlayerInfo
     private void KickPlayer()
     {
         PlayerData playerData = _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataFromPlayerIndex(GetPlayerIndex());
-        Debug.Log($"pressed kick {_serviceLocator.Get<MultiplayerStorage>().GetPlayerData().playerId} host: {_serviceLocator.Get<LobbyRelayManager>().GetJoinedLobby().HostId} k");
+        Debug.Log($"pressed kick {_serviceLocator.Get<MultiplayerStorage>().GetPlayerData().playerId}" +
+                  $" host: {_serviceLocator.Get<LobbyRelayManager>().GetJoinedLobby().HostId} k");
         _serviceLocator.Get<LobbyRelayManager>().KickPlayer(playerData.playerId.ToString());
         _serviceLocator.Get<MultiplayerStorage>().KickPlayer(playerData.clientId);
     }

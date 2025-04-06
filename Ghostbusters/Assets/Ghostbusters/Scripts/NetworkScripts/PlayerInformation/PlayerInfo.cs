@@ -68,12 +68,14 @@ public abstract class PlayerInfo : MonoBehaviour
         }
         else
             _readyGameObject.SetActive(_characterSelectReady.IsPlayerReady(playerData.clientId));
+        UpdatePlayerName(playerData);
+    }
+
+    private void UpdatePlayerName(PlayerData playerData)
+    {
         ulong clientID = _serviceLocator.Get<MultiplayerStorage>().GetPlayerData().clientId;
 
-        if (playerData.clientId == clientID)
-            _playerNameText.color = Color.green;
-        else
-            _playerNameText.color = Color.white;
+        _playerNameText.color = playerData.clientId == clientID ? Color.green : Color.white;
         _playerNameText.text = playerData.playerName.ToString();
     }
 
