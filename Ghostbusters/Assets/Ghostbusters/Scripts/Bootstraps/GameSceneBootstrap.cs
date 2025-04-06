@@ -57,7 +57,7 @@ public class GameSceneBootstrap : MonoBehaviour
     {
         _gameSceneConfiguration = Resources.Load<GameSceneConfiguration>(LoadPath + _numberOfConfigType);
         Instantiate(_gameSceneConfiguration.GetLevelObject());
-        Instantiate(_gameSceneConfiguration.GetTerrainObject());
+        // Instantiate(_gameSceneConfiguration.GetTerrainObject());
         Instantiate(_gameSceneConfiguration.GetEnviroment());
     }
 

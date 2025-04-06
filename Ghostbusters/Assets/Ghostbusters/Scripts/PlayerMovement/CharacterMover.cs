@@ -1,21 +1,47 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
 public abstract class CharacterMover : NetworkBehaviour
 {
     [SerializeField] internal Rigidbody _rigidbody;
+    [SerializeField] internal Transform _navCheckDot;
 
+    private Vector3 _safePoint;
+    private float _timer;
     protected Vector3 _direction;
     protected Vector2 _input;
+
     protected const string Horizontal = "Horizontal";
     protected const string Vertical = "Vertical";
+    private const float CheckRadius = 0.5f;
+    private const float CheckInterval = 2.5f;
     private const float BackMoveSpeed = 3.375f;
     private const float MovementSpeed = 4.5f;
 
     private void Awake()
     {
         _rigidbody.isKinematic = true;
+    }
+
+    protected virtual void Update()
+    {
+        _timer += Time.deltaTime;
+        if (_timer >= CheckInterval)
+        {
+            _timer = 0f;
+            if (!IsOnNavMesh())
+            {
+                Debug.LogError("Out of bounds");
+                transform.position = _safePoint;
+            }
+            else
+            {
+                _safePoint = transform.position;
+            }
+        }
     }
 
     public virtual void Move()
@@ -56,5 +82,10 @@ public abstract class CharacterMover : NetworkBehaviour
     protected Vector2 GetInput()
     {
         return new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
+    }
+
+    private bool IsOnNavMesh()
+    {
+        return NavMesh.SamplePosition(_navCheckDot.position, out _, CheckRadius, NavMesh.AllAreas);
     }
 }

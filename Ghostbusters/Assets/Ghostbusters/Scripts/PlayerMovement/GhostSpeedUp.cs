@@ -22,6 +22,7 @@ public class GhostSpeedUp : GhostMover
 
     private void Update()
     {
+        base.Update();
         if (!IsOwner) return;
 
         GhostMove();
