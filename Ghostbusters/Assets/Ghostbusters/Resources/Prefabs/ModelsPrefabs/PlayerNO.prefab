@@ -294,8 +294,8 @@ GameObject:
   - component: {fileID: 9030675597157732721}
   - component: {fileID: 7408890187267987035}
   - component: {fileID: -7911315309490851568}
-  - component: {fileID: 131683806190917558}
   - component: {fileID: -2515787978255025047}
+  - component: {fileID: 131683806190917558}
   - component: {fileID: 7155014602679406567}
   - component: {fileID: 7895445609988697491}
   - component: {fileID: 289307720369143025}
@@ -380,38 +380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &131683806190917558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5255370187049413777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59466d0918fa8f546b5b0850946afa10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 1874786418358173608}
-  _navCheckDot: {fileID: 5173266347649546689}
-  _animator: {fileID: 1237098469879964603}
-  _blockingSphere: {fileID: 4814684917461445608, guid: 8888e61f2e667094b9d8a5495545c1b9, type: 3}
-  _blockingSphereSpawnEffect: {fileID: 7177991128484655659, guid: 59a35ab9f68edff40b6e5332bed330f5, type: 3}
-  OnDisableAbility:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 265202256761099327}
-        m_TargetAssemblyTypeName: CharacterAbilityStateChanger, Assembly-CSharp
-        m_MethodName: DisableAbility
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &-2515787978255025047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,6 +411,24 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &131683806190917558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5255370187049413777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59466d0918fa8f546b5b0850946afa10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 1874786418358173608}
+  _groundCheckDot: {fileID: 5173266347649546689}
+  _animator: {fileID: 1237098469879964603}
+  _blockingSphere: {fileID: 4814684917461445608, guid: 8888e61f2e667094b9d8a5495545c1b9, type: 3}
+  _blockingSphereSpawnEffect: {fileID: 7177991128484655659, guid: 59a35ab9f68edff40b6e5332bed330f5, type: 3}
+  _characterAbilityStateChanger: {fileID: 265202256761099327}
 --- !u!114 &7155014602679406567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,6 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b297c91d2eb5984788fabcb348d5b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnPositionList: {fileID: 11400000, guid: 0aa7f6df05a983440b5680a0b729bfb9, type: 2}
 --- !u!114 &289307720369143025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,21 +504,7 @@ MonoBehaviour:
   _bodyTransform: {fileID: 5173266347649546689}
   _bodyRigidbody: {fileID: 1874786418358173608}
   _fireObj: {fileID: 7155014602679406567}
-  OnSpectatorStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 131683806190917558}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  _characterMover: {fileID: 131683806190917558}
   _hudView: {fileID: 9014929157552778291}
   _deathAudioSource: {fileID: 5098936875972626571}
 --- !u!114 &7143969652443490114

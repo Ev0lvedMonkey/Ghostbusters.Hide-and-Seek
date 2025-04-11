@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class CharactersSceneBootstrap : MonoBehaviour
 {
-    [SerializeField] private CharacterSelectReady _characterSelectReady;
+    [Header("UI Elements")]
     [SerializeField] private CharacterSelectUI _characterSelectUI;
     [SerializeField] private HostDisconnectUI _hostDisconnectUI;
+    
+    [Header("Сomponents")]
+    [SerializeField] private CharacterSelectReady _characterSelectReady;
     [SerializeField] private List<PlayerInfo> _listPlayerInfo;
-
 
     private void OnEnable()
     {

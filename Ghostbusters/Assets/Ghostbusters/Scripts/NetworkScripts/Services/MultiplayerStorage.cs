@@ -7,10 +7,9 @@ public class MultiplayerStorage : NetworkBehaviour, IService
 {
     [SerializeField] private NetworkManager _networkManager;
 
-    public const int MAX_PLAYER_AMOUNT = 4;
-    private const string PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER = "PlayerNameMultiplayer";
-
-
+    public const int MaxPlayerAmount = 4;
+    private const string PlayerPrefsPlayerNameMultiplayer = "PlayerNameMultiplayer";
+    
     internal UnityEvent OnTryingToJoinGame = new();
     internal UnityEvent OnFailedToJoinGame = new();
     internal UnityEvent OnPlayerDataNetworkListChanged = new();
@@ -24,7 +23,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
 
         DontDestroyOnLoad(gameObject);
 
-        //_playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
+        //_playerName = PlayerPrefs.GetString(PlayerPrefsPlayerNameMultiplayer, "PlayerName" + UnityEngine.Random.Range(100, 1000));
 
         _playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
     }
@@ -38,7 +37,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
     {
         this._playerName = playerName;
 
-        PlayerPrefs.SetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, playerName);
+        PlayerPrefs.SetString(PlayerPrefsPlayerNameMultiplayer, playerName);
         Debug.Log($"{gameObject.name}: set player name {playerName}");
     }
 
@@ -215,7 +214,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
             return;
         }
 
-        if (NetworkManager.Singleton.ConnectedClientsIds.Count >= MAX_PLAYER_AMOUNT)
+        if (NetworkManager.Singleton.ConnectedClientsIds.Count >= MaxPlayerAmount)
         {
             connectionApprovalResponse.Approved = false;
             connectionApprovalResponse.Reason = "Game is full";

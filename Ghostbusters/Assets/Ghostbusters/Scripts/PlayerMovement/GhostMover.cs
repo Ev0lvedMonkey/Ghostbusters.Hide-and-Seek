@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class GhostMover : CharacterMover
 {
+    [Header("Ghost Movement Сomponents")]
     [SerializeField] private Transform _groundCheckDot;
     [SerializeField] private LayerMask _groundLayer;
 
@@ -13,7 +14,7 @@ public abstract class GhostMover : CharacterMover
     private const float JumpHeight = 5.5f;
     private const float GroundCheckRadius = 0.3f;
 
-    protected virtual void Start()
+    protected override void Awake()
     {
         ServiceLocator.Current.Get<GameStateManager>().OnOpenHUD.AddListener(() => IsRotationLocked = true);
     }
@@ -68,7 +69,7 @@ public abstract class GhostMover : CharacterMover
         return 1.0f;
     }
 
-    public override void Move()
+    protected override void Move()
     {
         if (!IsOwner) return;
 

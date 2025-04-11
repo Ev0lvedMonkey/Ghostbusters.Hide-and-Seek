@@ -4,11 +4,21 @@ using UnityEngine.Events;
 
 public class GhostbusterMover : CharacterMover
 {
+    [Header("Animator")]
     [SerializeField] private Animator _animator;
+    
+    [Header("Сomponents")]
     [SerializeField] private GameObject _blockingSphere;
     [SerializeField] private GameObject _blockingSphereSpawnEffect;
-    [SerializeField] private UnityEvent OnDisableAbility;
+    [SerializeField] private CharacterAbilityStateChanger _characterAbilityStateChanger;
+    
+    private readonly UnityEvent OnDisableAbility = new();
 
+    protected override void Awake()
+    {
+        base.Awake();
+        OnDisableAbility.AddListener(_characterAbilityStateChanger.DisableAbility);
+    }
 
     private void Update()
     {
@@ -18,7 +28,7 @@ public class GhostbusterMover : CharacterMover
         {
             SpawnSphereServerRpc();
             SpawnEffectServerRpc();
-            //OnDisableAbility.Invoke();
+            OnDisableAbility.Invoke();
         }
         SetAnimState();
     }

@@ -862,13 +862,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _firePositionService: {fileID: 1558595193}
   _gameStateManager: {fileID: 1991110626}
+  _keyboardInput: {fileID: 35563362}
   _gameStartCountdownUI: {fileID: 1123111052}
   _gamePlayingClockUI: {fileID: 12628857}
   _gameOverWinUI: {fileID: 1296789133}
   _mouseSenceSettingUI: {fileID: 1923689883}
-  _keyboardInput: {fileID: 35563362}
   _chatManager: {fileID: 5530268196343046901}
-  _numberOfConfigType: 1
+  _gameSceneConfiguration: {fileID: 11400000, guid: 396e63358c3df0245b7ca75ddae3d5bc, type: 2}
 --- !u!1 &969271100
 GameObject:
   m_ObjectHideFlags: 0
@@ -2496,6 +2496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80466a0fa527560458320e2bd4f64cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _matchDurationConfig: {fileID: 11400000, guid: 7fce70d8bada38b4a8b99ad4da234ea3, type: 2}
   ghostPrefab: {fileID: 2874304489409965433, guid: 6709ee023e2b27546814a661e1926aae, type: 3}
   playerPrefab: {fileID: 3143400298435435878, guid: 49b2e1893a37e574597223e8c5b73872, type: 3}
 --- !u!4 &1991110627

@@ -5,7 +5,8 @@ public class BlockingSphere : MonoBehaviour
 {
     [SerializeField] private SphereCollider _sphereCollider;
 
-    private HashSet<GameObject> trappedTransformingShoots = new();
+    private HashSet<GameObject> _trappedTransformingShoots = new();
+    
     private const float DestroyTime = 6f;
 
     private void OnValidate()
@@ -28,7 +29,7 @@ public class BlockingSphere : MonoBehaviour
         if (!enterColiderTransform.TryGetComponent(out TransformingShoot transformingShootComponent))
             return;
         Debug.LogError($"TransformingShoot {enterColiderTransform.name} entered the sphere");
-        trappedTransformingShoots.Add(enterColiderTransform.gameObject);
+        _trappedTransformingShoots.Add(enterColiderTransform.gameObject);
 
     }
 
@@ -39,7 +40,7 @@ public class BlockingSphere : MonoBehaviour
             return;
 
         if (!exitColiderTransform.TryGetComponent(out TransformingShoot transformingShootComponent)
-            && trappedTransformingShoots.Contains(exitColiderTransform.gameObject))
+            && _trappedTransformingShoots.Contains(exitColiderTransform.gameObject))
             return;
         
             Debug.LogError($"TransformingShoot {exitColiderTransform.name} tried to exit the sphere but was blocked");
@@ -56,6 +57,6 @@ public class BlockingSphere : MonoBehaviour
 
     private void OnDisable()
     {
-        trappedTransformingShoots.Clear();
+        _trappedTransformingShoots.Clear();
     }
 }

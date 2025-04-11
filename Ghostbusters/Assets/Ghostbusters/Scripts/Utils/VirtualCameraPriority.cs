@@ -4,6 +4,7 @@ using Unity.Netcode;
 
 public class VirtualCameraPriority : NetworkBehaviour
 {
+    [Header("Сomponents")]
     [SerializeField] private CinemachineVirtualCamera _virtualCamera;
 
     private void OnValidate()
@@ -30,11 +31,6 @@ public class VirtualCameraPriority : NetworkBehaviour
             _virtualCamera.Priority = 0;
         }
 
-    }
-
-    public CinemachineVirtualCamera GetCam()
-    {
-        return _virtualCamera;
     }
     
     private void ActivateCamera() =>

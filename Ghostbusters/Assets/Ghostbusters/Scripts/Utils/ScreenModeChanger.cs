@@ -1,13 +1,13 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ScreenModeChanger : MonoBehaviour
 {
+    [SerializeField] private Toggle _fullscreenToggle; 
+    [SerializeField] private CustomToggle _toggleController; 
+
     private const string FullscreenKey = "FullscreenMode";
-
-    [SerializeField] private Toggle fullscreenToggle; 
-    [SerializeField] private CustomToggle toggleController; 
-
 
     public void DetermineScreenMode()
     {
@@ -17,11 +17,11 @@ public class ScreenModeChanger : MonoBehaviour
 
     public void AddComponentsListeners() =>
 
-        fullscreenToggle.onValueChanged.AddListener(OnToggleChanged);
+        _fullscreenToggle.onValueChanged.AddListener(OnToggleChanged);
 
     public void RemoveComponentsListeners() =>
 
-        fullscreenToggle.onValueChanged.RemoveListener(OnToggleChanged);
+        _fullscreenToggle.onValueChanged.RemoveListener(OnToggleChanged);
 
     private void OnToggleChanged(bool isFullscreen)
     {
@@ -33,8 +33,8 @@ public class ScreenModeChanger : MonoBehaviour
 
     private void SetScreenMode(bool isFullscreen)
     {
-        toggleController.OnPointerDown(!isFullscreen);
-        fullscreenToggle.isOn = isFullscreen;
+        _toggleController.OnPointerDown(!isFullscreen);
+        _fullscreenToggle.isOn = isFullscreen;
         if (isFullscreen)
         {
             Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);

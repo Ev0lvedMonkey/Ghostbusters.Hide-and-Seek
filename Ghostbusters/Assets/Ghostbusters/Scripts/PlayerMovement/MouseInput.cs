@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class MouseInput : NetworkBehaviour
 {
+    [Header("Base Mouse Input Сomponents")]
     [SerializeField] private MouseSenceConfiguration _mouseSenseConfig;
     [SerializeField] private Transform _camFollowPosition;
     [SerializeField] private Transform _torseObj;
@@ -14,8 +15,8 @@ public abstract class MouseInput : NetworkBehaviour
 
     private const string MouseX = "Mouse X";
     private const string MouseY = "Mouse Y";
-    private const float AngleLimit = 25f;
 
+    private const float AngleLimit = 25f;
     private const float MinMinusAngleLimit = 0;
     private const float MaxMinusAngleLimit = -AngleLimit;
     private const float MinPlusAngleLimit = 0f;
@@ -28,22 +29,7 @@ public abstract class MouseInput : NetworkBehaviour
     {
         Init();
     }
-
-    [ServerRpc]
-    protected virtual void UpdateRotationServerRpc(float xAxis, float yAxis) =>
-        UpdateRotationClientRpc(xAxis, yAxis);
-
-
-    [ClientRpc]
-    private void UpdateRotationClientRpc(float xAxis, float yAxis)
-    {
-        if (IsOwner) return;
-
-        _xAxis = xAxis;
-        _yAxis = yAxis;
-        ApplyRotation();
-    }
-
+    
     private void LateUpdate()
     {
         if (IsOwner)
@@ -110,11 +96,26 @@ public abstract class MouseInput : NetworkBehaviour
         _yAxis = Mathf.Clamp(_yAxis, MinusAngleLimit, PlusAngleLimit);
     }
 
-    private void Init()
+    protected virtual void Init()
     {
         _fullbodyRotation = new FullBodyRotation(transform);
         _camRotation = new CamRotation(_camFollowPosition);
         _torseRotation = new TorseRotation(_torseObj);
+    }
+    
+    [ServerRpc]
+    protected virtual void UpdateRotationServerRpc(float xAxis, float yAxis) =>
+        UpdateRotationClientRpc(xAxis, yAxis);
+
+
+    [ClientRpc]
+    private void UpdateRotationClientRpc(float xAxis, float yAxis)
+    {
+        if (IsOwner) return;
+
+        _xAxis = xAxis;
+        _yAxis = yAxis;
+        ApplyRotation();
     }
 
 }

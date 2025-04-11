@@ -5,11 +5,11 @@ using UnityEngine;
 
 public static class CustomPlayerPrefs 
 {
-    private const int salt = 835026145;
+    private const int Salt = 835026145;
 
     public static void SetInt(string key, int value)
     {
-        int salted = value ^ salt;
+        int salted = value ^ Salt;
         PlayerPrefs.SetInt(StringHash(key), salted);
         PlayerPrefs.SetInt(StringHash("_" + key), IntHash(value));
     }
@@ -25,7 +25,7 @@ public static class CustomPlayerPrefs
         if (!PlayerPrefs.HasKey(hashedKey)) return defaultValue;
 
         int salted = PlayerPrefs.GetInt(hashedKey);
-        int value = salted ^ salt;
+        int value = salted ^ Salt;
 
         int loadedHash = PlayerPrefs.GetInt(StringHash("_" + key));
         if (loadedHash != IntHash(value)) return defaultValue;
@@ -37,7 +37,7 @@ public static class CustomPlayerPrefs
     {
         int intValue = BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
 
-        int salted = intValue ^ salt;
+        int salted = intValue ^ Salt;
         PlayerPrefs.SetInt(StringHash(key), salted);
         PlayerPrefs.SetInt(StringHash("_" + key), IntHash(intValue));
     }
@@ -53,7 +53,7 @@ public static class CustomPlayerPrefs
         if (!PlayerPrefs.HasKey(hashedKey)) return defaultValue;
 
         int salted = PlayerPrefs.GetInt(hashedKey);
-        int value = salted ^ salt;
+        int value = salted ^ Salt;
 
         int loadedHash = PlayerPrefs.GetInt(StringHash("_" + key));
         if (loadedHash != IntHash(value)) return defaultValue;
@@ -92,7 +92,7 @@ public static class CustomPlayerPrefs
         if (!PlayerPrefs.HasKey(hashedKey)) return false;
 
         int salted = PlayerPrefs.GetInt(hashedKey);
-        int value = salted ^ salt;
+        int value = salted ^ Salt;
 
         int loadedHash = PlayerPrefs.GetInt(StringHash("_" + key));
 

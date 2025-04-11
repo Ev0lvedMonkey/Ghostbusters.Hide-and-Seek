@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class MenuSceneBootstrap : MonoBehaviour
 {
-    [SerializeField] private MouseSenceSettingUI _mouseSenceSettingUI;
+    [Header("UI Elements")]
     [SerializeField] private ScreenModeChanger _screenModeChanger;
+    [SerializeField] private MouseSenceSettingUI _mouseSenceSettingUI;
     [SerializeField] private SingltonsCleanUp _singltonCleanUp;
-    [SerializeField] private CamRotateAround _camRotateAround;
     [SerializeField] private MenuUI _menuUI;
     [SerializeField] private SettingUI _settingUI;
     [SerializeField] private HelpUI _helpUI;
+    
+    [Header("Components")]
+    [SerializeField] private CamRotateAround _camRotateAround;
     [SerializeField] private AudioManager _audioManager;
 
     private void Awake()

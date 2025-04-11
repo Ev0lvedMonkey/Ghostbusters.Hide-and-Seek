@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class TransformingShoot : RayFiringObject
 {
+    [Header("Transforming Shoot Сomponents")]
     [SerializeField] private GameObject _bodyObject;
-    [SerializeField] private AudioSource _audioSource;
     [SerializeField] private GameObject _transformEffect;
+    
+    [Header("Audio Сomponents")]
+    [SerializeField] private AudioSource _audioSource;
     
     private MeshFilter _bodyMeshFilter;
     private MeshRenderer _bodyRenderer;

@@ -12,6 +12,11 @@ public class CharacterSelectReady : NetworkBehaviour
     {
         playerReadyDictionary = new Dictionary<ulong, bool>();
     }
+    
+    public bool IsPlayerReady(ulong clientId)
+    {
+        return playerReadyDictionary.ContainsKey(clientId) && playerReadyDictionary[clientId];
+    }
 
     public void SetPlayerReady()
     {
@@ -30,7 +35,6 @@ public class CharacterSelectReady : NetworkBehaviour
         {
             if (!playerReadyDictionary.ContainsKey(clientId) || !playerReadyDictionary[clientId])
             {
-                // This player is NOT ready
                 allClientsReady = false;
                 break;
             }
@@ -51,11 +55,4 @@ public class CharacterSelectReady : NetworkBehaviour
 
         OnReadyChanged.Invoke();
     }
-
-
-    public bool IsPlayerReady(ulong clientId)
-    {
-        return playerReadyDictionary.ContainsKey(clientId) && playerReadyDictionary[clientId];
-    }
-
 }

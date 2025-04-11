@@ -4,13 +4,20 @@ using UnityEngine.Events;
 
 public class CharacterHealthController : NetworkBehaviour
 {
+    [Header("Properties")]
     [SerializeField, Range(100, 150)] private float _maxHealth;
+    
+    [Header("Components")]
     [SerializeField] private GameObject _deathEffect;
     [SerializeField] private Transform _bodyTransform;
     [SerializeField] private Rigidbody _bodyRigidbody;
     [SerializeField] private RayFiringObject _fireObj;
-    [SerializeField] private UnityEvent OnSpectatorStart;
+    [SerializeField] private CharacterMover _characterMover;
+    
+    [Header("UI Elements")]
     [SerializeField] private HealthView _hudView;
+    
+    [Header("Audio")]
     [SerializeField] private AudioSource _deathAudioSource;
 
     private const int SELF_DAMAGE = 10;
@@ -133,7 +140,7 @@ public class CharacterHealthController : NetworkBehaviour
         DisableHUD();
         _bodyTransform.gameObject.SetActive(false);
 
-        OnSpectatorStart.Invoke();
+        _characterMover.enabled = false;
         _bodyRigidbody.isKinematic = true;
         _bodyRigidbody.useGravity = false;
         _fireObj.enabled = false;

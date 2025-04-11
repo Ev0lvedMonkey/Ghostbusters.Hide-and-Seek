@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ClientPlayerInfo : PlayerInfo
 {
     [SerializeField] private Button _kickButton;
-
+    
     private void OnDisable()
     {
         _kickButton.gameObject.SetActive(false);
@@ -28,11 +28,13 @@ public class ClientPlayerInfo : PlayerInfo
 
     private void KickPlayer()
     {
-        PlayerData playerData = _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataFromPlayerIndex(GetPlayerIndex());
-        Debug.Log($"pressed kick {_serviceLocator.Get<MultiplayerStorage>().GetPlayerData().playerId}" +
+        PlayerData playerData = _multiplayerStorage.GetPlayerDataFromPlayerIndex(GetPlayerIndex());
+        
+        Debug.Log($"pressed kick {_multiplayerStorage.GetPlayerData().playerId}" +
                   $" host: {_serviceLocator.Get<LobbyRelayManager>().GetJoinedLobby().HostId} k");
+        
         _serviceLocator.Get<LobbyRelayManager>().KickPlayer(playerData.playerId.ToString());
-        _serviceLocator.Get<MultiplayerStorage>().KickPlayer(playerData.clientId);
+        _multiplayerStorage.KickPlayer(playerData.clientId);
     }
 
     protected override void UpdatePlayerInfo()

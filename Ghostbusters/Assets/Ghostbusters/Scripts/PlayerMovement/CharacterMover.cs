@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,6 +5,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class CharacterMover : NetworkBehaviour
 {
+    [Header("Character Mover Componets")]
     [SerializeField] internal Rigidbody _rigidbody;
     [SerializeField] internal Transform _navCheckDot;
 
@@ -14,6 +14,7 @@ public abstract class CharacterMover : NetworkBehaviour
     protected Vector3 _direction;
     protected Vector2 _input;
 
+    
     protected const string Horizontal = "Horizontal";
     protected const string Vertical = "Vertical";
     private const float CheckRadius = 0.5f;
@@ -21,7 +22,7 @@ public abstract class CharacterMover : NetworkBehaviour
     private const float BackMoveSpeed = 3.375f;
     private const float MovementSpeed = 4.5f;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _rigidbody.isKinematic = true;
     }
@@ -36,15 +37,17 @@ public abstract class CharacterMover : NetworkBehaviour
             {
                 Debug.LogError("Out of bounds");
                 transform.position = _safePoint;
+                _rigidbody.position = _safePoint;
+                _rigidbody.velocity = Vector3.zero;
             }
             else
             {
-                _safePoint = transform.position;
+                _safePoint = new(transform.position.x, transform.position.y + 1.2f, transform.position.z); 
             }
         }
     }
 
-    public virtual void Move()
+    protected virtual void Move()
     {
         if (!IsOwner) return;
 
@@ -54,7 +57,7 @@ public abstract class CharacterMover : NetworkBehaviour
         float verticalInput = _input.y;
 
         _direction = transform.forward * verticalInput + transform.right * horizontalInput;
-        Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * Time.deltaTime;
+        Vector3 targetPosition = transform.position + _direction.normalized * (GetMoveSpeed() * Time.deltaTime);
         _rigidbody.MovePosition(targetPosition);
         UpdatePositionServerRpc(targetPosition);
     }
@@ -86,6 +89,6 @@ public abstract class CharacterMover : NetworkBehaviour
 
     private bool IsOnNavMesh()
     {
-        return NavMesh.SamplePosition(_navCheckDot.position, out _, CheckRadius, NavMesh.AllAreas);
+        return NavMesh.SamplePosition(new Vector3(_navCheckDot.position.x, 0f, _navCheckDot.position.z ), out _, CheckRadius, NavMesh.AllAreas);
     }
 }

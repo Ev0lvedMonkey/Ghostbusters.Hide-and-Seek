@@ -3,23 +3,35 @@ using UnityEngine.Events;
 
 public class GhostMouseInput : MouseInput
 {
+    [Header("Ghost Mouse Input Сomponents")]
     [SerializeField] private GhostMover _ghostMover;
-    [SerializeField] private UnityEvent OnSetDeafaultStats;
+    [SerializeField] private DeafaultCamPos _deafaultCamPos;
+    
+    private readonly UnityEvent OnSetDeafaultStats = new();
+    
     private bool _isFirstFrame;
 
+    private const float MinusMouseAngleLimit = 25f;
+    private const float PLusMouseAngleLimit = 10f;
+    
     private void Start()
     {
-        Debug.Log($"Set nouse limits ghost");
-        SetMinusAngleLimit(25);
-        SetPlusAngleLimit(10);
+        SetMinusAngleLimit(MinusMouseAngleLimit);
+        SetPlusAngleLimit(PLusMouseAngleLimit);
     }
 
-    void Update()
+    private void Update()
     {
         if (!IsOwner) return;
 
         base.SetMousePos();
         base.UpdateRotationServerRpc(_xAxis, _yAxis);
+    }
+
+    protected override void Init()
+    {
+        base.Init();
+        OnSetDeafaultStats.AddListener(_deafaultCamPos.SetDeafaultStats);
     }
 
     protected override void ApplyRotation()
@@ -31,7 +43,6 @@ public class GhostMouseInput : MouseInput
             SetDefaultBodyRotation();
 
             _isFirstFrame = false;
-            return;
         }
         else
         {

@@ -3,8 +3,12 @@ using UnityEngine.UI;
 
 public class DecideTransformingObject : MonoBehaviour
 {
-    [SerializeField, Range(1f, 250f)] protected float _maxRayDistance;
     [SerializeField] protected Image _crosshairImage;
+    
+    private const float MaxRayDistance =  250f;
+    
+    private readonly Color TransformableObjectColor = Color.red;
+    private readonly Color SimpleObjectColor = Color.cyan;
     
     private void Update()
     {
@@ -12,15 +16,14 @@ public class DecideTransformingObject : MonoBehaviour
 
         Ray ray = new(firePosition.position, firePosition.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, _maxRayDistance))
+        if (Physics.Raycast(ray, out RaycastHit hit, MaxRayDistance))
         {
             if (!hit.collider.TryGetComponent<TransformableObject>(out var transformableObject))
             {
-                _crosshairImage.color = Color.red;
+                _crosshairImage.color = TransformableObjectColor;
             }
             else
-                _crosshairImage.color = Color.cyan;
-
+                _crosshairImage.color = SimpleObjectColor;
         }
 
     }

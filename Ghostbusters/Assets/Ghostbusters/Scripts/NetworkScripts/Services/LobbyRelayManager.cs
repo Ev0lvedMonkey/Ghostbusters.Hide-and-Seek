@@ -16,6 +16,8 @@ using UnityEngine.SceneManagement;
 
 public class LobbyRelayManager : MonoBehaviour, IService
 {
+    public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
+    
     internal UnityEvent OnCreateLobbyStarted = new();
     internal UnityEvent OnCreateLobbyFailed = new();
     internal UnityEvent OnJoinStarted = new();
@@ -23,8 +25,8 @@ public class LobbyRelayManager : MonoBehaviour, IService
     internal UnityEvent OnJoinFailed = new();
     internal UnityEvent OnSignIn = new();
 
-    private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
-    public const string KEY_PLAYER_NAME = "PlayerName";
+    private const string RelayJoinCodeKey = "RelayJoinCode";
+    public const string PlayerNameKey = "PlayerName";
 
     private float _heartbeatTimer;
     private float _lobbyPollTimer;
@@ -32,27 +34,21 @@ public class LobbyRelayManager : MonoBehaviour, IService
     private string _playerName;
     private ServiceLocator _serviceLocator;
 
+    private void Update()
+    {
+        HandleHeartbeat();
+        HandlePeriodicListLobbies();
+    }
+
     public void Init()
     {
         _serviceLocator = ServiceLocator.Current;
-        //Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     public void InitializeAuthentication() =>
         InitializeUnityAuthentication();
 
-    public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
-    public class OnLobbyListChangedEventArgs : EventArgs
-    {
-        public List<Lobby> lobbyList;
-    }
-
-    private void Update()
-    {
-        HandleHeartbeat();
-        HandlePeriodicListLobbies();
-    }
 
     public async Task CreateLobby(string lobbyName, bool isPrivate)
     {
@@ -61,15 +57,17 @@ public class LobbyRelayManager : MonoBehaviour, IService
             Debug.LogError("NO 3 AUTH");
             return;
         }
+
         OnCreateLobbyStarted?.Invoke();
         try
         {
             if (string.IsNullOrWhiteSpace(lobbyName))
                 lobbyName = $"Lobby_{UnityEngine.Random.Range(100, 1000)}";
-            _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerStorage.MAX_PLAYER_AMOUNT, new CreateLobbyOptions
-            {
-                IsPrivate = isPrivate,
-            });
+            _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerStorage.MaxPlayerAmount,
+                new CreateLobbyOptions
+                {
+                    IsPrivate = isPrivate,
+                });
 
             Allocation allocation = await AllocateRelay();
 
@@ -77,14 +75,16 @@ public class LobbyRelayManager : MonoBehaviour, IService
 
             await LobbyService.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
             {
-                Data = new Dictionary<string, DataObject> {
-                     { KEY_RELAY_JOIN_CODE , new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode) }
-                 }
+                Data = new Dictionary<string, DataObject>
+                {
+                    { RelayJoinCodeKey, new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode) }
+                }
             });
 
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
+            NetworkManager.Singleton.GetComponent<UnityTransport>()
+                .SetRelayServerData(new RelayServerData(allocation, "dtls"));
 
-           _serviceLocator.Get<MultiplayerStorage>().StartHost();
+            _serviceLocator.Get<MultiplayerStorage>().StartHost();
             SceneLoader.LoadNetwork(SceneLoader.ScenesEnum.CharactersScene);
         }
         catch (LobbyServiceException e)
@@ -101,19 +101,21 @@ public class LobbyRelayManager : MonoBehaviour, IService
             Debug.LogError("NO 2 AUTH");
             return;
         }
+
         OnJoinStarted?.Invoke();
         try
         {
             _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
 
-            string relayJoinCode = _joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+            string relayJoinCode = _joinedLobby.Data[RelayJoinCodeKey].Value;
 
             JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
 
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+            NetworkManager.Singleton.GetComponent<UnityTransport>()
+                .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
             Debug.Log($"{gameObject.name}: quick joined");
 
-           _serviceLocator.Get<MultiplayerStorage>().StartClient();
+            _serviceLocator.Get<MultiplayerStorage>().StartClient();
         }
         catch (LobbyServiceException e)
         {
@@ -129,20 +131,21 @@ public class LobbyRelayManager : MonoBehaviour, IService
             Debug.LogError("NO 1 AUTH");
             return;
         }
+
         OnJoinStarted?.Invoke();
         try
         {
             _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
 
-            string relayJoinCode = _joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+            string relayJoinCode = _joinedLobby.Data[RelayJoinCodeKey].Value;
 
             JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
 
-            NetworkManager.Singleton.GetComponent<UnityTransport>().
-                SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+            NetworkManager.Singleton.GetComponent<UnityTransport>()
+                .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
             Debug.Log($"{gameObject.name}: joined by code");
 
-           _serviceLocator.Get<MultiplayerStorage>().StartClient();
+            _serviceLocator.Get<MultiplayerStorage>().StartClient();
         }
         catch (LobbyServiceException e)
         {
@@ -158,20 +161,21 @@ public class LobbyRelayManager : MonoBehaviour, IService
             Debug.LogError("NO 4 AUTH");
             return;
         }
+
         OnJoinStarted?.Invoke();
         try
         {
             _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
 
-            string relayJoinCode = _joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+            string relayJoinCode = _joinedLobby.Data[RelayJoinCodeKey].Value;
 
             JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
 
-            NetworkManager.Singleton.GetComponent<UnityTransport>().
-                SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+            NetworkManager.Singleton.GetComponent<UnityTransport>()
+                .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
             Debug.Log($"{gameObject.name}: joined by ID");
 
-           _serviceLocator.Get<MultiplayerStorage>().StartClient();
+            _serviceLocator.Get<MultiplayerStorage>().StartClient();
         }
         catch (LobbyServiceException e)
         {
@@ -200,9 +204,9 @@ public class LobbyRelayManager : MonoBehaviour, IService
             {
                 Debug.Log(e);
             }
+
             Debug.Log($"NOT delete lobby");
         }
-
     }
 
     public async void LeaveLobby()
@@ -250,7 +254,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
     private async void InitializeUnityAuthentication()
     {
         _playerName = "Player" + UnityEngine.Random.Range(0, 1000);
-       _serviceLocator.Get<MultiplayerStorage>().SetPlayerName(_playerName);
+        _serviceLocator.Get<MultiplayerStorage>().SetPlayerName(_playerName);
         if (UnityServices.State != ServicesInitializationState.Initialized)
         {
             InitializationOptions initializationOptions = new();
@@ -260,7 +264,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
 
             AuthenticationService.Instance.SignedIn += () =>
             {
-                Debug.Log($"{gameObject.name} Signed in! " + AuthenticationService.Instance.PlayerId); 
+                Debug.Log($"{gameObject.name} Signed in! " + AuthenticationService.Instance.PlayerId);
 
                 Debug.Log($"{gameObject.name} Player name: " + _playerName);
             };
@@ -279,7 +283,6 @@ public class LobbyRelayManager : MonoBehaviour, IService
             AuthenticationService.Instance.IsSignedIn &&
             SceneManager.GetActiveScene().name == SceneLoader.ScenesEnum.LobbyScene.ToString())
         {
-
             _lobbyPollTimer -= Time.deltaTime;
             if (_lobbyPollTimer <= 0f)
             {
@@ -312,9 +315,10 @@ public class LobbyRelayManager : MonoBehaviour, IService
         {
             QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions
             {
-                Filters = new List<QueryFilter> {
-                  new (QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT)
-             }
+                Filters = new List<QueryFilter>
+                {
+                    new(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT)
+                }
             };
             QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(queryLobbiesOptions);
 
@@ -327,7 +331,6 @@ public class LobbyRelayManager : MonoBehaviour, IService
             {
                 Debug.Log($"{gameObject.name}: queryResponse {item.Name}");
             }
-
         }
         catch (LobbyServiceException e)
         {
@@ -339,7 +342,8 @@ public class LobbyRelayManager : MonoBehaviour, IService
     {
         try
         {
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MultiplayerStorage.MAX_PLAYER_AMOUNT - 1);
+            Allocation allocation =
+                await RelayService.Instance.CreateAllocationAsync(MultiplayerStorage.MaxPlayerAmount - 1);
 
             return allocation;
         }
@@ -380,4 +384,10 @@ public class LobbyRelayManager : MonoBehaviour, IService
             return default;
         }
     }
+
+    public class OnLobbyListChangedEventArgs : EventArgs
+    {
+        public List<Lobby> lobbyList;
+    }
 }
+

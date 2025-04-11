@@ -6,8 +6,8 @@ public class CharacterAbilityStateChanger : MonoBehaviour
 {
     [SerializeField] private Image _abilityImage;
 
-    [SerializeField] private Color EnabledColor = Color.green;
-    [SerializeField] private Color DisabledColor = Color.gray;
+    private readonly Color EnabledColor = Color.green;
+    private readonly Color DisabledColor = Color.gray;
 
     private void OnValidate()
     {

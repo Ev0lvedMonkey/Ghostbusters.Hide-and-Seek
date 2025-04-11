@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class GhostbusterMouseInput : MouseInput
 {
+    private const float MouseAngleLimits = 25f;
+    
     private void Start()
     {
-        Debug.Log($"Set nouse limits buster");
-        SetMinusAngleLimit(25);
-        SetPlusAngleLimit(25);
+        SetMinusAngleLimit(MouseAngleLimits);
+        SetPlusAngleLimit(MouseAngleLimits);
     }
 
     void Update()

@@ -10,14 +10,15 @@ public class AudioVolumeConfiguration : ScriptableObject
 
     public readonly string MusicKey = "MusicValue";
     public readonly string EffectsKey = "EffectsValue";
+    
+    public float MusicVolume => _musicVolume;
+    public float EffectsVolume => _effectsVolume;
 
     private void OnEnable()
     {
         LoadVolumes();
     }
 
-    public float MusicVolume => _musicVolume;
-    public float EffectsVolume => _effectsVolume;
 
     public void SetMusicVolume(float value)
     {

@@ -3,18 +3,21 @@ using UnityEngine;
 
 public abstract class PlayerInfo : MonoBehaviour
 {
+    [Header("Base Сomponents")]
     [SerializeField] private int _playerIndex;
     [SerializeField] private GameObject _readyGameObject;
     [SerializeField] private TextMeshProUGUI _playerNameText;
 
     protected ServiceLocator _serviceLocator;
+    protected MultiplayerStorage _multiplayerStorage;
     private CharacterSelectReady _characterSelectReady;
 
     public virtual void Init(CharacterSelectReady characterSelectReady)
     {
         _characterSelectReady = characterSelectReady;
         _serviceLocator = ServiceLocator.Current;
-        _serviceLocator.Get<MultiplayerStorage>().OnPlayerDataNetworkListChanged.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
+        _multiplayerStorage = _serviceLocator.Get<MultiplayerStorage>(); 
+        _multiplayerStorage.OnPlayerDataNetworkListChanged.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
         _characterSelectReady.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
         UpdatePlayer();
     }

@@ -3,9 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class LobbySceneBootstrap : MonoBehaviour
 {
+    [Header("UI Elements")]
     [SerializeField] private LobbyMessageUI _lobbyMessageUI;
     [SerializeField] private CreateLobbyUI _createLobbyUI;
     [SerializeField] private MainMenuUi _mainMenuUi;
+    
+    [Header("Net Managers")]
     [SerializeField] private LobbyRelayManager _lobbyRelayManager;
     [SerializeField] private MultiplayerStorage _multiplayerStorage;
 
