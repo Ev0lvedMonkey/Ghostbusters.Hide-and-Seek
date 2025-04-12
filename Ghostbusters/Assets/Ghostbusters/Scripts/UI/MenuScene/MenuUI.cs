@@ -9,9 +9,9 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private Button _helpButton;
     [SerializeField] private Button _quickButton;
 
-    [Header("UI`s")]
+    [Header("UI Components")]
     [SerializeField] private SettingUI _settingUI;
-    [SerializeField] private HelpUI _helpUI;
+    [SerializeField] private ModernHelpUI _helpUI;
 
     public void Init()
     {

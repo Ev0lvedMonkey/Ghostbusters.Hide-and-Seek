@@ -8,7 +8,7 @@ public class MenuSceneBootstrap : MonoBehaviour
     [SerializeField] private SingltonsCleanUp _singltonCleanUp;
     [SerializeField] private MenuUI _menuUI;
     [SerializeField] private SettingUI _settingUI;
-    [SerializeField] private HelpUI _helpUI;
+    [SerializeField] private ModernHelpUI _helpUI;
     
     [Header("Components")]
     [SerializeField] private CamRotateAround _camRotateAround;

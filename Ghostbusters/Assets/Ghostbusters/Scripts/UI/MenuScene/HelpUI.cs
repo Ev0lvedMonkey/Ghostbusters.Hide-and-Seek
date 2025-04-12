@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HelpUI : MonoBehaviour
+public abstract class HelpUI : MonoBehaviour
 {
+    [Header("Base Components")]
     [SerializeField] private Button _exitButton;
 
-    public void Init()
+    public virtual void Init()
     {
         _exitButton.onClick.AddListener(Hide);
         Hide();
     }
 
-    public void Show() =>
+    public virtual void Show() =>
          gameObject.SetActive(true);
 
     public void Hide() =>
