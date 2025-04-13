@@ -69,7 +69,7 @@ MonoBehaviour:
     \u043C\u044B\u0448\u0438"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 10d6d47ad3397f04fa08611c15ab18ed, type: 2}
-  m_sharedMaterial: {fileID: 2070507752049148131, guid: 10d6d47ad3397f04fa08611c15ab18ed, type: 2}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

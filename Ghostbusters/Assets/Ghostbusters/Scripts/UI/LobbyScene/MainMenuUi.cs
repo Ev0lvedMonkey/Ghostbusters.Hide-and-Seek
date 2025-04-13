@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Services.Core;
@@ -17,6 +16,7 @@ public class MainMenuUi : MonoBehaviour
     [SerializeField] private Transform _lobbyContainer;
     [SerializeField] private Transform _lobbyTemplate;
     [SerializeField] private CreateLobbyUI _lobbyCreateUI;
+    
     private ServiceLocator _serviceLocator;
 
     public void Init()
@@ -29,7 +29,6 @@ public class MainMenuUi : MonoBehaviour
         _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged += OnLobbyListChanged;
         _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(ActivateButtons);
         _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(AddButtonsListeners);
-        ActivateButtons();
         AddButtonsListeners();
         Show();
     }
