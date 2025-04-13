@@ -18,26 +18,31 @@ public class MainMenuUi : MonoBehaviour
     [SerializeField] private CreateLobbyUI _lobbyCreateUI;
     
     private ServiceLocator _serviceLocator;
-
+    private LobbyRelayManager _lobbyRelayManager;
+    
     public void Init()
     {
+        _serviceLocator = null;
+        _lobbyRelayManager = null;
         _serviceLocator = ServiceLocator.Current;
+        _lobbyRelayManager = _serviceLocator.Get<LobbyRelayManager>();
         _playerNameInputField.characterLimit = 19;
         _lobbyCodeInputField.characterLimit = 6;
         DeactivateButtons();
         UpdateLobbyList(new List<Lobby>());
-        _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged += OnLobbyListChanged;
-        _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(ActivateButtons);
-        _serviceLocator.Get<LobbyRelayManager>().OnSignIn.AddListener(AddButtonsListeners);
+        _lobbyRelayManager.OnLobbyListChanged += OnLobbyListChanged;
+        _lobbyRelayManager.OnSignIn.AddListener(ActivateButtons);
+        _lobbyRelayManager.OnSignIn.AddListener(AddButtonsListeners);
         AddButtonsListeners();
         Show();
+        ActivateButtons();
     }
 
     public void Uninit()
     {
-        _serviceLocator.Get<LobbyRelayManager>().OnLobbyListChanged -= OnLobbyListChanged;
-        _serviceLocator.Get<LobbyRelayManager>().OnSignIn.RemoveListener(ActivateButtons);
-        _serviceLocator.Get<LobbyRelayManager>().OnSignIn.RemoveListener(AddButtonsListeners);
+        _lobbyRelayManager.OnLobbyListChanged -= OnLobbyListChanged;
+        _lobbyRelayManager.OnSignIn.RemoveListener(ActivateButtons);
+        _lobbyRelayManager.OnSignIn.RemoveListener(AddButtonsListeners);
         RemoveButtonsListeners();
     }
 
@@ -93,6 +98,7 @@ public class MainMenuUi : MonoBehaviour
 
     private void ActivateButtons()
     {
+        Debug.LogError($"UnityServices.State {UnityServices.State}");
         if (UnityServices.State == ServicesInitializationState.Initialized)
         {
             _createLobbyBtn.gameObject.SetActive(true);

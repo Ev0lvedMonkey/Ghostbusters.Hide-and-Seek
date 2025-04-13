@@ -63,9 +63,6 @@ public class TransformingShoot : RayFiringObject
     {
         if (targetObjectRef.TryGet(out NetworkObject targetObject))
         {
-            Transform targetTransform = targetObject.transform;
-            ApplyTransformLocally(targetTransform);
-
             ApplyTransformClientRpc(targetObjectRef);
             PlaySoundClientRpc(transform.position);
         }
