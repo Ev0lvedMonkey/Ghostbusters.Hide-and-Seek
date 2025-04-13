@@ -14,8 +14,13 @@ public abstract class RayFiringObject : NetworkBehaviour
     private const float HitCooldown = 1.5f;
     private const KeyCode LMB = KeyCode.Mouse0;
 
+    private GameOverWinUI _gameOverWinUI;
+    private ChatManager _chatManager;
+    
     protected virtual void Start()
     {
+        _gameOverWinUI = ServiceLocator.Current.Get<GameOverWinUI>();
+        _chatManager = ServiceLocator.Current.Get<ChatManager>();
         _actionTimer = _fireRate;
         _isCooldownActive = false;
     }
@@ -42,7 +47,9 @@ public abstract class RayFiringObject : NetworkBehaviour
                 return false;
         }
 
-        return _actionTimer >= _fireRate && Input.GetKeyDown(LMB); ;
+        bool menuOpened = _gameOverWinUI.IsOpened() || _chatManager.IsOpened();
+        
+        return _actionTimer >= _fireRate && !menuOpened && Input.GetKeyDown(LMB);
     }
 
     protected virtual void Fire()
