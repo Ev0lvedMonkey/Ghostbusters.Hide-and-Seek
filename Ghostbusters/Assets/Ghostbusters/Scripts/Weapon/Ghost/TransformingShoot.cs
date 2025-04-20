@@ -43,13 +43,13 @@ public class TransformingShoot : RayFiringObject
 
     private void TryTransform(RaycastHit hit)
     {
-        if (!hit.collider.TryGetComponent<TransformableObject>(out var transformableObject))
+        if (!hit.collider.TryGetComponent<TransformableObject>(out TransformableObject transformableObject))
         {
             Debug.Log("TransformableObject not found");
             return;
         }
 
-        if (!hit.transform.TryGetComponent<NetworkObject>(out var targetNetworkObject))
+        if (!hit.transform.TryGetComponent<NetworkObject>(out NetworkObject targetNetworkObject))
         {
             Debug.Log("NetworkObject not found");
             return;
@@ -63,6 +63,7 @@ public class TransformingShoot : RayFiringObject
     {
         if (targetObjectRef.TryGet(out NetworkObject targetObject))
         {
+            ApplyTransformLocally(targetObject.transform);
             ApplyTransformClientRpc(targetObjectRef);
             PlaySoundClientRpc(transform.position);
         }
@@ -71,15 +72,19 @@ public class TransformingShoot : RayFiringObject
     [ClientRpc]
     private void ApplyTransformClientRpc(NetworkObjectReference targetObjectRef)
     {
-        if (targetObjectRef.TryGet(out NetworkObject targetObject))
+        if (!targetObjectRef.TryGet(out NetworkObject targetObject))
         {
-            if (_transformEffect != null)
-            {
-                Instantiate(_transformEffect, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
-            }
-            Transform targetTransform = targetObject.transform;
-            ApplyTransformLocally(targetTransform);
+            Debug.Log("Target object not found on client");
+            return;
         }
+
+        if (_transformEffect != null)
+        {
+            Instantiate(_transformEffect, transform.position + Vector3.up, Quaternion.identity);
+        }
+
+        Transform targetTransform = targetObject.transform;
+        ApplyTransformLocally(targetTransform);
     }
 
     private void ApplyTransformLocally(Transform targetTransform)

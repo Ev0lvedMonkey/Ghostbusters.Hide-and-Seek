@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class GhostbusterMouseInput : MouseInput
 {
     private const float MouseAngleLimits = 25f;
@@ -10,7 +8,7 @@ public class GhostbusterMouseInput : MouseInput
         SetPlusAngleLimit(MouseAngleLimits);
     }
 
-    void Update()
+    private void Update()
     {
         if (!IsOwner) return;
 

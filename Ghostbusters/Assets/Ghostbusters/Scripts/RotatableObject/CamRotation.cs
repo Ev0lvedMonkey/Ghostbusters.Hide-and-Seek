@@ -3,7 +3,7 @@ using UnityEngine;
 public class CamRotation 
 {
     private readonly Transform _cameraTransform;
-
+    
     public CamRotation(Transform cameraTransform)
     {
         _cameraTransform = cameraTransform;

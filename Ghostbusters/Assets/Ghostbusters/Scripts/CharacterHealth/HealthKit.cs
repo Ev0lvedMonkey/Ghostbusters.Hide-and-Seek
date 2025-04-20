@@ -6,12 +6,12 @@ public class HealthKit : MonoBehaviour
     {
         if (!other.TryGetComponent(out WeaponFire component))
             return;
-        if (component.TryGetComponent(out CharacterHealthController healthController))
-        {
-            if (!healthController.IsNeedHealth())
-                return;
-            healthController.Heal();
-            Destroy(gameObject);
-        }
+        if (!component.TryGetComponent(out CharacterHealthController healthController))
+            return;
+        if (!healthController.IsNeedHealth())
+            return;
+        
+        healthController.Heal();
+        Destroy(gameObject);
     }
 }

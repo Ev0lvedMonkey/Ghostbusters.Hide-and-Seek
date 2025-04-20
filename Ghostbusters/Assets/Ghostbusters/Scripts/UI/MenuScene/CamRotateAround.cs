@@ -4,12 +4,16 @@ public class CamRotateAround : MonoBehaviour
 {
     private float _initialHeight;
     private int _rotateDirection;
-
+    private Transform _camTransform;
+    
     [SerializeField] private Transform _target;
     [SerializeField] private CameraRotationProperties _cameraRotationProperties;
 
-    private void Update()=>
+    
+    private void Update()
+    {
         RotateCam();
+    }
     
     public void DefinitionOfRotateDirection()
     {
@@ -17,19 +21,22 @@ public class CamRotateAround : MonoBehaviour
         _rotateDirection = randomNumber == 0 ? -1 : 1;
     }
 
-    public void InitHeight() =>
+    public void Init()
+    {
+        _camTransform = this.transform;
         _initialHeight = transform.position.y - _target.position.y;
+    }
 
     private void RotateCam()
     {
-        transform.RotateAround(_target.position, Vector3.up, (_cameraRotationProperties.RotationSpeed * _rotateDirection) * Time.deltaTime);
+        _camTransform.RotateAround(_target.position, Vector3.up, (_cameraRotationProperties.RotationSpeed * _rotateDirection) * Time.deltaTime);
 
         float waveOffset = Mathf.Sin(Time.time * _cameraRotationProperties.WaveFrequency) * _cameraRotationProperties.WaveAmplitude;
-        Vector3 newPosition = transform.position;
+        Vector3 newPosition = _camTransform.position;
         newPosition.y = _target.position.y + _initialHeight + waveOffset;
 
-        transform.position = newPosition;
+        _camTransform.position = newPosition;
 
-        transform.LookAt(_target);
+        _camTransform.LookAt(_target);
     }
 }

@@ -1,12 +1,8 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LobbySceneBootstrap : MonoBehaviour
 {
-    [Header("UI Elements")]
-    [SerializeField] private LobbyMessageUI _lobbyMessageUI;
-    [SerializeField] private CreateLobbyUI _createLobbyUI;
-    [SerializeField] private MainMenuUi _mainMenuUi;
+    [SerializeField] private LobbyUIBootstrap _lobbyUIBootstrap;
     
     [Header("Net Managers")]
     [SerializeField] private LobbyRelayManager _lobbyRelayManager;
@@ -16,6 +12,7 @@ public class LobbySceneBootstrap : MonoBehaviour
     {
         ServiceLocator.Current.Register(_lobbyRelayManager);
         ServiceLocator.Current.Register(_multiplayerStorage);
+        
         _multiplayerStorage.Init();
         _lobbyRelayManager.Init();
     }
@@ -23,15 +20,11 @@ public class LobbySceneBootstrap : MonoBehaviour
     private void OnEnable()
     {
         _lobbyRelayManager.InitializeAuthentication();
-        _mainMenuUi.Init();
-        _lobbyMessageUI.Init();
-        _createLobbyUI.Init();
+        _lobbyUIBootstrap.Init();
     }
 
     private void OnDisable()
     {
-        _createLobbyUI.Uninit();
-        _lobbyMessageUI.Uninit();
-        _mainMenuUi.Uninit();
+        _lobbyUIBootstrap.Uninit();
     }
 }

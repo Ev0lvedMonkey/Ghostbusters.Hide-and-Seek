@@ -10,7 +10,7 @@ public class GhostSpeedUp : GhostMover
     private readonly UnityEvent OnEnableAbility = new();
     private readonly UnityEvent OnDisableAbility = new();
     
-    private const float SpeedBoostMultiplier = 1.75f;
+    private const float SpeedBoostMultiplier = 1.4f;
     private const float SpeedBoostDuration = 4f;
     private const float SpeedBoostCooldown = 9f;
 

@@ -14,16 +14,18 @@ public class GhostbusterMover : CharacterMover
     
     private readonly UnityEvent OnDisableAbility = new();
 
+    private GameOverWinUI _gameOverWinUI;
     protected override void Awake()
     {
         base.Awake();
+        _gameOverWinUI = ServiceLocator.Current.Get<GameOverWinUI>();
         OnDisableAbility.AddListener(_characterAbilityStateChanger.DisableAbility);
     }
 
     private void Update()
     {
         if (!IsOwner) return;
-        if (ServiceLocator.Current.Get<GameOverWinUI>().IsOpened()) return;
+        if (_gameOverWinUI.IsOpened()) return;
         if (Input.GetKeyDown(KeyCode.E))
         {
             SpawnSphereServerRpc();

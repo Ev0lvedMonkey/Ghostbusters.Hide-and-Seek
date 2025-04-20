@@ -18,7 +18,7 @@ public abstract class CharacterMover : NetworkBehaviour
     protected const string Horizontal = "Horizontal";
     protected const string Vertical = "Vertical";
     private const float CheckRadius = 0.5f;
-    private const float CheckInterval = 2.5f;
+    private const float CheckInterval = 1f;
     private const float BackMoveSpeed = 3.375f;
     private const float MovementSpeed = 4.5f;
 

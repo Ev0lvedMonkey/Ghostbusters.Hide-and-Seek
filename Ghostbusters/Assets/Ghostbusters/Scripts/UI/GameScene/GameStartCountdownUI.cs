@@ -17,11 +17,12 @@ public class GameStartCountdownUI : MonoBehaviour
 
     private void GameManager_OnStateChanged()
     {
-        if (!_gameStateManager.IsCountdownToStartActive())
+        if (_gameStateManager.IsCountdownToStartActive())
         {
-            _gameStateManager.OnStartGame.Invoke();
-            Hide();
+            return;
         }
+        _gameStateManager.OnStartGame.Invoke();
+        Hide();
     }
 
     private void Update()
