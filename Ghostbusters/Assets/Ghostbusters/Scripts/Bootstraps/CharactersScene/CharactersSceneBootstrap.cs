@@ -2,29 +2,25 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 public class CharactersSceneBootstrap : MonoBehaviour
 {
-    [Header("UI Elements")]
-    [SerializeField] private CharacterSelectUI _characterSelectUI;
-    [SerializeField] private HostDisconnectUI _hostDisconnectUI;
-    
-    [Header("Сomponents")]
+    [Header("Сomponents")] [SerializeField]
+    private CharactersSceneUIBootstrap _charactersSceneUIBootstrap;
+
     [SerializeField] private CharacterSelectReady _characterSelectReady;
     [SerializeField] private List<PlayerInfo> _listPlayerInfo;
 
     private void OnEnable()
     {
         _characterSelectReady.MakeNewPlayerReadyDictionary();
-        _characterSelectUI.Init(_characterSelectReady);
-        _characterSelectUI.UpdateLobbyData();
-        _hostDisconnectUI.Init();
+        _charactersSceneUIBootstrap.Init(_characterSelectReady);
         InitPlayersData();
     }
 
     private void OnDisable()
     {
-        _characterSelectUI.Uninit();
-        _hostDisconnectUI.Uninit();
+        _charactersSceneUIBootstrap.Uninit();
         UnnitPlayersData();
     }
 

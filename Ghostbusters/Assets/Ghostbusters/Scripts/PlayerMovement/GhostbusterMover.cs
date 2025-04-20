@@ -11,7 +11,8 @@ public class GhostbusterMover : CharacterMover
     [SerializeField] private GameObject _blockingSphere;
     [SerializeField] private GameObject _blockingSphereSpawnEffect;
     [SerializeField] private CharacterAbilityStateChanger _characterAbilityStateChanger;
-    
+
+    private bool _abilityUsed;
     private readonly UnityEvent OnDisableAbility = new();
 
     private GameOverWinUI _gameOverWinUI;
@@ -26,11 +27,12 @@ public class GhostbusterMover : CharacterMover
     {
         if (!IsOwner) return;
         if (_gameOverWinUI.IsOpened()) return;
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !_abilityUsed)
         {
             SpawnSphereServerRpc();
             SpawnEffectServerRpc();
             OnDisableAbility.Invoke();
+            _abilityUsed = true;
         }
         SetAnimState();
     }

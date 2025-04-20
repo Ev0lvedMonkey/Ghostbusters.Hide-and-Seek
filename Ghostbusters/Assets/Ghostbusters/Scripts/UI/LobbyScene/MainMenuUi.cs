@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -97,9 +98,8 @@ public class MainMenuUi : MonoBehaviour
     }
 
     private void ActivateButtons()
-    {
-        Debug.LogError($"UnityServices.State {UnityServices.State}");
-        if (UnityServices.State == ServicesInitializationState.Initialized)
+    { 
+        if (AuthenticationService.Instance.IsSignedIn)
         {
             _createLobbyBtn.gameObject.SetActive(true);
             _joinLobbyByCodeBtn.gameObject.SetActive(true);
