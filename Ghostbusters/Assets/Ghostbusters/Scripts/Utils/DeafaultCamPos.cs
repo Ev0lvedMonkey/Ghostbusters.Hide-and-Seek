@@ -41,7 +41,8 @@ public class DeafaultCamPos : MonoBehaviour
         while (true)
         {
             float clampedZ = Mathf.Clamp(transform.localPosition.z, MinZ, MaxZ);
-            Vector3 targetPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, clampedZ);
+            float clampedY = Mathf.Clamp(transform.transform.localPosition.y, 2.5f, 3.1f);
+            Vector3 targetPosition = new Vector3(transform.localPosition.x, clampedY, clampedZ);
 
             _moveTween = transform.DOLocalMove(targetPosition, TweenDuration);
 

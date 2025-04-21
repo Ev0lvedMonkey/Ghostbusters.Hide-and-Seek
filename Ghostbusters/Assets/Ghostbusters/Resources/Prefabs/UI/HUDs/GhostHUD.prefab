@@ -408,8 +408,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _abilityImage: {fileID: 7236206023268421084}
-  EnabledColor: {r: 0, g: 1, b: 0, a: 1}
-  DisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1 &7489010246766059769
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,6 +785,7 @@ GameObject:
   - component: {fileID: 5996301721716108415}
   - component: {fileID: 3248493397044136719}
   - component: {fileID: 6988606847659363538}
+  - component: {fileID: 2766012131000795921}
   m_Layer: 5
   m_Name: Crosshair1
   m_TagString: Untagged
@@ -851,6 +850,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2766012131000795921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8198412369848993403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2015d098dc326f44387745d222cb29e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _crosshairImage: {fileID: 6988606847659363538}
 --- !u!1 &8223299199857589437
 GameObject:
   m_ObjectHideFlags: 0

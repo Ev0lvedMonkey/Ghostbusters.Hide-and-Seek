@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4177325879471899661}
   - component: {fileID: 688667910808384836}
   - component: {fileID: 1209271080738658268}
+  - component: {fileID: 3516042820558574162}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -134,6 +135,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3516042820558574162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43246360713807547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 254dedf731b18d44892e4aa4b2ad10e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNameText: {fileID: 1209271080738658268}
 --- !u!1 &103794358845236284
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +193,7 @@ GameObject:
   - component: {fileID: 5930506250087524810}
   - component: {fileID: 5501239424411516893}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: WorldSpaceCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camLoader: {fileID: -9148439180790676213}
-  _playerUI: {fileID: 7143969652443490114}
+  _playerUI: {fileID: 3516042820558574162}
 --- !u!1 &5255370187049413777
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,11 +311,10 @@ GameObject:
   - component: {fileID: -2515787978255025047}
   - component: {fileID: 131683806190917558}
   - component: {fileID: 7155014602679406567}
-  - component: {fileID: 7895445609988697491}
   - component: {fileID: 289307720369143025}
+  - component: {fileID: 7895445609988697491}
   - component: {fileID: -9148439180790676213}
   - component: {fileID: -6096408923155873637}
-  - component: {fileID: 7143969652443490114}
   - component: {fileID: 627271985527512015}
   - component: {fileID: 2026730895169691158}
   - component: {fileID: 1874786418358173608}
@@ -424,7 +437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 1874786418358173608}
-  _groundCheckDot: {fileID: 5173266347649546689}
+  _navCheckDot: {fileID: 0}
   _animator: {fileID: 1237098469879964603}
   _blockingSphere: {fileID: 4814684917461445608, guid: 8888e61f2e667094b9d8a5495545c1b9, type: 3}
   _blockingSphereSpawnEffect: {fileID: 7177991128484655659, guid: 59a35ab9f68edff40b6e5332bed330f5, type: 3}
@@ -446,19 +459,6 @@ MonoBehaviour:
   _hitEffect: {fileID: 8601352837897393951, guid: 4fa7fbfd989c2d247942c721c0a1fbd5, type: 3}
   _characterHealth: {fileID: -6096408923155873637}
   _shootSource: {fileID: 6322592334579268046}
---- !u!114 &7895445609988697491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5255370187049413777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b297c91d2eb5984788fabcb348d5b05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnPositionList: {fileID: 11400000, guid: 0aa7f6df05a983440b5680a0b729bfb9, type: 2}
 --- !u!114 &289307720369143025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,6 +474,19 @@ MonoBehaviour:
   _mouseSenseConfig: {fileID: 11400000, guid: b95d8db789e061c4e925b5dd5b707af2, type: 2}
   _camFollowPosition: {fileID: 4730471717647617360}
   _torseObj: {fileID: 1149413298654292678}
+--- !u!114 &7895445609988697491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5255370187049413777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b297c91d2eb5984788fabcb348d5b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPositionList: {fileID: 11400000, guid: 0aa7f6df05a983440b5680a0b729bfb9, type: 2}
 --- !u!114 &-9148439180790676213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1e74657db4d504c96396378dec2eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _maxHealth: 150
   _deathEffect: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
   _bodyTransform: {fileID: 5173266347649546689}
   _bodyRigidbody: {fileID: 1874786418358173608}
@@ -507,19 +520,6 @@ MonoBehaviour:
   _characterMover: {fileID: 131683806190917558}
   _hudView: {fileID: 9014929157552778291}
   _deathAudioSource: {fileID: 5098936875972626571}
---- !u!114 &7143969652443490114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5255370187049413777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 254dedf731b18d44892e4aa4b2ad10e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNameText: {fileID: 1209271080738658268}
 --- !u!33 &627271985527512015
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1209,6 +1209,10 @@ PrefabInstance:
       propertyPath: m_text
       value: 'C '
       objectReference: {fileID: 0}
+    - target: {fileID: 3946983144083574793, guid: b62ca8aac848c99479f6caa2153f2456, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 7969138770366691887, guid: 10d6d47ad3397f04fa08611c15ab18ed, type: 2}
     - target: {fileID: 3946983144083574793, guid: b62ca8aac848c99479f6caa2153f2456, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 1

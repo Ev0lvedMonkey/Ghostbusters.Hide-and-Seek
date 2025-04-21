@@ -42,16 +42,6 @@ public class CharacterHealthController : NetworkBehaviour
             TakeDamageServerRpc(true);
     }
 
-    public void EnableHUD()
-    {
-        _hudView.gameObject.SetActive(true);
-    }
-
-    public void DisableHUD()
-    {
-        _hudView.gameObject.SetActive(false);
-    }
-
     public override void OnNetworkSpawn()
     {
         UpdateHUDClientRpc(_currentHealth);
@@ -67,7 +57,6 @@ public class CharacterHealthController : NetworkBehaviour
     {
         _currentHealth += 20;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
-        Debug.Log($"Health UPPPPP");
 
         UpdateHUDClientRpc(_currentHealth);
     }
@@ -157,7 +146,12 @@ public class CharacterHealthController : NetworkBehaviour
             _deathAudioSource.Play();
         }
     }
-
+    
+    private void DisableHUD()
+    {
+        _hudView.gameObject.SetActive(false);
+    }
+    
     private float GetHealthPercentage()
     {
         return _currentHealth / _maxHealth;
