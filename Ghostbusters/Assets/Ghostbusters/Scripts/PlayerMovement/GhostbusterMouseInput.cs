@@ -4,7 +4,7 @@ public class GhostbusterMouseInput : MouseInput
     
     private void Start()
     {
-        SetMinusAngleLimit(MouseAngleLimits);
+        SetMinusAngleLimit(-MouseAngleLimits);
         SetPlusAngleLimit(MouseAngleLimits);
     }
 

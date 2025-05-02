@@ -11,7 +11,7 @@ public class GhostMouseInput : MouseInput
     
     private bool _isFirstFrame;
 
-    private const float MinusMouseAngleLimit = 25f;
+    private const float MinusMouseAngleLimit = -10f;
     private const float PLusMouseAngleLimit = 10f;
     
     private void Start()

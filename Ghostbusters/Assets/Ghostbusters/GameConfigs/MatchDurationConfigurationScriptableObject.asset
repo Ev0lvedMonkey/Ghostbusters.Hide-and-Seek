@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e148fe02afe7456296aefe5e2397fadf, type: 3}
   m_Name: MatchDurationConfigurationScriptableObject
   m_EditorClassIdentifier: 
-  _gameDuration: 60
+  _gameDuration: 120
   _startDelay: 10

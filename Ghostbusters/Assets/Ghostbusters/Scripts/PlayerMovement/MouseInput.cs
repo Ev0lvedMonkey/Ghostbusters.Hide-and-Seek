@@ -16,12 +16,6 @@ public abstract class MouseInput : NetworkBehaviour
     private const string MouseX = "Mouse X";
     private const string MouseY = "Mouse Y";
 
-    private const float AngleLimit = 25f;
-    private const float MinMinusAngleLimit = 0;
-    private const float MaxMinusAngleLimit = -AngleLimit;
-    private const float MinPlusAngleLimit = 0f;
-    private const float MaxPlusAngleLimit = AngleLimit;
-
     protected float MinusAngleLimit { get; private set; }
     protected float PlusAngleLimit { get; private set; }
 
@@ -42,19 +36,19 @@ public abstract class MouseInput : NetworkBehaviour
     {
         if (IsOwner)
         {
-            transform.eulerAngles = new Vector3(0, _torseObj.eulerAngles.y, 0);
+            float y = _torseObj.eulerAngles.y;
+            float closestRightAngle = Mathf.Round(y / 90f) * 90f;
+            transform.eulerAngles = new Vector3(0, closestRightAngle, 0);
         }
     }
 
     protected void SetMinusAngleLimit(float angle)
     {
-        angle = Mathf.Clamp(angle, MinMinusAngleLimit, MaxMinusAngleLimit);
         MinusAngleLimit = angle;
     }
 
     protected void SetPlusAngleLimit(float angle)
     {
-        angle = Mathf.Clamp(angle, MinPlusAngleLimit, MaxPlusAngleLimit);
         PlusAngleLimit = angle;
     }
 

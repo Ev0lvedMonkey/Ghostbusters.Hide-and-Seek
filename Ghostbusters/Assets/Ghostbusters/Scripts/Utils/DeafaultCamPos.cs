@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class DeafaultCamPos : MonoBehaviour
 {
-    private const float MinZ = -0.8f;
-    private const float MaxZ = 1f;
-
     private const float TweenDuration = 0.5f;
     private const float UpdateInterval = 2.5f;
+
+    private const float MinZ = -0.8f;
+    private const float MaxZ = 1f;
+    private const float MinY = 0f;
+    private const float MaxY = 30f;
+
+    [SerializeField] private Transform followedObject;
 
     private Coroutine _limitCoroutine;
     private Tween _moveTween;
 
     private void Start()
     {
-        _limitCoroutine = StartCoroutine(LimitZPositionCoroutine());
+        _limitCoroutine = StartCoroutine(UpdatePositionCoroutine());
     }
 
     private void OnDisable()
@@ -33,20 +37,41 @@ public class DeafaultCamPos : MonoBehaviour
     {
         transform.localEulerAngles = Vector3.zero;
     }
-
-    private IEnumerator LimitZPositionCoroutine()
+    
+    private IEnumerator UpdatePositionCoroutine()
     {
         WaitForSeconds delay = new WaitForSeconds(UpdateInterval);
 
         while (true)
         {
-            float clampedZ = Mathf.Clamp(transform.localPosition.z, MinZ, MaxZ);
-            float clampedY = Mathf.Clamp(transform.transform.localPosition.y, 2.5f, 3.1f);
-            Vector3 targetPosition = new Vector3(transform.localPosition.x, clampedY, clampedZ);
-
-            _moveTween = transform.DOLocalMove(targetPosition, TweenDuration);
-
+            UpdateTargetPosition();
             yield return delay;
         }
+    }
+
+    private void UpdateTargetPosition()
+    {
+        if (followedObject == null)
+            return;
+
+        float heightOffset = GetObjectHeight(followedObject) * 0.6f;
+        float targetY = Mathf.Clamp(followedObject.position.y + heightOffset, MinY, MaxY);
+        float targetZ = Mathf.Clamp(transform.localPosition.z, MinZ, MaxZ);
+
+        Vector3 targetPos = new Vector3(transform.localPosition.x, targetY, targetZ);
+        _moveTween = transform.DOLocalMove(targetPos, TweenDuration);
+    }
+
+    private float GetObjectHeight(Transform obj)
+    {
+        Collider col = obj.GetComponentInChildren<Collider>();
+        if (col != null)
+            return col.bounds.size.y;
+
+        Renderer rend = obj.GetComponentInChildren<Renderer>();
+        if (rend != null)
+            return rend.bounds.size.y;
+
+        return 1f; // default fallback
     }
 }
