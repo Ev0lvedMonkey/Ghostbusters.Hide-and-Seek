@@ -17,14 +17,16 @@ public abstract class PlayerInfo : MonoBehaviour
         _characterSelectReady = characterSelectReady;
         _serviceLocator = ServiceLocator.Current;
         _multiplayerStorage = _serviceLocator.Get<MultiplayerStorage>(); 
+        
         _multiplayerStorage.OnPlayerDataNetworkListChanged.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
         _characterSelectReady.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
+
         UpdatePlayer();
     }
 
     public virtual void Uninit()
     {
-        ServiceLocator.Current.Get<MultiplayerStorage>().OnPlayerDataNetworkListChanged.RemoveListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
+        _multiplayerStorage.OnPlayerDataNetworkListChanged.RemoveListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
         _characterSelectReady?.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
         _characterSelectReady = null;
     }
@@ -34,7 +36,6 @@ public abstract class PlayerInfo : MonoBehaviour
         UpdatePlayer();
     }
 
-
     private void MultiplayerStorage_OnPlayerDataNetworkListChanged()
     {
         UpdatePlayer();
@@ -42,7 +43,7 @@ public abstract class PlayerInfo : MonoBehaviour
 
     private void UpdatePlayer()
     {
-        if (_serviceLocator.Get<MultiplayerStorage>().IsPlayerIndexConnected(_playerIndex))
+        if (_multiplayerStorage.IsPlayerIndexConnected(_playerIndex))
         {
             UpdatePlayerInfo();
         }
@@ -61,24 +62,20 @@ public abstract class PlayerInfo : MonoBehaviour
     {
         Show();
 
-        PlayerData playerData = _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataFromPlayerIndex(_playerIndex);
-        if (Application.isEditor)
-        {
-            if (_serviceLocator.Get<LobbyRelayManager>().IsLobbyHost())
-                _readyGameObject.SetActive(_characterSelectReady.IsPlayerReady(0));
-            else
-                _readyGameObject.SetActive(_characterSelectReady.IsPlayerReady(playerData.clientId));
-        }
-        else
-            _readyGameObject.SetActive(_characterSelectReady.IsPlayerReady(playerData.clientId));
+        PlayerData playerData = _multiplayerStorage.GetPlayerDataFromPlayerIndex(_playerIndex);
+
+        bool isReady = _characterSelectReady.GetReadyStatus(playerData.clientId);
+
+        _readyGameObject.SetActive(isReady);
+
         UpdatePlayerName(playerData);
     }
 
     private void UpdatePlayerName(PlayerData playerData)
     {
-        ulong clientID = _serviceLocator.Get<MultiplayerStorage>().GetPlayerData().clientId;
+        ulong localClientId = _multiplayerStorage.GetPlayerData().clientId;
 
-        _playerNameText.color = playerData.clientId == clientID ? Color.green : Color.white;
+        _playerNameText.color = playerData.clientId == localClientId ? Color.green : Color.white;
         _playerNameText.text = playerData.playerName.ToString();
     }
 

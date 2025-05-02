@@ -13,7 +13,6 @@ public class CharactersSceneBootstrap : MonoBehaviour
 
     private void OnEnable()
     {
-        _characterSelectReady.MakeNewPlayerReadyDictionary();
         _charactersSceneUIBootstrap.Init(_characterSelectReady);
         InitPlayersData();
     }

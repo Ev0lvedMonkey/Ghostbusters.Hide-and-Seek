@@ -4,43 +4,45 @@ using UnityEngine.Events;
 
 public class CharacterSelectReady : NetworkBehaviour
 {
-    internal UnityEvent OnReadyChanged = new();
+    private readonly Dictionary<ulong, bool> _readyDict = new();
+    private readonly Dictionary<ulong, bool> _localReadyCache = new();
 
-    private Dictionary<ulong, bool> playerReadyDictionary;
+    public UnityEvent OnReadyChanged = new();
 
-    public void MakeNewPlayerReadyDictionary()
+    public override void OnNetworkSpawn()
     {
-        playerReadyDictionary = new Dictionary<ulong, bool>();
+        if (IsServer)
+        {
+            NetworkManager.OnClientConnectedCallback += OnClientConnected;
+        }
     }
-    
-    public bool IsPlayerReady(ulong clientId)
+
+    public bool GetReadyStatus(ulong clientId)
     {
-        return playerReadyDictionary.ContainsKey(clientId) && playerReadyDictionary[clientId];
+        if (IsServer)
+        {
+            return _readyDict.TryGetValue(clientId, out bool isReady) && isReady;
+        }
+        else
+        {
+            return _localReadyCache.TryGetValue(clientId, out bool isReady) && isReady;
+        }
     }
 
     public void SetPlayerReady()
     {
-        SetPlayerReadyServerRpc();
+        SubmitReadyServerRpc();
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
+    private void SubmitReadyServerRpc(ServerRpcParams rpcParams = default)
     {
-        SetPlayerReadyClientRpc(serverRpcParams.Receive.SenderClientId);
+        ulong sender = rpcParams.Receive.SenderClientId;
+        _readyDict[sender] = true;
 
-        playerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
+        BroadcastReadyStatusClientRpc(sender, true);
 
-        bool allClientsReady = true;
-        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
-        {
-            if (!playerReadyDictionary.ContainsKey(clientId) || !playerReadyDictionary[clientId])
-            {
-                allClientsReady = false;
-                break;
-            }
-        }
-
-        if (allClientsReady)
+        if (AllClientsReady())
         {
             ServiceLocator.Current.Get<LobbyRelayManager>().DeleteLobby();
             SceneLoader.LoadNetwork(SceneLoader.ScenesEnum.GameScene);
@@ -49,10 +51,40 @@ public class CharacterSelectReady : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void SetPlayerReadyClientRpc(ulong clientId)
+    private void BroadcastReadyStatusClientRpc(ulong clientId, bool isReady)
     {
-        playerReadyDictionary[clientId] = true;
-
+        _localReadyCache[clientId] = isReady;
         OnReadyChanged.Invoke();
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        foreach (var kvp in _readyDict)
+        {
+            SendReadyStatusToNewClientClientRpc(kvp.Key, kvp.Value, new ClientRpcParams
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new[] { clientId }
+                }
+            });
+        }
+    }
+
+    [ClientRpc]
+    private void SendReadyStatusToNewClientClientRpc(ulong otherClientId, bool isReady, ClientRpcParams clientRpcParams = default)
+    {
+        _localReadyCache[otherClientId] = isReady;
+        OnReadyChanged.Invoke();
+    }
+
+    private bool AllClientsReady()
+    {
+        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            if (!_readyDict.TryGetValue(clientId, out var ready) || !ready)
+                return false;
+        }
+        return true;
     }
 }
