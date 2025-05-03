@@ -78,7 +78,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
         {
             if (_playerDataNetworkList[i].clientId == clientId)
             {
-                Debug.Log($"GetPlayerDataIndexFromClientId Return index {i} from input clientID {clientId}");
+                Debug.Log($"[GetPlayerDataIndexFromClientId] Return index {i} from input clientID {clientId}");
                 return i;
             }
         }
@@ -96,9 +96,8 @@ public class MultiplayerStorage : NetworkBehaviour, IService
             }
             if (playerData.clientId == clientId)
             {
-                Debug.LogError($"GetPlayerDataFromClientId return playerdata {playerData.playerName}");
-                Debug.LogError($"GetPlayerDataFromClientId return playerdata {playerData.playerId}");
-                Debug.LogError($"GetPlayerDataFromClientId return playerdata {playerData.clientId}");
+                Debug.LogError($"[GetPlayerDataFromClientId] return playerdata name {playerData.playerName}," +
+                               $" playerId {playerData.playerId}, clientId {playerData.clientId}");
                 return playerData;
             }
         }
@@ -134,7 +133,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
     public void KickPlayer(ulong clientId)
     {
         NetworkManager.Singleton.DisconnectClient(clientId);
-        Debug.Log($"DisconnectClient {clientId}");
+        Debug.Log($"Multiplayer storage kick clientId {clientId}, player name {GetPlayerDataFromClientId(clientId).playerName}");
         NetworkManager_Server_OnClientDisconnectCallback(clientId);
     }
 
@@ -178,7 +177,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
             return;
         }
         _playerDataNetworkList.Add(newPlayer);
-        Debug.Log($"PlayerDataNetworkList added new player {newPlayer.playerName}\n Player count: {_playerDataNetworkList.Count}");
+        Debug.Log($"PlayerDataNetworkList added new player {newPlayer.playerName}\n Player count: {_playerDataNetworkList.Count} Player index: ");
     }
 
     [ServerRpc(RequireOwnership = false)]

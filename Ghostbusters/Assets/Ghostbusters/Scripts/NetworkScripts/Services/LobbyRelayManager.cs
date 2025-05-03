@@ -232,7 +232,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
             try
             {
                 await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, playerId);
-                Debug.Log($"Removed {playerId}");
+                Debug.Log($"Lobby kick playerId {playerId}, {GetPlayerName()}");
             }
             catch (LobbyServiceException e)
             {

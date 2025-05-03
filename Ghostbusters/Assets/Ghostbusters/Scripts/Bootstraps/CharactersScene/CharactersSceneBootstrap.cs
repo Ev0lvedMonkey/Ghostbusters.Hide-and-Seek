@@ -35,7 +35,10 @@ public class CharactersSceneBootstrap : MonoBehaviour
         foreach (PlayerInfo playerInfo in _listPlayerInfo)
         {
             if (playerInfo.TryGetComponent(out ClientPlayerInfo clientInfo))
+            {
                 clientInfo.Init(_characterSelectReady);
+                continue;
+            }
             playerInfo.Init(_characterSelectReady);
         }
     }

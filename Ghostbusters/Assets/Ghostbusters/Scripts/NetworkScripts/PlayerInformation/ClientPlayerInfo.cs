@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,12 +37,12 @@ public class ClientPlayerInfo : PlayerInfo
     private void KickPlayer()
     {
         PlayerData playerData = _multiplayerStorage.GetPlayerDataFromPlayerIndex(_playerIndex);
-        
-        Debug.Log($"pressed kick {_multiplayerStorage.GetPlayerData().playerId}" +
-                  $" host: {_serviceLocator.Get<LobbyRelayManager>().GetJoinedLobby().HostId} k");
-        
-        _serviceLocator.Get<LobbyRelayManager>().KickPlayer(playerData.playerId.ToString());
-        _multiplayerStorage.KickPlayer(playerData.clientId);
+        if (_multiplayerStorage.IsPlayerIndexConnected(_playerIndex))
+        {
+            Debug.Log($"Will kick player {playerData.playerName} playerIndex {_playerIndex}");
+            _serviceLocator.Get<LobbyRelayManager>().KickPlayer(playerData.playerId.ToString());
+            _multiplayerStorage.KickPlayer(playerData.clientId);
+        }
     }
 
     protected override void UpdatePlayerInfo()
