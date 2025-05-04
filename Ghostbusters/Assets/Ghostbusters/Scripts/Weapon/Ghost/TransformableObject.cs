@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NetworkObject))]
-public class TransformableObject : MonoBehaviour{
+public class TransformableObject : NetworkBehaviour{
 
     private void Awake()
     {

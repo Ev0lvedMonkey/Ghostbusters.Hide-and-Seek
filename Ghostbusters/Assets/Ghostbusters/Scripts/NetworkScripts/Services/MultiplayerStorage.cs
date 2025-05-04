@@ -96,7 +96,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
             }
             if (playerData.clientId == clientId)
             {
-                Debug.LogError($"[GetPlayerDataFromClientId] return playerdata name {playerData.playerName}," +
+                Debug.Log($"[GetPlayerDataFromClientId] return playerdata name {playerData.playerName}," +
                                $" playerId {playerData.playerId}, clientId {playerData.clientId}");
                 return playerData;
             }

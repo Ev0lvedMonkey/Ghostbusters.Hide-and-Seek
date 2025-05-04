@@ -63,7 +63,7 @@ public class TransformingShoot : RayFiringObject
     {
         if (targetObjectRef.TryGet(out NetworkObject targetObject))
         {
-            ApplyTransformLocally(targetObject.transform);
+            // ApplyTransformLocally(targetObject.transform);
             ApplyTransformClientRpc(targetObjectRef);
             PlaySoundClientRpc(transform.position);
         }
@@ -72,6 +72,7 @@ public class TransformingShoot : RayFiringObject
     [ClientRpc]
     private void ApplyTransformClientRpc(NetworkObjectReference targetObjectRef)
     {
+        
         if (!targetObjectRef.TryGet(out NetworkObject targetObject))
         {
             Debug.Log("Target object not found on client");

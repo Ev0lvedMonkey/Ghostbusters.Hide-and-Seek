@@ -22,7 +22,6 @@ public abstract class PlayerInfo : MonoBehaviour
         _characterSelectReady.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
 
         UpdatePlayer();
-        Debug.Log($"[PlayerInfo] was inited with _playerIndex {_playerIndex}");
     }
 
     public virtual void Uninit()
