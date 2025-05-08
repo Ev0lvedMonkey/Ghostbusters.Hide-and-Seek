@@ -52,6 +52,7 @@ public class MainMenuUi : MonoBehaviour
 
     private void Hide() =>
         gameObject.SetActive(false);
+    
     private void OnLobbyListChanged(object sender, LobbyRelayManager.OnLobbyListChangedEventArgs e)
     {
         UpdateLobbyList(e.lobbyList);

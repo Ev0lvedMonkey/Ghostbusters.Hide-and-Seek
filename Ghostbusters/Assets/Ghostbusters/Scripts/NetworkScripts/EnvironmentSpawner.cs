@@ -1,10 +1,11 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 
 public class EnvironmentSpawner : NetworkBehaviour
 {
-    [System.Serializable]
+    [Serializable]
     public class SpawnEntry
     {
         public Transform spawnPoint;
@@ -17,16 +18,12 @@ public class EnvironmentSpawner : NetworkBehaviour
 
     public void SpawnAllClient()
     {
-        Debug.LogError($"IsHost 3 {IsHost} ");
         foreach (var entry in spawnEntries)
         {
             if (entry.prefab == null || entry.spawnPoint == null)
                 continue;
 
             GameObject obj = Instantiate(entry.prefab, entry.spawnPoint.position, entry.spawnPoint.rotation);
-            NetworkObject netObj = obj.GetComponent<NetworkObject>();
-
-            Debug.LogError($"IsHost 4 {IsHost} ");
 
             spawnedObjects.Add(obj);
         }
@@ -34,7 +31,6 @@ public class EnvironmentSpawner : NetworkBehaviour
     
     public void SpawnAllHost()
     {
-        Debug.LogError($"IsHost 3 {IsHost} ");
         foreach (var entry in spawnEntries)
         {
             if (entry.prefab == null || entry.spawnPoint == null)

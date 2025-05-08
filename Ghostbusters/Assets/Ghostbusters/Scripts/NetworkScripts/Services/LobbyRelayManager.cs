@@ -16,8 +16,9 @@ using UnityEngine.SceneManagement;
 
 public class LobbyRelayManager : MonoBehaviour, IService
 {
+    private const int LobbyListChangedDelaySeconds = 2;
     public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
-    
+
     internal UnityEvent OnCreateLobbyStarted = new();
     internal UnityEvent OnCreateLobbyFailed = new();
     internal UnityEvent OnJoinStarted = new();
@@ -96,92 +97,82 @@ public class LobbyRelayManager : MonoBehaviour, IService
 
     public async Task QuickJoin()
     {
-        if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
-        {
-            Debug.LogError("NO 2 AUTH");
-            return;
-        }
+        if (!IsAuthorized()) return;
 
         OnJoinStarted?.Invoke();
         try
         {
-            _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
-
-            string relayJoinCode = _joinedLobby.Data[RelayJoinCodeKey].Value;
-
-            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
-
-            NetworkManager.Singleton.GetComponent<UnityTransport>()
-                .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
-            Debug.Log($"{gameObject.name}: quick joined");
-
-            _serviceLocator.Get<MultiplayerStorage>().StartClient();
+            var lobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+            if (!await TryJoinRelayAndStartClient(lobby))
+                OnQuickJoinFailed?.Invoke();
         }
         catch (LobbyServiceException e)
         {
-            Debug.Log(e);
+            Debug.LogError($"QuickJoin Exception: {e.Message}");
             OnQuickJoinFailed?.Invoke();
         }
     }
 
     public async Task JoinByCode(string lobbyCode)
     {
-        if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
-        {
-            Debug.LogError("NO 1 AUTH");
-            return;
-        }
+        if (!IsAuthorized()) return;
 
         OnJoinStarted?.Invoke();
         try
         {
-            _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-
-            string relayJoinCode = _joinedLobby.Data[RelayJoinCodeKey].Value;
-
-            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
-
-            NetworkManager.Singleton.GetComponent<UnityTransport>()
-                .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
-            Debug.Log($"{gameObject.name}: joined by code");
-
-            _serviceLocator.Get<MultiplayerStorage>().StartClient();
+            var lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+            if (!await TryJoinRelayAndStartClient(lobby))
+                OnJoinFailed?.Invoke();
         }
         catch (LobbyServiceException e)
         {
-            Debug.Log(e);
-            OnJoinFailed.Invoke();
+            Debug.LogError($"JoinByCode Exception: {e.Message}");
+            OnJoinFailed?.Invoke();
         }
     }
 
     public async void JoinWithId(string lobbyId)
     {
-        if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
-        {
-            Debug.LogError("NO 4 AUTH");
-            return;
-        }
+        if (!IsAuthorized()) return;
 
         OnJoinStarted?.Invoke();
         try
         {
-            _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
-
-            string relayJoinCode = _joinedLobby.Data[RelayJoinCodeKey].Value;
-
-            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
-
-            NetworkManager.Singleton.GetComponent<UnityTransport>()
-                .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
-            Debug.Log($"{gameObject.name}: joined by ID");
-
-            _serviceLocator.Get<MultiplayerStorage>().StartClient();
+            var lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
+            if (!await TryJoinRelayAndStartClient(lobby))
+                OnJoinFailed?.Invoke();
         }
         catch (LobbyServiceException e)
         {
-            Debug.Log(e);
+            Debug.LogError($"JoinWithId Exception: {e.Message}");
             OnJoinFailed?.Invoke();
         }
+    }
+
+    private async Task<bool> TryJoinRelayAndStartClient(Lobby lobby)
+    {
+        _joinedLobby = lobby;
+
+        if (!lobby.Data.TryGetValue(RelayJoinCodeKey, out var relayData))
+        {
+            Debug.LogError("Relay join code not found in lobby data.");
+            return false;
+        }
+
+        JoinAllocation joinAllocation = await JoinRelay(relayData.Value);
+        if (joinAllocation.Equals(default(JoinAllocation)))
+        {
+            Debug.LogError("Failed to join relay.");
+            return false;
+        }
+
+        NetworkManager.Singleton.GetComponent<UnityTransport>()
+            .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+
+        _serviceLocator.Get<MultiplayerStorage>().StartClient();
+        Debug.Log($"{gameObject.name}: successfully joined relay");
+
+        return true;
     }
 
     public string GetPlayerName()
@@ -251,6 +242,17 @@ public class LobbyRelayManager : MonoBehaviour, IService
         return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
     }
 
+    private bool IsAuthorized()
+    {
+        if (!AuthenticationService.Instance.IsSignedIn || !AuthenticationService.Instance.IsAuthorized)
+        {
+            Debug.LogError("Player not authorized.");
+            return false;
+        }
+
+        return true;
+    }
+
     private async void InitializeUnityAuthentication()
     {
         _playerName = "Player" + UnityEngine.Random.Range(0, 1000);
@@ -309,7 +311,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
         }
     }
 
-    private async void ListLobbies()
+    private async Task ListLobbies()
     {
         try
         {
@@ -322,21 +324,25 @@ public class LobbyRelayManager : MonoBehaviour, IService
             };
             QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(queryLobbiesOptions);
 
-            OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs
-            {
-                lobbyList = queryResponse.Results
-            });
             Debug.Log($"{gameObject.name}: Update listLobbies");
             foreach (var item in queryResponse.Results)
             {
                 Debug.Log($"{gameObject.name}: queryResponse {item.Name}");
             }
+
+            await Task.Delay(TimeSpan.FromSeconds(LobbyListChangedDelaySeconds));
+
+            OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs
+            {
+                lobbyList = queryResponse.Results
+            });
         }
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
     }
+
 
     private async Task<Allocation> AllocateRelay()
     {
@@ -390,4 +396,3 @@ public class LobbyRelayManager : MonoBehaviour, IService
         public List<Lobby> lobbyList;
     }
 }
-
