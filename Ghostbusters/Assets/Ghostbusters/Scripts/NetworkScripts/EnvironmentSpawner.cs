@@ -12,12 +12,16 @@ public class EnvironmentSpawner : NetworkBehaviour
         public GameObject prefab;
     }
 
+    private readonly List<GameObject> spawnedObjects = new();
+
     [SerializeField] private List<SpawnEntry> spawnEntries = new();
 
-    private readonly List<GameObject> spawnedObjects = new();
+    private bool _enviromentSpawned;
 
     public void SpawnAllClient()
     {
+        if(_enviromentSpawned)
+            return;
         foreach (var entry in spawnEntries)
         {
             if (entry.prefab == null || entry.spawnPoint == null)
@@ -27,10 +31,14 @@ public class EnvironmentSpawner : NetworkBehaviour
 
             spawnedObjects.Add(obj);
         }
+
+        _enviromentSpawned = true;
     }
     
     public void SpawnAllHost()
     {
+        if(_enviromentSpawned)
+            return;
         foreach (var entry in spawnEntries)
         {
             if (entry.prefab == null || entry.spawnPoint == null)
@@ -46,6 +54,8 @@ public class EnvironmentSpawner : NetworkBehaviour
             
             spawnedObjects.Add(obj);
         }
+
+        _enviromentSpawned = true;
     }
 
     public void DespawnAll()
