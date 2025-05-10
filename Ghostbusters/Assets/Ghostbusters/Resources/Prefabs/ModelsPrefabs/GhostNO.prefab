@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 837486399027911881}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3279998, y: 1.62, z: -2}
+  m_LocalPosition: {x: 0.36, y: 1.62, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -264,7 +264,7 @@ Transform:
   m_GameObject: {fileID: 2660743050981417221}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.92, y: 0, z: 0}
   m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -486,7 +486,7 @@ Transform:
   m_GameObject: {fileID: 7413153348805525786}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.7942853, y: 3.4857144, z: 0}
+  m_LocalPosition: {x: -3, y: 3.4857144, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -664,6 +664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fireRate: 0.02
   _maxRayDistance: 250
+  _camPos: {fileID: 815552867357321300}
   _bodyObject: {fileID: 2660743050981417221}
   _transformEffect: {fileID: 4425129568585013132, guid: bbeeb0ddc21369746aaaae5c5c1c09cf, type: 3}
   _audioSource: {fileID: 2988206033987780299}

@@ -7,10 +7,10 @@ public class DeafaultCamPos : MonoBehaviour
     private const float TweenDuration = 0.5f;
     private const float UpdateInterval = 2.5f;
 
-    private const float MinZ = -0.8f;
-    private const float MaxZ = 1f;
+    private const float MinZ = -1.5f;
+    private const float MaxZ = 0.1f;
     private const float MinY = 0f;
-    private const float MaxY = 30f;
+    private const float MaxY = 10f;
 
     [SerializeField] private Transform followedObject;
 
@@ -72,6 +72,12 @@ public class DeafaultCamPos : MonoBehaviour
         if (rend != null)
             return rend.bounds.size.y;
 
-        return 1f; // default fallback
+        return 1f;
+    }
+
+    public void SetTransformedXCamPosition()
+    {
+        Vector3 targetPos = new Vector3(-1.5f, transform.localPosition.y, transform.localPosition.z);
+        _moveTween = transform.DOLocalMove(targetPos, TweenDuration);
     }
 }

@@ -3,16 +3,19 @@ using UnityEngine;
 
 public class TransformingShoot : RayFiringObject
 {
-    [Header("Transforming Shoot Сomponents")]
+    [Header("Transforming Shoot Сomponents")] [SerializeField]
+    private DeafaultCamPos _camPos;
+
     [SerializeField] private GameObject _bodyObject;
     [SerializeField] private GameObject _transformEffect;
-    
-    [Header("Audio Сomponents")]
-    [SerializeField] private AudioSource _audioSource;
-    
+
+    [Header("Audio Сomponents")] [SerializeField]
+    private AudioSource _audioSource;
+
     private MeshFilter _bodyMeshFilter;
     private MeshRenderer _bodyRenderer;
     private MeshCollider _bodyMeshCollider;
+    private bool _firstTransformDone;
 
     protected override void Start()
     {
@@ -72,7 +75,6 @@ public class TransformingShoot : RayFiringObject
     [ClientRpc]
     private void ApplyTransformClientRpc(NetworkObjectReference targetObjectRef)
     {
-        
         if (!targetObjectRef.TryGet(out NetworkObject targetObject))
         {
             Debug.Log("Target object not found on client");
@@ -105,6 +107,9 @@ public class TransformingShoot : RayFiringObject
 
         AdjustBodyPosition();
         _audioSource.Play();
+        if (!_firstTransformDone)
+            _camPos.SetTransformedXCamPosition();
+        _firstTransformDone = true;
     }
 
     [ClientRpc]
@@ -116,6 +121,7 @@ public class TransformingShoot : RayFiringObject
 
     private void AdjustBodyPosition()
     {
-        _bodyObject.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+        _bodyObject.transform.position =
+            new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
     }
 }
