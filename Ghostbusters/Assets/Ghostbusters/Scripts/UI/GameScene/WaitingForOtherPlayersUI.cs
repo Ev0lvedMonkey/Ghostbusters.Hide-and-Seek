@@ -3,6 +3,7 @@ using UnityEngine;
 public class WaitingForOtherPlayersUI : MonoBehaviour
 {
     private GameStateManager _gameStateManager;
+    
     private void Start()
     {
         _gameStateManager = ServiceLocator.Current.Get<GameStateManager>();

@@ -3,24 +3,24 @@ using UnityEngine;
 
 public class CharacterHealthController : NetworkBehaviour
 {
+    private const int SelfDamage = 10;
+    private const int GhostDamage = 20;
+
     [Header("Properties")]
     [SerializeField, Range(100, 150)] private float _maxHealth;
-    
+
     [Header("Components")]
     [SerializeField] private GameObject _deathEffect;
     [SerializeField] private Transform _bodyTransform;
     [SerializeField] private Rigidbody _bodyRigidbody;
     [SerializeField] private RayFiringObject _fireObj;
     [SerializeField] private CharacterMover _characterMover;
-    
+
     [Header("UI Elements")]
     [SerializeField] private HealthView _hudView;
-    
+
     [Header("Audio")]
     [SerializeField] private AudioSource _deathAudioSource;
-
-    private const int SELF_DAMAGE = 10;
-    private const int GHOST_DAMAGE = 20;
 
     private float _currentHealth;
 
@@ -64,7 +64,7 @@ public class CharacterHealthController : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(bool isSelfDamage, ServerRpcParams rpcParams = default)
     {
-        int currentDamage = isSelfDamage ? SELF_DAMAGE : GHOST_DAMAGE;
+        int currentDamage = isSelfDamage ? SelfDamage : GhostDamage;
 
         _currentHealth -= currentDamage;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);

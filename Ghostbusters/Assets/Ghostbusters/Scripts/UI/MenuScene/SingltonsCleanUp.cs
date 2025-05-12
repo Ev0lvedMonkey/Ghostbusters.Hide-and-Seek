@@ -4,6 +4,7 @@ using UnityEngine;
 public class SingltonsCleanUp : MonoBehaviour
 {
     private ServiceLocator _serviceLocator;
+
     public void CleanUp()
     {
         _serviceLocator = ServiceLocator.Current;

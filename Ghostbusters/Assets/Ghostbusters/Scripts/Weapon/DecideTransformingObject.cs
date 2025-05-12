@@ -3,13 +3,12 @@ using UnityEngine.UI;
 
 public class DecideTransformingObject : MonoBehaviour
 {
-    [SerializeField] protected Image _crosshairImage;
-    
     private const float MaxRayDistance =  250f;
-    
     private readonly Color TransformableObjectColor = Color.red;
     private readonly Color SimpleObjectColor = Color.cyan;
-    
+
+    [SerializeField] protected Image _crosshairImage;
+
     private void Update()
     {
         Transform firePosition = ServiceLocator.Current.Get<FirePositionService>().FirePosition;
@@ -25,6 +24,5 @@ public class DecideTransformingObject : MonoBehaviour
             else
                 _crosshairImage.color = SimpleObjectColor;
         }
-
     }
 }

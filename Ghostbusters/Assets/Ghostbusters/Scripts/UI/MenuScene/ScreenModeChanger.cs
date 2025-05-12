@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class ScreenModeChanger : MonoBehaviour
 {
+    private const string FullscreenKey = "FullscreenMode";
+
     [SerializeField] private Toggle _fullscreenToggle; 
     [SerializeField] private CustomToggle _toggleController; 
-
-    private const string FullscreenKey = "FullscreenMode";
 
     public void DetermineScreenMode()
     {
@@ -16,11 +16,9 @@ public class ScreenModeChanger : MonoBehaviour
     }
 
     public void AddComponentsListeners() =>
-
         _fullscreenToggle.onValueChanged.AddListener(OnToggleChanged);
 
     public void RemoveComponentsListeners() =>
-
         _fullscreenToggle.onValueChanged.RemoveListener(OnToggleChanged);
 
     private void OnToggleChanged(bool isFullscreen)

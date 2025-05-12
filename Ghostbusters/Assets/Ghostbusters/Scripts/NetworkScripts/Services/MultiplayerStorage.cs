@@ -5,17 +5,17 @@ using UnityEngine.Events;
 
 public class MultiplayerStorage : NetworkBehaviour, IService
 {
-    [SerializeField] private NetworkManager _networkManager;
-
     public const int MaxPlayerAmount = 4;
     private const string PlayerPrefsPlayerNameMultiplayer = "PlayerNameMultiplayer";
+
+    [SerializeField] private NetworkManager _networkManager;
     
+    private NetworkList<PlayerData> _playerDataNetworkList;
+    private string _playerName;
+
     internal UnityEvent OnTryingToJoinGame = new();
     internal UnityEvent OnFailedToJoinGame = new();
     internal UnityEvent OnPlayerDataNetworkListChanged = new();
-
-    private NetworkList<PlayerData> _playerDataNetworkList;
-    private string _playerName;
 
     public void Init()
     {
@@ -117,17 +117,6 @@ public class MultiplayerStorage : NetworkBehaviour, IService
     public ulong GetLocalPlayerID()
     {
         return _networkManager.LocalClientId;
-    }
-
-    public void KickAllPlayers()
-    {
-        foreach (var item in _playerDataNetworkList)
-        {
-            if (NetworkManager.Singleton.IsHost)
-                return;
-            ServiceLocator.Current.Get<LobbyRelayManager>().KickPlayer(item.playerId.ToString());
-            KickPlayer(item.clientId);
-        }
     }
 
     public void KickPlayer(ulong clientId)

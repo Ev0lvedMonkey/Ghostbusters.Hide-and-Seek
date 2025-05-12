@@ -3,17 +3,17 @@ using UnityEngine.Events;
 
 public class GhostMouseInput : MouseInput
 {
-    [Header("Ghost Mouse Input Сomponents")]
-    [SerializeField] private GhostMover _ghostMover;
-    [SerializeField] private DeafaultCamPos _deafaultCamPos;
-    
-    private readonly UnityEvent OnSetDeafaultStats = new();
-    
-    private bool _isFirstFrame;
-
     private const float MinusMouseAngleLimit = -10f;
     private const float PLusMouseAngleLimit = 10f;
-    
+
+    [Header("Ghost Mouse Input Components")]
+    [SerializeField] private GhostMover _ghostMover;
+    [SerializeField] private DeafaultCamPos _deafaultCamPos;
+
+    private bool _isFirstFrame;
+
+    private readonly UnityEvent OnSetDeafaultStats = new();
+
     private void Start()
     {
         SetMinusAngleLimit(MinusMouseAngleLimit);

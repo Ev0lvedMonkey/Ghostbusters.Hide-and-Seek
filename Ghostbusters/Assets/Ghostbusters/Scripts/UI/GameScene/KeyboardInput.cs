@@ -4,7 +4,6 @@ public class KeyboardInput : MonoBehaviour
 {
     private bool _isMenuOpen;
     private bool _isChatOpen;
-
     private GameStateManager _gameStateManager;
 
     public void Init(GameStateManager gameStateManager)

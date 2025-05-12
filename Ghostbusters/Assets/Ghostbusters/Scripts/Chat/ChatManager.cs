@@ -9,7 +9,11 @@ using UnityEngine.Serialization;
 
 public class ChatManager : NetworkBehaviour, IService
 {
-    [Header("Сomponents")]
+    private readonly Queue<ChatMessage> _chatMessages = new();
+    private const int MaxMessages = 20;
+    private const int MaxMessageLength = 100;
+
+    [Header("Components")]
     [SerializeField] private ChatMessage _chatMessagePrefab;
     [SerializeField] private CanvasGroup _chatContent;
     [SerializeField] private TMP_InputField _chatInput;
@@ -19,11 +23,6 @@ public class ChatManager : NetworkBehaviour, IService
 
     private MultiplayerStorage _multiplayerStorage;
     private bool _isChatOpen;
-    private readonly Queue<ChatMessage> _chatMessages = new();
-    
-    private const int MaxMessages = 20;
-    private const int MaxMessageLength = 100;
-
 
     private void Update()
     {

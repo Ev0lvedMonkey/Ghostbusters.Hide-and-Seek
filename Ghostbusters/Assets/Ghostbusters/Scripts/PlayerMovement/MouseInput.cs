@@ -3,7 +3,10 @@ using UnityEngine;
 
 public abstract class MouseInput : NetworkBehaviour
 {
-    [Header("Base Mouse Input Сomponents")]
+    private const string MouseX = "Mouse X";
+    private const string MouseY = "Mouse Y";
+
+    [Header("Base Mouse Input Components")]
     [SerializeField] private MouseSenceConfiguration _mouseSenseConfig;
     [SerializeField] private Transform _camFollowPosition;
     [SerializeField] private Transform _torseObj;
@@ -12,9 +15,6 @@ public abstract class MouseInput : NetworkBehaviour
     private IRotatable _fullbodyRotation;
     private IRotatable _torseRotation;
     private CamRotation _camRotation;
-
-    private const string MouseX = "Mouse X";
-    private const string MouseY = "Mouse Y";
 
     protected float MinusAngleLimit { get; private set; }
     protected float PlusAngleLimit { get; private set; }
@@ -97,11 +97,12 @@ public abstract class MouseInput : NetworkBehaviour
         _camRotation = new CamRotation(_camFollowPosition);
         _torseRotation = new TorseRotation(_torseObj);
     }
-    
-    [ServerRpc]
-    protected virtual void UpdateRotationServerRpc(float xAxis, float yAxis) =>
-        UpdateRotationClientRpc(xAxis, yAxis);
 
+    [ServerRpc]
+    protected virtual void UpdateRotationServerRpc(float xAxis, float yAxis)
+    {
+        UpdateRotationClientRpc(xAxis, yAxis);
+    }
 
     [ClientRpc]
     private void UpdateRotationClientRpc(float xAxis, float yAxis)
@@ -112,5 +113,4 @@ public abstract class MouseInput : NetworkBehaviour
         _yAxis = yAxis;
         ApplyRotation();
     }
-
 }

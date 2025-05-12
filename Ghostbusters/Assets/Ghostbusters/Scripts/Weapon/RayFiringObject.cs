@@ -3,17 +3,16 @@ using Unity.Netcode;
 
 public abstract class RayFiringObject : NetworkBehaviour
 {
-    [Header("Base Сomponents")]
+    private const float ResetCooldownTimer = 0;
+    private const float HitCooldown = 1.5f;
+    private const KeyCode LMB = KeyCode.Mouse0;
+
+    [Header("Base Components")]
     [SerializeField, Range(0.02f, 3f)] protected float _fireRate;
     [SerializeField, Range(1f, 250f)] protected float _maxRayDistance;
 
     private float _actionTimer;
     private bool _isCooldownActive;
-    
-    private const float ResetCooldownTimer = 0;
-    private const float HitCooldown = 1.5f;
-    private const KeyCode LMB = KeyCode.Mouse0;
-
     private GameOverWinUI _gameOverWinUI;
     private ChatManager _chatManager;
     

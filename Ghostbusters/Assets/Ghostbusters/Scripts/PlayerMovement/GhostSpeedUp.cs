@@ -4,18 +4,18 @@ using UnityEngine.Events;
 
 public class GhostSpeedUp : GhostMover
 {
-    [Header("Ghost Speed Up Сomponents")]
-    [SerializeField] protected CharacterAbilityStateChanger _characterAbilityStateChanger;
-    
-    private readonly UnityEvent OnEnableAbility = new();
-    private readonly UnityEvent OnDisableAbility = new();
-    
     private const float SpeedBoostMultiplier = 1.4f;
     private const float SpeedBoostDuration = 4f;
     private const float SpeedBoostCooldown = 9f;
 
+    [Header("Ghost Speed Up Components")]
+    [SerializeField] protected CharacterAbilityStateChanger _characterAbilityStateChanger;
+
     private bool _isSpeedBoostActive;
     private bool _canUseSpeedBoost = true;
+
+    private readonly UnityEvent OnEnableAbility = new();
+    private readonly UnityEvent OnDisableAbility = new();
 
     protected override void Awake()
     {
@@ -37,6 +37,11 @@ public class GhostSpeedUp : GhostMover
         }
     }
 
+    protected override float GetModifiedSpeed()
+    {
+        return _isSpeedBoostActive ? SpeedBoostMultiplier : 1.0f;
+    }
+
     private void ActivateSpeedBoost()
     {
         if (_isSpeedBoostActive) return;
@@ -56,10 +61,5 @@ public class GhostSpeedUp : GhostMover
         Debug.Log("Speed Boost Ready");
         _canUseSpeedBoost = true;
         OnEnableAbility.Invoke();
-    }
-
-    protected override float GetModifiedSpeed()
-    {
-        return _isSpeedBoostActive ? SpeedBoostMultiplier : 1.0f;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class GamePlayingClockUI : MonoBehaviour
 {
     [SerializeField] private UICircleSegmented timerImage;
+
     private GameStateManager _gameStateManager;
 
     private void Update()

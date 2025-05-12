@@ -12,9 +12,13 @@ public abstract class HelpUI : MonoBehaviour
         Hide();
     }
 
-    public virtual void Show() =>
+    public virtual void Show()
+    {
          gameObject.SetActive(true);
+    }
 
-    public void Hide() =>
+    private void Hide()
+    {
         gameObject.SetActive(false);
+    }
 }

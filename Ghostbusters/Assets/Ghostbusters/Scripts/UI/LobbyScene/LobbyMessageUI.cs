@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class LobbyMessageUI : MonoBehaviour
 {
+    private const string DynamicTextTable = "DynamicTextTable";
+
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Button closeButton;
 
-    private const string DynamicTextTable = "DynamicTextTable";
-    
     private ServiceLocator _serviceLocator;
 
     public void Init()

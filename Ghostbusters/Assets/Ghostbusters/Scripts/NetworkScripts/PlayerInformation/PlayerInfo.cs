@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class PlayerInfo : MonoBehaviour
 {
-    [Header("Base Сomponents")]
+    [Header("Base Components")]
     [SerializeField] private int _playerIndex;
     [SerializeField] private GameObject _readyGameObject;
     [SerializeField] private TextMeshProUGUI _playerNameText;
@@ -31,6 +31,24 @@ public abstract class PlayerInfo : MonoBehaviour
         _characterSelectReady = null;
     }
 
+    protected int GetPlayerIndex()
+    {
+        return _playerIndex;
+    }
+
+    protected virtual void UpdatePlayerInfo()
+    {
+        Show();
+
+        PlayerData playerData = _multiplayerStorage.GetPlayerDataFromPlayerIndex(_playerIndex);
+
+        bool isReady = _characterSelectReady.GetReadyStatus(playerData.clientId);
+
+        _readyGameObject.SetActive(isReady);
+
+        UpdatePlayerName(playerData);
+    }
+
     private void CharacterSelectReady_OnReadyChanged()
     {
         UpdatePlayer();
@@ -53,23 +71,6 @@ public abstract class PlayerInfo : MonoBehaviour
         }
     }
 
-    protected int GetPlayerIndex()
-    {
-        return _playerIndex;
-    }
-
-    protected virtual void UpdatePlayerInfo()
-    {
-        Show();
-
-        PlayerData playerData = _multiplayerStorage.GetPlayerDataFromPlayerIndex(_playerIndex);
-
-        bool isReady = _characterSelectReady.GetReadyStatus(playerData.clientId);
-
-        _readyGameObject.SetActive(isReady);
-
-        UpdatePlayerName(playerData);
-    }
 
     private void UpdatePlayerName(PlayerData playerData)
     {

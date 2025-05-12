@@ -13,12 +13,13 @@ public class SettingUI : MonoBehaviour
         en
     }
 
+    private const string LanguageKey = "SelectedLanguage";
+
     [Header("Mixer")] 
     [SerializeField] private AudioMixerGroup _mixerGroup;
 
-    [Header("Components")]
+    [Header("UI Elements")]
     [SerializeField] private Slider _musicSlider;
-
     [SerializeField] private TMP_Text _musicText;
     [SerializeField] private Slider _effectsSlider;
     [SerializeField] private TMP_Text _effectsText;
@@ -27,11 +28,11 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private ScreenModeChanger _screenModeChanger;
     [SerializeField] private MouseSenceSettingUI _mouseSenceSettingUI;
 
-    [Header("Config")] [SerializeField] private AudioVolumeConfiguration _audioConfig;
+    [Header("Config")]
+    [SerializeField] private AudioVolumeConfiguration _audioConfig;
 
     private GameStateManager _gameStateManager;
     private Language _selectedLanguage;
-    private const string LanguageKey = "SelectedLanguage";
 
     public void Init(GameStateManager gameStateManager = null)
     {
@@ -67,6 +68,16 @@ public class SettingUI : MonoBehaviour
         _mouseSenceSettingUI.RemoveComponentsListeners();
     }
 
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
 
     private void InitSubSettings()
     {
@@ -77,15 +88,6 @@ public class SettingUI : MonoBehaviour
         _screenModeChanger.AddComponentsListeners();
     }
 
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
 
     private void OnMusicSliderChanged(float value)
     {

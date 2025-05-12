@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class TransformingShoot : RayFiringObject
 {
-    [Header("Transforming Shoot Сomponents")] [SerializeField]
-    private DeafaultCamPos _camPos;
+    [Header("Transforming Shoot Components")] 
+    [SerializeField] private DeafaultCamPos _camPos;
 
     [SerializeField] private GameObject _bodyObject;
     [SerializeField] private GameObject _transformEffect;
 
-    [Header("Audio Сomponents")] [SerializeField]
-    private AudioSource _audioSource;
+    [Header("Audio Components")]
+    [SerializeField] private AudioSource _audioSource;
 
     private MeshFilter _bodyMeshFilter;
     private MeshRenderer _bodyRenderer;
@@ -66,7 +66,6 @@ public class TransformingShoot : RayFiringObject
     {
         if (targetObjectRef.TryGet(out NetworkObject targetObject))
         {
-            // ApplyTransformLocally(targetObject.transform);
             ApplyTransformClientRpc(targetObjectRef);
             PlaySoundClientRpc(transform.position);
         }

@@ -1,8 +1,1 @@
-public class GhostHealthView : HealthView
-{
-    public GhostHealthView() : base()
-    {
-
-    }
-
-}
+public class GhostHealthView : HealthView{}

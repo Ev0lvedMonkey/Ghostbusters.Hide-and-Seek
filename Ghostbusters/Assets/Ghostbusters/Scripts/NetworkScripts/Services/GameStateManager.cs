@@ -3,30 +3,20 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum State
+{
+    WaitingToStart,
+    CountdownToStart,
+    GamePlaying,
+    WinBusters,
+    WinGhost
+}
+
 public class GameStateManager : NetworkBehaviour, IService
 {
-    internal UnityEvent OnStateChanged = new();
-    internal UnityEvent OnLocalPlayerReadyChanged = new();
-    internal UnityEvent OnStartGame = new();
-    internal UnityEvent OnCloseHUD = new();
-    internal UnityEvent OnOpenHUD = new();
-    internal UnityEvent OnSecretRoomOpen = new();
-    internal UnityEvent OnChatOpen = new();
-    internal UnityEvent OnChatClose = new();
-
-
-    public enum State
-    {
-        WaitingToStart,
-        CountdownToStart,
-        GamePlaying,
-        WinBusters,
-        WinGhost
-    }
-
     [Header("Match Duration Configuration")]
     [SerializeField] private MatchDurationConfiguration _matchDurationConfig;
-    
+
     [Header("Character`s prefabs")]
     [SerializeField] private Transform ghostPrefab;
     [SerializeField] private Transform playerPrefab;
@@ -39,6 +29,15 @@ public class GameStateManager : NetworkBehaviour, IService
     private float _gameDuration;
     private Dictionary<ulong, bool> _playerReadyDictionary;
     private ServiceLocator _serviceLocator;
+
+    internal UnityEvent OnStateChanged = new();
+    internal UnityEvent OnLocalPlayerReadyChanged = new();
+    internal UnityEvent OnStartGame = new();
+    internal UnityEvent OnCloseHUD = new();
+    internal UnityEvent OnOpenHUD = new();
+    internal UnityEvent OnSecretRoomOpen = new();
+    internal UnityEvent OnChatOpen = new();
+    internal UnityEvent OnChatClose = new();
 
     private void Update()
     {
@@ -58,6 +57,7 @@ public class GameStateManager : NetworkBehaviour, IService
                     _state.Value = State.GamePlaying;
                     _gamePlayingTimer.Value = _gameDuration;
                 }
+
                 break;
             case State.GamePlaying:
                 _gamePlayingTimer.Value -= Time.deltaTime;
@@ -67,8 +67,8 @@ public class GameStateManager : NetworkBehaviour, IService
                 {
                     _state.Value = State.WinGhost;
                 }
-                break;
 
+                break;
         }
     }
 
@@ -76,7 +76,7 @@ public class GameStateManager : NetworkBehaviour, IService
     {
         _serviceLocator = ServiceLocator.Current;
         _startDelay = new NetworkVariable<float>(_matchDurationConfig.StartDelay);
-        _gameDuration = _matchDurationConfig.GameDuration;  
+        _gameDuration = _matchDurationConfig.GameDuration;
     }
 
     public override void OnNetworkSpawn()
@@ -94,7 +94,7 @@ public class GameStateManager : NetworkBehaviour, IService
         _state.Value = State.CountdownToStart;
         Debug.LogWarning($"CountdownToStart started");
     }
-    
+
     public bool IsCountdownToStartActive()
     {
         return _state.Value == State.CountdownToStart;
@@ -109,7 +109,7 @@ public class GameStateManager : NetworkBehaviour, IService
     {
         return _state.Value;
     }
-    
+
     public bool IsLocalPlayerReady()
     {
         return _isLocalPlayerReady;
@@ -119,7 +119,7 @@ public class GameStateManager : NetworkBehaviour, IService
     {
         return 1 - (_gamePlayingTimer.Value / _gameDuration);
     }
-    
+
     [ServerRpc(RequireOwnership = false)]
     public void ReportPlayerLostServerRpc(ulong clientId)
     {
@@ -136,7 +136,9 @@ public class GameStateManager : NetworkBehaviour, IService
         CheckWinCondition();
     }
 
-    private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    private void SceneManager_OnLoadEventCompleted(string sceneName,
+        UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted,
+        List<ulong> clientsTimedOut)
     {
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
@@ -149,6 +151,7 @@ public class GameStateManager : NetworkBehaviour, IService
             {
                 playerTransform = Instantiate(playerPrefab);
             }
+
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
             _playerStatusList.Add(false);
         }
@@ -157,7 +160,8 @@ public class GameStateManager : NetworkBehaviour, IService
     private bool IsGhost(ulong clientId)
     {
         int idPlayer =
-            _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataIndexFromClientId(_serviceLocator.Get<MultiplayerStorage>().GetPlayerDataFromClientId(clientId).clientId);
+            _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataIndexFromClientId(_serviceLocator
+                .Get<MultiplayerStorage>().GetPlayerDataFromClientId(clientId).clientId);
         if (idPlayer == 0 || idPlayer == 2) return true;
         else return false;
     }
@@ -186,7 +190,6 @@ public class GameStateManager : NetworkBehaviour, IService
                 else if (_playerStatusList[1] == true)
                     allBustersLost = true;
                 else continue;
-
             }
         }
         else if (_playerStatusList.Count == 4)
@@ -198,7 +201,6 @@ public class GameStateManager : NetworkBehaviour, IService
                 else if (_playerStatusList[1] == true && _playerStatusList[3] == true)
                     allBustersLost = true;
                 else continue;
-
             }
         }
         else
@@ -206,10 +208,11 @@ public class GameStateManager : NetworkBehaviour, IService
             allGhostsLost = false;
             allBustersLost = false;
         }
+
         if (allGhostsLost) _state.Value = State.WinBusters;
         else if (allBustersLost) _state.Value = State.WinGhost;
     }
-    
+
     private void State_OnValueChanged(State previousValue, State newValue)
     {
         OnStateChanged?.Invoke();

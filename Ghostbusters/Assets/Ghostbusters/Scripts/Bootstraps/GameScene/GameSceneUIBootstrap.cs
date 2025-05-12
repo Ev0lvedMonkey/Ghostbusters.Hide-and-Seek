@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class GameSceneUIBootstrap : MonoBehaviour
 {
-    [Header("UI Elements")] [SerializeField]
-    private GameStartCountdownUI _gameStartCountdownUI;
-
+    [Header("UI Elements")]
+    [SerializeField] private GameStartCountdownUI _gameStartCountdownUI;
     [SerializeField] private GamePlayingClockUI _gamePlayingClockUI;
     [SerializeField] private GameOverWinUI _gameOverWinUI;
     [SerializeField] private SettingUI _settingUI;

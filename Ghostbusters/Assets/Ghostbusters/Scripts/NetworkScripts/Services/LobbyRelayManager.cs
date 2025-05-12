@@ -17,15 +17,6 @@ using UnityEngine.SceneManagement;
 public class LobbyRelayManager : MonoBehaviour, IService
 {
     private const int LobbyListChangedDelaySeconds = 2;
-    public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
-
-    internal UnityEvent OnCreateLobbyStarted = new();
-    internal UnityEvent OnCreateLobbyFailed = new();
-    internal UnityEvent OnJoinStarted = new();
-    internal UnityEvent OnQuickJoinFailed = new();
-    internal UnityEvent OnJoinFailed = new();
-    internal UnityEvent OnSignIn = new();
-
     private const string RelayJoinCodeKey = "RelayJoinCode";
     public const string PlayerNameKey = "PlayerName";
 
@@ -34,6 +25,14 @@ public class LobbyRelayManager : MonoBehaviour, IService
     private Lobby _joinedLobby;
     private string _playerName;
     private ServiceLocator _serviceLocator;
+
+    public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
+    internal UnityEvent OnCreateLobbyStarted = new();
+    internal UnityEvent OnCreateLobbyFailed = new();
+    internal UnityEvent OnJoinStarted = new();
+    internal UnityEvent OnQuickJoinFailed = new();
+    internal UnityEvent OnJoinFailed = new();
+    internal UnityEvent OnSignIn = new();
 
     private void Update()
     {
@@ -47,9 +46,10 @@ public class LobbyRelayManager : MonoBehaviour, IService
         DontDestroyOnLoad(gameObject);
     }
 
-    public void InitializeAuthentication() =>
+    public void InitializeAuthentication()
+    {
         InitializeUnityAuthentication();
-
+    }
 
     public async Task CreateLobby(string lobbyName, bool isPrivate)
     {
@@ -149,31 +149,6 @@ public class LobbyRelayManager : MonoBehaviour, IService
         }
     }
 
-    private async Task<bool> TryJoinRelayAndStartClient(Lobby lobby)
-    {
-        _joinedLobby = lobby;
-
-        if (!lobby.Data.TryGetValue(RelayJoinCodeKey, out var relayData))
-        {
-            Debug.LogError("Relay join code not found in lobby data.");
-            return false;
-        }
-
-        JoinAllocation joinAllocation = await JoinRelay(relayData.Value);
-        if (joinAllocation.Equals(default(JoinAllocation)))
-        {
-            Debug.LogError("Failed to join relay.");
-            return false;
-        }
-
-        NetworkManager.Singleton.GetComponent<UnityTransport>()
-            .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
-
-        _serviceLocator.Get<MultiplayerStorage>().StartClient();
-        Debug.Log($"{gameObject.name}: successfully joined relay");
-
-        return true;
-    }
 
     public string GetPlayerName()
     {
@@ -237,9 +212,35 @@ public class LobbyRelayManager : MonoBehaviour, IService
         return _joinedLobby;
     }
 
-    public bool IsLobbyHost()
+    private bool IsLobbyHost()
     {
         return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
+    }
+
+    private async Task<bool> TryJoinRelayAndStartClient(Lobby lobby)
+    {
+        _joinedLobby = lobby;
+
+        if (!lobby.Data.TryGetValue(RelayJoinCodeKey, out var relayData))
+        {
+            Debug.LogError("Relay join code not found in lobby data.");
+            return false;
+        }
+
+        JoinAllocation joinAllocation = await JoinRelay(relayData.Value);
+        if (joinAllocation.Equals(default(JoinAllocation)))
+        {
+            Debug.LogError("Failed to join relay.");
+            return false;
+        }
+
+        NetworkManager.Singleton.GetComponent<UnityTransport>()
+            .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+
+        _serviceLocator.Get<MultiplayerStorage>().StartClient();
+        Debug.Log($"{gameObject.name}: successfully joined relay");
+
+        return true;
     }
 
     private bool IsAuthorized()

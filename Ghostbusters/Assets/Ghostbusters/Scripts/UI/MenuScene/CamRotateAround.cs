@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class CamRotateAround : MonoBehaviour
 {
-    private float _initialHeight;
-    private int _rotateDirection;
-    private Transform _camTransform;
-    
     [SerializeField] private Transform _target;
     [SerializeField] private CameraRotationProperties _cameraRotationProperties;
 
-    
+    private float _initialHeight;
+    private int _rotateDirection;
+    private Transform _camTransform;
+
     private void Update()
     {
         RotateCam();

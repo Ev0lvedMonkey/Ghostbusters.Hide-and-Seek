@@ -4,6 +4,7 @@ using UnityEngine;
 public class SpawnNetworkPlayer : NetworkBehaviour
 {
     [SerializeField] private CharactersSpawnPositionList _spawnPositionList;
+
     private ServiceLocator _serviceLocator;
     
     private void Awake()

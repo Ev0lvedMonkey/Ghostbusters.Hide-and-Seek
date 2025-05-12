@@ -3,12 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MouseSenceScriptableObject", menuName = "MouseSence")]
 public class MouseSenceConfiguration : ScriptableObject
 {
-    public float MaxMouseSense { get; } = 5f;
-    public float MinMouseSense { get; } = 1f;
+    private const string MouseSenseKey = "MouseSense";
 
     [SerializeField] private float _mouseSense;
 
-    private const string MouseSenseKey = "MouseSense";
+    public float MaxMouseSense { get; } = 5f;
+    public float MinMouseSense { get; } = 1f;
 
     private void OnEnable()
     {

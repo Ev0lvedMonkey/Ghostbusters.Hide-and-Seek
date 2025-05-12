@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 public class GameOverWinUI : MonoBehaviour, IService
 {
-    public UnityEvent PlayerExit = new();
-
+    [Header("UI Elements")]
     [SerializeField] private SettingUI _settingUI;
     [SerializeField] private TextMeshProUGUI _gameOverWinText;
     [SerializeField] private Button _playAgainButton;
@@ -18,6 +17,8 @@ public class GameOverWinUI : MonoBehaviour, IService
     private bool _isOpened;
     private bool _winnnerWasDetermined;
     private GameStateManager _gameStateManager;
+
+    public UnityEvent PlayerExit = new();
 
     public void Init(GameStateManager gameStateManager)
     {

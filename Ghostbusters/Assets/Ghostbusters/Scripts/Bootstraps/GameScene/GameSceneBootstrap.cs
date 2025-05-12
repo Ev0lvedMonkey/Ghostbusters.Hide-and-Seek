@@ -22,7 +22,7 @@ public class GameSceneBootstrap : MonoBehaviour
     {
         ServiceLocator.Current.Register(_gameStateManager);
 
-        LoadLevel(); // Загружаем уровень (без окружения — теперь этим занимается EnvironmentSynchronizer)
+        LoadLevel();
         
         _gameStateManager.Init();
         _gameStateManager.StartCountdown();
@@ -39,7 +39,6 @@ public class GameSceneBootstrap : MonoBehaviour
 
     private void LoadLevel()
     {
-        // Уровень, как правило, включает в себя плоскость, стены, UI и т.п. — без динамического окружения
         Instantiate(_gameSceneConfiguration.GetLevelObject());
     }
 

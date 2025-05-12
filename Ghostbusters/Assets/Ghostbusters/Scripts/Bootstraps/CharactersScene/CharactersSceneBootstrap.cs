@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class CharactersSceneBootstrap : MonoBehaviour
 {
-    [Header("Сomponents")] [SerializeField]
-    private CharactersSceneUIBootstrap _charactersSceneUIBootstrap;
-
+    [Header("Components")] 
+    [SerializeField] private CharactersSceneUIBootstrap _charactersSceneUIBootstrap;
     [SerializeField] private CharacterSelectReady _characterSelectReady;
     [SerializeField] private List<PlayerInfo> _listPlayerInfo;
 

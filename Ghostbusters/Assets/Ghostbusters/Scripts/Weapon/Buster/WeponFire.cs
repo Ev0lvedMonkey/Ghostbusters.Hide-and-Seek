@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class WeaponFire : RayFiringObject
 {
+    private const string GhostLayer = "Ghost";
+    private const string TransformableLayer = "Transformable";
+    private const string StaticObjectsLayer = "StaticObjects";
+
     [SerializeField] private GameObject _hitEffect;
     [SerializeField] private CharacterHealthController _characterHealth;
     [SerializeField] private AudioSource _shootSource;
@@ -10,10 +14,6 @@ public class WeaponFire : RayFiringObject
     private LayerMask _targetLayerMask;
     private LayerMask _transformableLayerMask;
     private LayerMask _staticObjectsLayerMask;
-
-    private const string GhostLayer = "Ghost";
-    private const string TransformableLayer = "Transformable";
-    private const string StaticObjectsLayer = "StaticObjects";
 
     protected override void Start()
     {
@@ -81,27 +81,5 @@ public class WeaponFire : RayFiringObject
     {
         if (IsOwner) return;
         Instantiate(_hitEffect, hitPoint, Quaternion.LookRotation(hitNormal));
-        Debug.Log("Effect played");
     }
-
-    /*
-    [Inject]
-    public void Construct(CharacterHealthController characterHealthController)
-    {
-        _targetHealthController = characterHealthController;
-        Debug.Log("CharacterHealthController INJECTED");
-    }
-
-    [Inject]
-    public void InitializeSignal(SignalBus signalBus)
-    {
-        signalBus.Subscribe<PlayerDiedSignal>(OnPlayerDied);
-        Debug.Log("SIGNAL INJECTED");
-    }
-
-    private void OnPlayerDied()
-    {
-        Debug.Log("Player died event handled");
-    }
-    */
 }

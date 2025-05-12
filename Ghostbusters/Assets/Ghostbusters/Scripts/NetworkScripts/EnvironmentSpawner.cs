@@ -3,15 +3,15 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 
+[Serializable]
+public class SpawnEntry
+{
+    public Transform spawnPoint;
+    public GameObject prefab;
+}
+
 public class EnvironmentSpawner : NetworkBehaviour
 {
-    [Serializable]
-    public class SpawnEntry
-    {
-        public Transform spawnPoint;
-        public GameObject prefab;
-    }
-
     private readonly List<GameObject> spawnedObjects = new();
 
     [SerializeField] private List<SpawnEntry> spawnEntries = new();
@@ -20,7 +20,7 @@ public class EnvironmentSpawner : NetworkBehaviour
 
     public void SpawnAllClient()
     {
-        if(_enviromentSpawned)
+        if (_enviromentSpawned)
             return;
         foreach (var entry in spawnEntries)
         {
@@ -34,10 +34,10 @@ public class EnvironmentSpawner : NetworkBehaviour
 
         _enviromentSpawned = true;
     }
-    
+
     public void SpawnAllHost()
     {
-        if(_enviromentSpawned)
+        if (_enviromentSpawned)
             return;
         foreach (var entry in spawnEntries)
         {
@@ -51,7 +51,7 @@ public class EnvironmentSpawner : NetworkBehaviour
             {
                 netObj.Spawn();
             }
-            
+
             spawnedObjects.Add(obj);
         }
 

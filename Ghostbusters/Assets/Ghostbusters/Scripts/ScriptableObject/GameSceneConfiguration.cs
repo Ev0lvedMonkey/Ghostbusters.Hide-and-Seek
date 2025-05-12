@@ -11,13 +11,6 @@ public class GameSceneConfiguration : ScriptableObject
     {
         return _level;
     }
-    
-    public GameObject GetEnviroment()
-    {
-        int randomIndex = Random.Range(0, _enviromentType.Count);
-        Debug.Log($"randomIndex {randomIndex}");
-        return _enviromentType[randomIndex];
-    }
 
     public GameObject GetEnviroment(int index)
     {

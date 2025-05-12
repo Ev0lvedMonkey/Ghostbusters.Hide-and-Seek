@@ -2,21 +2,29 @@ using UnityEngine;
 
 public abstract class GhostMover : CharacterMover
 {
-    [Header("Ghost Movement Сomponents")]
-    [SerializeField] private Transform _groundCheckDot;
-    [SerializeField] private LayerMask _groundLayer;
-
-    private bool _isGrounded;
-    public bool IsRotationLocked { get; private set; }
-
     private readonly Vector3 JumpDir = Vector3.up;
     private const KeyCode JumpKey = KeyCode.Space;
     private const float JumpHeight = 5.5f;
     private const float GroundCheckRadius = 0.3f;
 
+    [Header("Ghost Movement Components")]
+    [SerializeField] private Transform _groundCheckDot;
+    [SerializeField] private LayerMask _groundLayer;
+
+    private bool _isGrounded;
+
+    public bool IsRotationLocked { get; private set; }
+
     protected override void Awake()
     {
         ServiceLocator.Current.Get<GameStateManager>().OnOpenHUD.AddListener(() => IsRotationLocked = true);
+    }
+
+    private void FixedUpdate()
+    {
+        if (!IsOwner) return;
+
+        Move();
     }
 
     protected void GhostMove()
@@ -27,11 +35,24 @@ public abstract class GhostMover : CharacterMover
         UpdateIdleState();
     }
 
-    private void FixedUpdate()
+    protected virtual float GetModifiedSpeed()
+    {
+        return 1.0f;
+    }
+
+    protected override void Move()
     {
         if (!IsOwner) return;
 
-        Move();
+        _input = GetInput();
+
+        float horizontalInput = _input.x;
+        float verticalInput = _input.y;
+
+        _direction = transform.forward * verticalInput + transform.right * horizontalInput;
+        Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * GetModifiedSpeed() * Time.deltaTime;
+        _rigidbody.MovePosition(targetPosition);
+        UpdatePositionServerRpc(targetPosition);
     }
 
     private void TryJump()
@@ -64,23 +85,4 @@ public abstract class GhostMover : CharacterMover
         }
     }
 
-    protected virtual float GetModifiedSpeed()
-    {
-        return 1.0f;
-    }
-
-    protected override void Move()
-    {
-        if (!IsOwner) return;
-
-        _input = GetInput();
-
-        float horizontalInput = _input.x;
-        float verticalInput = _input.y;
-
-        _direction = transform.forward * verticalInput + transform.right * horizontalInput;
-        Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * GetModifiedSpeed() * Time.deltaTime;
-        _rigidbody.MovePosition(targetPosition);
-        UpdatePositionServerRpc(targetPosition);
-    }
 }

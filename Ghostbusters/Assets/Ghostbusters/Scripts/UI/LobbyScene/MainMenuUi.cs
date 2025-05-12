@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class MainMenuUi : MonoBehaviour
 {
+    [Header("UI Elements")]
     [SerializeField] private Button _createLobbyBtn;
     [SerializeField] private Button _quickJoinLobbyBtn;
     [SerializeField] private Button _joinLobbyByCodeBtn;
@@ -47,11 +48,15 @@ public class MainMenuUi : MonoBehaviour
         RemoveButtonsListeners();
     }
 
-    private void Show() =>
-        this.gameObject.SetActive(true);
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
 
-    private void Hide() =>
+    private void Hide()
+    {
         gameObject.SetActive(false);
+    }
     
     private void OnLobbyListChanged(object sender, LobbyRelayManager.OnLobbyListChangedEventArgs e)
     {
@@ -118,8 +123,10 @@ public class MainMenuUi : MonoBehaviour
         _lobbyTemplate.gameObject.SetActive(false);
     }
 
-    private async void QuickJoin() =>
+    private async void QuickJoin()
+    {
         await _serviceLocator.Get<LobbyRelayManager>().QuickJoin();
+    }
 
     private async void JoinWithCode()
     {

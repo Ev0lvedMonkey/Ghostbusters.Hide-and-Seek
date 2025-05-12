@@ -9,13 +9,13 @@ public class LobbyTemplateUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playerCountText;
     [SerializeField] private Button _lobbyButton;
 
+    private Lobby lobby;
+
     private void OnValidate()
     {
         if(_lobbyButton == null)
             _lobbyButton = GetComponent<Button>();
     }
-
-    private Lobby lobby;
 
     private void Awake()
     {

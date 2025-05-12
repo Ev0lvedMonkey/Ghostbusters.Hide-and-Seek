@@ -5,7 +5,14 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class CharacterMover : NetworkBehaviour
 {
-    [Header("Character Mover Componets")]
+    protected const string Horizontal = "Horizontal";
+    protected const string Vertical = "Vertical";
+    private const float CheckRadius = 0.5f;
+    private const float CheckInterval = 1f;
+    private const float BackMoveSpeed = 3.375f;
+    private const float MovementSpeed = 4.5f;
+
+    [Header("Character Mover Components")]
     [SerializeField] internal Rigidbody _rigidbody;
     [SerializeField] internal Transform _navCheckDot;
 
@@ -13,14 +20,6 @@ public abstract class CharacterMover : NetworkBehaviour
     private float _timer;
     protected Vector3 _direction;
     protected Vector2 _input;
-
-    
-    protected const string Horizontal = "Horizontal";
-    protected const string Vertical = "Vertical";
-    private const float CheckRadius = 0.5f;
-    private const float CheckInterval = 1f;
-    private const float BackMoveSpeed = 3.375f;
-    private const float MovementSpeed = 4.5f;
 
     protected virtual void Awake()
     {
@@ -68,12 +67,6 @@ public abstract class CharacterMover : NetworkBehaviour
         UpdatePositionClientRpc(targetPosition);
     }
 
-    [ClientRpc]
-    private void UpdatePositionClientRpc(Vector3 targetPosition)
-    {
-        if (IsOwner) return;
-        _rigidbody.MovePosition(targetPosition);
-    }
 
     protected float GetMoveSpeed()
     {
@@ -85,6 +78,13 @@ public abstract class CharacterMover : NetworkBehaviour
     protected Vector2 GetInput()
     {
         return new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
+    }
+
+    [ClientRpc]
+    private void UpdatePositionClientRpc(Vector3 targetPosition)
+    {
+        if (IsOwner) return;
+        _rigidbody.MovePosition(targetPosition);
     }
 
     private bool IsOnNavMesh()

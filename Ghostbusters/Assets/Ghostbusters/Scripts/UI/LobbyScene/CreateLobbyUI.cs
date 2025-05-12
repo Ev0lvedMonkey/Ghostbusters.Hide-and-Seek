@@ -14,23 +14,29 @@ public class CreateLobbyUI : MonoBehaviour
         lobbyNameInputField.characterLimit = 14;
         createPublicButton.onClick.AddListener(() => CreateLobby(false));
         createPrivateButton.onClick.AddListener(() => CreateLobby(true));
-        closeButton.onClick.AddListener(() =>Hide());
+        closeButton.onClick.AddListener(() => Hide());
         Hide();
-    } 
+    }
 
     public void Uninit()
     {
         createPublicButton.onClick.RemoveListener(() => CreateLobby(false));
         createPrivateButton.onClick.RemoveListener(() => CreateLobby(true));
-        closeButton.onClick.RemoveListener(() =>Hide());
+        closeButton.onClick.RemoveListener(() => Hide());
     }
 
-    public void Show() =>
+    public void Show()
+    {
         gameObject.SetActive(true);
+    }
 
-    private void Hide() =>
+    private void Hide()
+    {
         this.gameObject.SetActive(false);
+    }
 
-    private async void CreateLobby(bool isPrivate) =>
-                 await ServiceLocator.Current.Get<LobbyRelayManager>().CreateLobby(lobbyNameInputField.text, isPrivate);
+    private async void CreateLobby(bool isPrivate)
+    {
+        await ServiceLocator.Current.Get<LobbyRelayManager>().CreateLobby(lobbyNameInputField.text, isPrivate);
+    }
 }

@@ -7,15 +7,16 @@ public class GhostbusterMover : CharacterMover
     [Header("Animator")]
     [SerializeField] private Animator _animator;
     
-    [Header("Сomponents")]
+    [Header("Components")]
     [SerializeField] private GameObject _blockingSphere;
     [SerializeField] private GameObject _blockingSphereSpawnEffect;
     [SerializeField] private CharacterAbilityStateChanger _characterAbilityStateChanger;
 
     private bool _abilityUsed;
+    private GameOverWinUI _gameOverWinUI;
+
     private readonly UnityEvent OnDisableAbility = new();
 
-    private GameOverWinUI _gameOverWinUI;
     protected override void Awake()
     {
         base.Awake();
@@ -53,8 +54,8 @@ public class GhostbusterMover : CharacterMover
     [ServerRpc]
     private void SpawnSphereServerRpc()
     {
-        var instance = Instantiate(_blockingSphere, transform.position, Quaternion.identity);
-        var instanceNetworkObject = instance.GetComponent<NetworkObject>();
+        GameObject instance = Instantiate(_blockingSphere, transform.position, Quaternion.identity);
+        NetworkObject instanceNetworkObject = instance.GetComponent<NetworkObject>();
         instanceNetworkObject.Spawn(true);
     }
 

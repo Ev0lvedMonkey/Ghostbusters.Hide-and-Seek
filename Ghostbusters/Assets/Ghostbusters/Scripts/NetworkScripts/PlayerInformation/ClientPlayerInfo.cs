@@ -33,6 +33,11 @@ public class ClientPlayerInfo : PlayerInfo
         _kickButton.onClick.RemoveListener(() => _kickButton.gameObject.SetActive(false));
         _kickButton.gameObject.SetActive(false);
     }
+    protected override void UpdatePlayerInfo()
+    {
+        base.UpdatePlayerInfo();
+        _kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
+    }
 
     private void KickPlayer()
     {
@@ -43,11 +48,5 @@ public class ClientPlayerInfo : PlayerInfo
             _serviceLocator.Get<LobbyRelayManager>().KickPlayer(playerData.playerId.ToString());
             _multiplayerStorage.KickPlayer(playerData.clientId);
         }
-    }
-
-    protected override void UpdatePlayerInfo()
-    {
-        base.UpdatePlayerInfo();
-        _kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
     }
 }

@@ -3,14 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AudioVolumeConfiguration", menuName = "AudioVolumeScriptableObject")]
 public class AudioVolumeConfiguration : ScriptableObject
 {
-    [Range(0.0f, 1.0f)]
-    [SerializeField] private float _musicVolume = 0.75f;
-    [Range(0.0f, 1.0f)]
-    [SerializeField] private float _effectsVolume = 0.75f;
-
     public readonly string MusicKey = "MusicValue";
     public readonly string EffectsKey = "EffectsValue";
-    
+
+    [SerializeField, Range(0.0f, 1.0f)] private float _musicVolume = 0.75f;
+    [SerializeField, Range(0.0f, 1.0f)] private float _effectsVolume = 0.75f;
+
     public float MusicVolume => _musicVolume;
     public float EffectsVolume => _effectsVolume;
 
@@ -18,7 +16,6 @@ public class AudioVolumeConfiguration : ScriptableObject
     {
         LoadVolumes();
     }
-
 
     public void SetMusicVolume(float value)
     {
