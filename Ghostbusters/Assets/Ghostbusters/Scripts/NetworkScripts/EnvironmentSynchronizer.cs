@@ -19,6 +19,7 @@ public class EnvironmentSynchronizer : NetworkBehaviour
             _environmentIndex.Value = _configuration.GetEnviromentRndIndex();
             LoadEnvironment(_environmentIndex.Value);
         }
+        Debug.Log($"[EnvironmentSynchronizer] OnNetworkSpawn {_environmentIndex.Value}");
         
         if(_environmentIndex.Value > 0)
             LoadEnvironment(_environmentIndex.Value);

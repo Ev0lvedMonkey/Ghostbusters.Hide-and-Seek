@@ -21,6 +21,6 @@ public class GameSceneConfiguration : ScriptableObject
 
     public int GetEnviromentRndIndex()
     {
-        return Random.Range(0, _enviromentType.Count + 1);
+        return Random.Range(0, _enviromentType.Count);
     }
 }
