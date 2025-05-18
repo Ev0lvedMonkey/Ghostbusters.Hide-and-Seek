@@ -13,6 +13,7 @@ public class DeafaultCamPos : MonoBehaviour
     private const float MaxY = 10f;
 
     [SerializeField] private Transform followedObject;
+    [SerializeField] private Collider transformableObjectCollider;
 
     private Coroutine _limitCoroutine;
     private Tween _moveTween;
@@ -37,7 +38,7 @@ public class DeafaultCamPos : MonoBehaviour
     {
         transform.localEulerAngles = Vector3.zero;
     }
-    
+
     private IEnumerator UpdatePositionCoroutine()
     {
         WaitForSeconds delay = new WaitForSeconds(UpdateInterval);
@@ -54,7 +55,7 @@ public class DeafaultCamPos : MonoBehaviour
         if (followedObject == null)
             return;
 
-        float heightOffset = GetObjectHeight(followedObject) * 0.6f;
+        float heightOffset = GetObjectHeight() * 1.4f;
         float targetY = Mathf.Clamp(followedObject.position.y + heightOffset, MinY, MaxY);
         float targetZ = Mathf.Clamp(transform.localPosition.z, MinZ, MaxZ);
 
@@ -62,17 +63,10 @@ public class DeafaultCamPos : MonoBehaviour
         _moveTween = transform.DOLocalMove(targetPos, TweenDuration);
     }
 
-    private float GetObjectHeight(Transform obj)
+    private float GetObjectHeight()
     {
-        Collider col = obj.GetComponentInChildren<Collider>();
-        if (col != null)
-            return col.bounds.size.y;
-
-        Renderer rend = obj.GetComponentInChildren<Renderer>();
-        if (rend != null)
-            return rend.bounds.size.y;
-
-        return 1f;
+        Debug.Log($"{transformableObjectCollider.bounds.size.y}");
+        return transformableObjectCollider.bounds.size.y;
     }
 
     public void SetTransformedXCamPosition()

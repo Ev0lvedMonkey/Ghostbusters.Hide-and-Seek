@@ -505,6 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followedObject: {fileID: 7045450888813315848}
+  transformableObjectCollider: {fileID: 4038037104488601648}
 --- !u!1 &8826096940076894113
 GameObject:
   m_ObjectHideFlags: 0

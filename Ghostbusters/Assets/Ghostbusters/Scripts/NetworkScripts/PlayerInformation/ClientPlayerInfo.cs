@@ -31,7 +31,6 @@ public class ClientPlayerInfo : PlayerInfo
         base.Uninit();
         _kickButton.onClick.RemoveListener(KickPlayer);
         _kickButton.onClick.RemoveListener(() => _kickButton.gameObject.SetActive(false));
-        _kickButton.gameObject.SetActive(false);
     }
     protected override void UpdatePlayerInfo()
     {

@@ -14,12 +14,13 @@ public class GameSceneConfiguration : ScriptableObject
 
     public GameObject GetEnviroment(int index)
     {
-        Debug.Log($"[GameSceneConfiguration] GetEnviroment {index} on player {ServiceLocator.Current.Get<MultiplayerStorage>().GetPlayerData().playerName}");
+        Debug.Log(
+            $"[GameSceneConfiguration] GetEnviroment {index} on player {ServiceLocator.Current.Get<MultiplayerStorage>().GetPlayerData().playerName}");
         return _enviromentType[index];
     }
 
     public int GetEnviromentRndIndex()
     {
-        return Random.Range(0, _enviromentType.Count);
+        return Random.Range(0, _enviromentType.Count + 1);
     }
 }

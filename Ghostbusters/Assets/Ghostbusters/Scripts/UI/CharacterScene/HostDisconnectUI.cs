@@ -17,7 +17,7 @@ public class HostDisconnectUI : MonoBehaviour
     {
         _playAgainButton.onClick.RemoveListener(BackToMenu);
         NetworkManager.Singleton.OnClientDisconnectCallback -= NetworkManager_OnClientDisconnectCallback;
-        Hide();
+        // Hide();
     }
 
 
@@ -47,6 +47,6 @@ public class HostDisconnectUI : MonoBehaviour
 
     private void Hide()
     {
-        gameObject.SetActive(false);
+        gameObject?.SetActive(false);
     }
 }
