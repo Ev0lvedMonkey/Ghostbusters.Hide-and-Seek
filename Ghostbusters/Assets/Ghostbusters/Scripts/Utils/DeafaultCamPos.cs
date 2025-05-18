@@ -7,7 +7,7 @@ public class DeafaultCamPos : MonoBehaviour
     private const float TweenDuration = 0.5f;
     private const float UpdateInterval = 2.5f;
 
-    private const float MinZ = -1.5f;
+    private const float MinZ = -2.5f;
     private const float MaxZ = 0.1f;
     private const float MinY = 0f;
     private const float MaxY = 10f;
@@ -77,7 +77,7 @@ public class DeafaultCamPos : MonoBehaviour
 
     public void SetTransformedXCamPosition()
     {
-        Vector3 targetPos = new Vector3(-1.5f, transform.localPosition.y, transform.localPosition.z);
+        Vector3 targetPos = new Vector3(-1.6f, transform.localPosition.y, transform.localPosition.z);
         _moveTween = transform.DOLocalMove(targetPos, TweenDuration);
     }
 }
