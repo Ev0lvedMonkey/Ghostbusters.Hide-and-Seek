@@ -15,5 +15,5 @@ MonoBehaviour:
   _spawnPositionList:
   - {x: 38, y: 0, z: 31}
   - {x: 28, y: 0, z: 4}
-  - {x: 22, y: 0, z: 25}
-  - {x: 23, y: 0, z: 4}
+  - {x: 15, y: 0, z: 25}
+  - {x: 25, y: 0, z: 4}
