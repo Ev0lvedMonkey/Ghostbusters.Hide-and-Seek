@@ -108,6 +108,8 @@ public class LobbyRelayManager : MonoBehaviour, IService
         }
         catch (LobbyServiceException e)
         {
+            if(e.Message.Contains("Rate limit has been exceeded"))
+                return;
             Debug.LogError($"QuickJoin Exception: {e.Message}");
             OnQuickJoinFailed?.Invoke();
         }
@@ -126,6 +128,8 @@ public class LobbyRelayManager : MonoBehaviour, IService
         }
         catch (LobbyServiceException e)
         {
+            if(e.Message.Contains("Rate limit has been exceeded"))
+                return;
             Debug.LogError($"JoinByCode Exception: {e.Message}");
             OnJoinFailed?.Invoke();
         }
@@ -144,6 +148,8 @@ public class LobbyRelayManager : MonoBehaviour, IService
         }
         catch (LobbyServiceException e)
         {
+            if(e.Message.Contains("Rate limit has been exceeded"))
+                return;
             Debug.LogError($"JoinWithId Exception: {e.Message}");
             OnJoinFailed?.Invoke();
         }
@@ -223,14 +229,14 @@ public class LobbyRelayManager : MonoBehaviour, IService
 
         if (!lobby.Data.TryGetValue(RelayJoinCodeKey, out var relayData))
         {
-            Debug.LogError("Relay join code not found in lobby data.");
+            Debug.Log("Relay join code not found in lobby data.");
             return false;
         }
 
         JoinAllocation joinAllocation = await JoinRelay(relayData.Value);
         if (joinAllocation.Equals(default(JoinAllocation)))
         {
-            Debug.LogError("Failed to join relay.");
+            Debug.Log("Failed to join relay.");
             return false;
         }
 
