@@ -519,6 +519,7 @@ MonoBehaviour:
   _fireObj: {fileID: 7155014602679406567}
   _characterMover: {fileID: 131683806190917558}
   _hudView: {fileID: 9014929157552778291}
+  _spaceCanvasTransform: {fileID: 5501239424411516893}
   _deathAudioSource: {fileID: 5098936875972626571}
 --- !u!33 &627271985527512015
 MeshFilter:

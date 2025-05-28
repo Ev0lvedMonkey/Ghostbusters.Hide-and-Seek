@@ -36,7 +36,6 @@ public class ClientPlayerInfo : PlayerInfo
     {
         base.UpdatePlayerInfo();
         _kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
-        Debug.Log($"[ClientPlayerInfo] PlayerIndex: {_playerIndex} KickButton: {} ");
     }
 
     private void KickPlayer()

@@ -18,6 +18,7 @@ public class CharacterHealthController : NetworkBehaviour
 
     [Header("UI Elements")]
     [SerializeField] private HealthView _hudView;
+    [SerializeField] private WorldSpaceCanvasTransform _spaceCanvasTransform;
 
     [Header("Audio")]
     [SerializeField] private AudioSource _deathAudioSource;
@@ -127,6 +128,7 @@ public class CharacterHealthController : NetworkBehaviour
         }
         DisableHUD();
         _bodyTransform.gameObject.SetActive(false);
+        _spaceCanvasTransform.gameObject.SetActive(false);
 
         _characterMover.enabled = false;
         _bodyRigidbody.isKinematic = true;
