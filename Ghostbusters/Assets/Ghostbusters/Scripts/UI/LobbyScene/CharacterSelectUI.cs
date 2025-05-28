@@ -12,12 +12,12 @@ public class CharacterSelectUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _lobbyNameText;
     [SerializeField] private TextMeshProUGUI _lobbyCodeText;
 
-    private CharacterSelectReady _characterSelectReady;
+    private PlayerReadyManager _playerReadyManager;
     private ServiceLocator _serviceLocator;
     
-    public void Init(CharacterSelectReady characterSelectReady)
+    public void Init(PlayerReadyManager playerReadyManager)
     {
-        _characterSelectReady = characterSelectReady;
+        _playerReadyManager = playerReadyManager;
         _serviceLocator = ServiceLocator.Current;
         _mainMenuButton.onClick.AddListener(BackToMenu);
         _readyButton.onClick.AddListener(SetReady);
@@ -47,7 +47,7 @@ public class CharacterSelectUI : MonoBehaviour
 
     private void SetReady()
     {
-        _characterSelectReady.SetPlayerReady();
+        _playerReadyManager.SetPlayerReady();
     }
 
     private void BackToMenu()

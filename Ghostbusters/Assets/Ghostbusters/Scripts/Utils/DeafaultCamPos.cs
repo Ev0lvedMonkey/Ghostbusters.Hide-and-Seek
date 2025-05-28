@@ -65,7 +65,6 @@ public class DeafaultCamPos : MonoBehaviour
 
     private float GetObjectHeight()
     {
-        Debug.Log($"{transformableObjectCollider.bounds.size.y}");
         return transformableObjectCollider.bounds.size.y;
     }
 

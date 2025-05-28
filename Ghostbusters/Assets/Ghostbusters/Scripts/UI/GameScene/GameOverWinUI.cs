@@ -49,7 +49,7 @@ public class GameOverWinUI : MonoBehaviour, IService
     {
         NetworkManager.Singleton.Shutdown();
         SceneLoader.Load(SceneLoader.ScenesEnum.MenuScene);
-        ulong clientID = ServiceLocator.Current.Get<MultiplayerStorage>().GetPlayerData().clientId;
+        ulong clientID = ServiceLocator.Current.Get<PlayerSessionManager>().GetPlayerData().clientId;
         _gameStateManager.ReportPlayerLostServerRpc(clientID);
     }
 

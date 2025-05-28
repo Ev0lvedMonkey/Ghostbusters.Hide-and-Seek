@@ -81,11 +81,11 @@ public class MainMenuUi : MonoBehaviour
 
     private void AddButtonsListeners()
     {
-        _playerNameInputField.text = _serviceLocator.Get<MultiplayerStorage>().GetPlayerName();
+        _playerNameInputField.text = _serviceLocator.Get<PlayerSessionManager>().GetPlayerName();
         if (UnityServices.State == ServicesInitializationState.Initialized)
         {
             _playerNameInputField.onValueChanged.AddListener((string newText) =>
-               _serviceLocator.Get<MultiplayerStorage>().SetPlayerName(newText));
+               _serviceLocator.Get<PlayerSessionManager>().SetPlayerName(newText));
             _createLobbyBtn.onClick.AddListener(_lobbyCreateUI.Show);
             _joinLobbyByCodeBtn.onClick.AddListener(JoinWithCode);
             _quickJoinLobbyBtn.onClick.AddListener(QuickJoin);
@@ -96,7 +96,7 @@ public class MainMenuUi : MonoBehaviour
     private void RemoveButtonsListeners()
     {
         _playerNameInputField.onValueChanged.RemoveListener((string newText) =>
-           _serviceLocator.Get<MultiplayerStorage>().SetPlayerName(newText));
+           _serviceLocator.Get<PlayerSessionManager>().SetPlayerName(newText));
         _createLobbyBtn.onClick.RemoveListener(_lobbyCreateUI.Show);
         _joinLobbyByCodeBtn.onClick.RemoveListener(JoinWithCode);
         _quickJoinLobbyBtn.onClick.RemoveListener(QuickJoin);

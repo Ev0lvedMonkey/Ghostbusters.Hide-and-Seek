@@ -41,35 +41,7 @@ public class GameStateManager : NetworkBehaviour, IService
 
     private void Update()
     {
-        if (!IsServer)
-        {
-            return;
-        }
-
-        switch (_state.Value)
-        {
-            case State.WaitingToStart:
-                break;
-            case State.CountdownToStart:
-                _startDelay.Value -= Time.deltaTime;
-                if (_startDelay.Value < 0f)
-                {
-                    _state.Value = State.GamePlaying;
-                    _gamePlayingTimer.Value = _gameDuration;
-                }
-
-                break;
-            case State.GamePlaying:
-                _gamePlayingTimer.Value -= Time.deltaTime;
-                if (_gamePlayingTimer.Value <= _gameDuration / 2)
-                    OnSecretRoomOpen.Invoke();
-                if (_gamePlayingTimer.Value < 0f)
-                {
-                    _state.Value = State.WinGhost;
-                }
-
-                break;
-        }
+        GameStateHandler();
     }
 
     public void Init()
@@ -123,17 +95,50 @@ public class GameStateManager : NetworkBehaviour, IService
     [ServerRpc(RequireOwnership = false)]
     public void ReportPlayerLostServerRpc(ulong clientId)
     {
-        int playerIndex = _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataIndexFromClientId(clientId);
+        int playerIndex = _serviceLocator.Get<PlayerSessionManager>().GetPlayerDataIndexFromClientId(clientId);
         Debug.Log($"ReportPlayerLostServerRpc invoke player with clientID {clientId}, his index {playerIndex}");
         if (playerIndex != -1) _playerStatusList[playerIndex] = true;
         int index = 0;
-        foreach (var item in _playerStatusList)
+        foreach (bool item in _playerStatusList)
         {
             Debug.Log($"layerStatusList index {index} is dead? - {item}");
             index++;
         }
 
         CheckWinCondition();
+    }
+
+    private void GameStateHandler()
+    {
+        if (!IsServer)
+        {
+            return;
+        }
+
+        switch (_state.Value)
+        {
+            case State.WaitingToStart:
+                break;
+            case State.CountdownToStart:
+                _startDelay.Value -= Time.deltaTime;
+                if (_startDelay.Value < 0f)
+                {
+                    _state.Value = State.GamePlaying;
+                    _gamePlayingTimer.Value = _gameDuration;
+                }
+
+                break;
+            case State.GamePlaying:
+                _gamePlayingTimer.Value -= Time.deltaTime;
+                if (_gamePlayingTimer.Value <= _gameDuration / 2)
+                    OnSecretRoomOpen.Invoke();
+                if (_gamePlayingTimer.Value < 0f)
+                {
+                    _state.Value = State.WinGhost;
+                }
+
+                break;
+        }
     }
 
     private void SceneManager_OnLoadEventCompleted(string sceneName,
@@ -160,8 +165,8 @@ public class GameStateManager : NetworkBehaviour, IService
     private bool IsGhost(ulong clientId)
     {
         int idPlayer =
-            _serviceLocator.Get<MultiplayerStorage>().GetPlayerDataIndexFromClientId(_serviceLocator
-                .Get<MultiplayerStorage>().GetPlayerDataFromClientId(clientId).clientId);
+            _serviceLocator.Get<PlayerSessionManager>().GetPlayerDataIndexFromClientId(_serviceLocator
+                .Get<PlayerSessionManager>().GetPlayerDataFromClientId(clientId).clientId);
         if (idPlayer == 0 || idPlayer == 2) return true;
         else return false;
     }

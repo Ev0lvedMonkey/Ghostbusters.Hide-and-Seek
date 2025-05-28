@@ -21,14 +21,14 @@ public class ChatManager : NetworkBehaviour, IService
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private EventSystem _eventSystem;
 
-    private MultiplayerStorage _multiplayerStorage;
+    private PlayerSessionManager _playerSessionManager;
     private bool _isChatOpen;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return) && _chatInput.text.Length <= MaxMessageLength)
         {
-            SendChatMessage(_chatInput.text, _multiplayerStorage.GetPlayerName(), _multiplayerStorage.GetLocalPlayerID());
+            SendChatMessage(_chatInput.text, _playerSessionManager.GetPlayerName(), _playerSessionManager.GetLocalPlayerID());
             _chatInput.text = string.Empty;
         }
 
@@ -42,7 +42,7 @@ public class ChatManager : NetworkBehaviour, IService
     }
     public void Init()
     {
-        _multiplayerStorage = ServiceLocator.Current.Get<MultiplayerStorage>();
+        _playerSessionManager = ServiceLocator.Current.Get<PlayerSessionManager>();
         _body.SetActive(false);
         _chatInput.characterLimit = MaxMessageLength;
     }
@@ -66,7 +66,7 @@ public class ChatManager : NetworkBehaviour, IService
             Destroy(_chatMessages.Dequeue().gameObject);
         }
 
-        if (_multiplayerStorage.GetLocalPlayerID() == ownerId)
+        if (_playerSessionManager.GetLocalPlayerID() == ownerId)
         {
             messageOwner = $"<color=yellow>{messageOwner}</color>";
         }

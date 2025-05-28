@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
 {
-    [Header("Buutons")]
+    [Header("Buttons")]
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _settingsButton;
     [SerializeField] private Button _helpButton;

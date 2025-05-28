@@ -12,8 +12,8 @@ public class SingltonsCleanUp : MonoBehaviour
             Destroy(NetworkManager.Singleton.gameObject);
         if (_serviceLocator != null)
         {
-            if (_serviceLocator.Get<MultiplayerStorage>() != null)
-                Destroy(_serviceLocator.Get<MultiplayerStorage>().gameObject);
+            if (_serviceLocator.Get<PlayerSessionManager>() != null)
+                Destroy(_serviceLocator.Get<PlayerSessionManager>().gameObject);
             if (_serviceLocator.Get<LobbyRelayManager>() != null)
                 Destroy(_serviceLocator.Get<LobbyRelayManager>().gameObject);
             if (_serviceLocator.Get<AudioManager>() != null)

@@ -6,9 +6,9 @@ public class CharactersSceneUIBootstrap : MonoBehaviour
     [SerializeField] private CharacterSelectUI _characterSelectUI;
     [SerializeField] private HostDisconnectUI _hostDisconnectUI;
     
-    public void Init( CharacterSelectReady characterSelectReady)
+    public void Init( PlayerReadyManager playerReadyManager)
     {
-        _characterSelectUI.Init(characterSelectReady);
+        _characterSelectUI.Init(playerReadyManager);
         _characterSelectUI.UpdateLobbyData();
         _hostDisconnectUI.Init();
     }

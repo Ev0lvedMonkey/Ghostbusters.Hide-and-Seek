@@ -3,19 +3,21 @@ using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MultiplayerStorage : NetworkBehaviour, IService
+public class PlayerSessionManager : NetworkBehaviour, IService
 {
     public const int MaxPlayerAmount = 4;
     private const string PlayerPrefsPlayerNameMultiplayer = "PlayerNameMultiplayer";
-
     [SerializeField] private NetworkManager _networkManager;
-    
     private NetworkList<PlayerData> _playerDataNetworkList;
     private string _playerName;
+
+    #region Unity Callbacks
 
     internal UnityEvent OnTryingToJoinGame = new();
     internal UnityEvent OnFailedToJoinGame = new();
     internal UnityEvent OnPlayerDataNetworkListChanged = new();
+
+    #endregion
 
     public void Init()
     {
@@ -35,7 +37,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
 
     public void SetPlayerName(string playerName)
     {
-        this._playerName = playerName;
+        _playerName = playerName;
 
         PlayerPrefs.SetString(PlayerPrefsPlayerNameMultiplayer, playerName);
         Debug.Log($"{gameObject.name}: set player name {playerName}");
@@ -82,6 +84,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
                 return i;
             }
         }
+
         return -1;
     }
 
@@ -94,13 +97,15 @@ public class MultiplayerStorage : NetworkBehaviour, IService
                 PlayerData firstPlayerData = _playerDataNetworkList[0];
                 return firstPlayerData;
             }
+
             if (playerData.clientId == clientId)
             {
                 Debug.Log($"[GetPlayerDataFromClientId] return playerdata name {playerData.playerName}," +
-                               $" playerId {playerData.playerId}, clientId {playerData.clientId}");
+                          $" playerId {playerData.playerId}, clientId {playerData.clientId}");
                 return playerData;
             }
         }
+
         return default;
     }
 
@@ -113,7 +118,7 @@ public class MultiplayerStorage : NetworkBehaviour, IService
     {
         return _playerDataNetworkList[playerIndex];
     }
-    
+
     public ulong GetLocalPlayerID()
     {
         return _networkManager.LocalClientId;
@@ -122,7 +127,6 @@ public class MultiplayerStorage : NetworkBehaviour, IService
     public void KickPlayer(ulong clientId)
     {
         NetworkManager.Singleton.DisconnectClient(clientId);
-        Debug.Log($"Multiplayer storage kick clientId {clientId}, player name {GetPlayerDataFromClientId(clientId).playerName}");
         NetworkManager_Server_OnClientDisconnectCallback(clientId);
     }
 
@@ -134,6 +138,8 @@ public class MultiplayerStorage : NetworkBehaviour, IService
             if (playerData.clientId == clientId)
             {
                 _playerDataNetworkList.RemoveAt(i);
+                Debug.Log(
+                    $"Multiplayer storage kick clientId {clientId}, player name {GetPlayerDataFromClientId(clientId).playerName}");
             }
         }
     }
@@ -151,22 +157,37 @@ public class MultiplayerStorage : NetworkBehaviour, IService
             if (clientId == 0)
             {
                 int newPlayerClientId = UnityEngine.Random.Range(100, 999);
-                newPlayer = new() { clientId = (ulong)newPlayerClientId, playerName = GetPlayerName(), playerId = AuthenticationService.Instance.PlayerId };
+                newPlayer = new()
+                {
+                    clientId = (ulong)newPlayerClientId, playerName = GetPlayerName(),
+                    playerId = AuthenticationService.Instance.PlayerId
+                };
             }
             else
-                newPlayer = new() { clientId = (ulong)clientId, playerName = GetPlayerName(), playerId = AuthenticationService.Instance.PlayerId };
+                newPlayer = new()
+                {
+                    clientId = (ulong)clientId, playerName = GetPlayerName(),
+                    playerId = AuthenticationService.Instance.PlayerId
+                };
         }
         else
         {
-            newPlayer = new() { clientId = (ulong)clientId, playerName = GetPlayerName(), playerId = AuthenticationService.Instance.PlayerId };
+            newPlayer = new()
+            {
+                clientId = (ulong)clientId, playerName = GetPlayerName(),
+                playerId = AuthenticationService.Instance.PlayerId
+            };
         }
+
         if (_playerDataNetworkList == null)
         {
             Debug.LogWarning($"{gameObject.name} PlayerDataNetworkList null");
             return;
         }
+
         _playerDataNetworkList.Add(newPlayer);
-        Debug.Log($"PlayerDataNetworkList added new player {newPlayer.playerName}\n Player count: {_playerDataNetworkList.Count} Player index: ");
+        Debug.Log(
+            $"PlayerDataNetworkList added new player {newPlayer.playerName}\n Player count: {_playerDataNetworkList.Count} Player index: ");
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -193,7 +214,9 @@ public class MultiplayerStorage : NetworkBehaviour, IService
         _playerDataNetworkList[playerDataIndex] = playerData;
     }
 
-    private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
+    private void NetworkManager_ConnectionApprovalCallback(
+        NetworkManager.ConnectionApprovalRequest connectionApprovalRequest,
+        NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
     {
         if (SceneLoader.GetTargetScene().ToString() != SceneLoader.ScenesEnum.CharactersScene.ToString())
         {
@@ -223,4 +246,4 @@ public class MultiplayerStorage : NetworkBehaviour, IService
     {
         OnFailedToJoinGame?.Invoke();
     }
-}   
+}

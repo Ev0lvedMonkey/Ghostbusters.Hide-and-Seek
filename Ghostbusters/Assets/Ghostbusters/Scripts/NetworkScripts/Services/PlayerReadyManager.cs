@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine.Events;
 
-public class CharacterSelectReady : NetworkBehaviour
+public class PlayerReadyManager : NetworkBehaviour
 {
     private readonly Dictionary<ulong, bool> _readyDict = new();
     private readonly Dictionary<ulong, bool> _localReadyCache = new();

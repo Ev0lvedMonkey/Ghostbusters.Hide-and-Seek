@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class LobbySceneBootstrap : MonoBehaviour
 {
@@ -6,14 +7,14 @@ public class LobbySceneBootstrap : MonoBehaviour
     
     [Header("Net Managers")]
     [SerializeField] private LobbyRelayManager _lobbyRelayManager;
-    [SerializeField] private MultiplayerStorage _multiplayerStorage;
+    [FormerlySerializedAs("_multiplayerStorage")] [SerializeField] private PlayerSessionManager playerSessionManager;
 
     private void Awake()
     {
         ServiceLocator.Current.Register(_lobbyRelayManager);
-        ServiceLocator.Current.Register(_multiplayerStorage);
+        ServiceLocator.Current.Register(playerSessionManager);
         
-        _multiplayerStorage.Init();
+        playerSessionManager.Init();
         _lobbyRelayManager.Init();
     }
 

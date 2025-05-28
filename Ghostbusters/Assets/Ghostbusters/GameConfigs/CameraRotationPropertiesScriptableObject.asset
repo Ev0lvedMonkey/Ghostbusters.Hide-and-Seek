@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791378f054e04d64fb6702722a2cce6e, type: 3}
   m_Name: CameraRotationPropertiesScriptableObject
   m_EditorClassIdentifier: 
-  rotationSpeed: 20
-  waveAmplitude: 1
-  waveFrequency: 1
+  _rotationSpeed: 20
+  _waveAmplitude: 1
+  _waveFrequency: 1

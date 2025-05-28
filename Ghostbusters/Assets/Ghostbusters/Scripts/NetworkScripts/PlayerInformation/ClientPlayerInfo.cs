@@ -18,9 +18,9 @@ public class ClientPlayerInfo : PlayerInfo
         KickPlayer();
     }
 
-    public override void Init(CharacterSelectReady characterSelectReady)
+    public override void Init(PlayerReadyManager playerReadyManager)
     {
-        base.Init(characterSelectReady);
+        base.Init(playerReadyManager);
         _playerIndex = GetPlayerIndex();
         _kickButton.onClick.AddListener(KickPlayer);
         _kickButton.onClick.AddListener(() => _kickButton.gameObject.SetActive(false));
@@ -36,16 +36,19 @@ public class ClientPlayerInfo : PlayerInfo
     {
         base.UpdatePlayerInfo();
         _kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
+        Debug.Log($"[ClientPlayerInfo] PlayerIndex: {_playerIndex} KickButton: {} ");
     }
 
     private void KickPlayer()
     {
-        PlayerData playerData = _multiplayerStorage.GetPlayerDataFromPlayerIndex(_playerIndex);
-        if (_multiplayerStorage.IsPlayerIndexConnected(_playerIndex))
+        PlayerData playerData = _playerSessionManager.GetPlayerDataFromPlayerIndex(_playerIndex);
+        if (_playerSessionManager.IsPlayerIndexConnected(_playerIndex))
         {
             Debug.Log($"Will kick player {playerData.playerName} playerIndex {_playerIndex}");
             _serviceLocator.Get<LobbyRelayManager>().KickPlayer(playerData.playerId.ToString());
-            _multiplayerStorage.KickPlayer(playerData.clientId);
+            _playerSessionManager.KickPlayer(playerData.clientId);
         }
+
+        UpdatePlayer();
     }
 }

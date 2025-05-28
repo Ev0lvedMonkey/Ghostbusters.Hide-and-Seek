@@ -122,7 +122,7 @@ public class CharacterHealthController : NetworkBehaviour
     {
         if (IsOwner)
         {
-            ulong clientID = ServiceLocator.Current.Get<MultiplayerStorage>().GetPlayerData().clientId;
+            ulong clientID = ServiceLocator.Current.Get<PlayerSessionManager>().GetPlayerData().clientId;
             ServiceLocator.Current.Get<GameStateManager>().ReportPlayerLostServerRpc(clientID);
         }
         DisableHUD();

@@ -30,10 +30,12 @@ public class KeyboardInput : MonoBehaviour
             if (_isChatOpen == false)
             {
                 _gameStateManager.OnChatOpen.Invoke();
+                CursorController.EnableCursor();
             }
             else
             {
                 _gameStateManager.OnChatClose.Invoke();
+                CursorController.DisableCursor();
             }
             _isChatOpen = !_isChatOpen;
         }

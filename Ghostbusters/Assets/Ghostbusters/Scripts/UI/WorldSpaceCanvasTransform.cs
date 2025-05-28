@@ -18,7 +18,7 @@ public class WorldSpaceCanvasTransform : NetworkBehaviour
 
         if (IsOwner)
         {
-            string localPlayerName = ServiceLocator.Current.Get<MultiplayerStorage>().GetPlayerName();
+            string localPlayerName = ServiceLocator.Current.Get<PlayerSessionManager>().GetPlayerName();
             SetPlayerNameServerRpc(localPlayerName);
         }
     }

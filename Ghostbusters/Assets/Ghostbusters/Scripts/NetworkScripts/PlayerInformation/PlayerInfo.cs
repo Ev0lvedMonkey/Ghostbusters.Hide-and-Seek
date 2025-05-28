@@ -9,26 +9,26 @@ public abstract class PlayerInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _playerNameText;
 
     protected ServiceLocator _serviceLocator;
-    protected MultiplayerStorage _multiplayerStorage;
-    private CharacterSelectReady _characterSelectReady;
+    protected PlayerSessionManager _playerSessionManager;
+    private PlayerReadyManager _playerReadyManager;
 
-    public virtual void Init(CharacterSelectReady characterSelectReady)
+    public virtual void Init(PlayerReadyManager playerReadyManager)
     {
-        _characterSelectReady = characterSelectReady;
+        _playerReadyManager = playerReadyManager;
         _serviceLocator = ServiceLocator.Current;
-        _multiplayerStorage = _serviceLocator.Get<MultiplayerStorage>(); 
+        _playerSessionManager = _serviceLocator.Get<PlayerSessionManager>(); 
         
-        _multiplayerStorage.OnPlayerDataNetworkListChanged.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
-        _characterSelectReady.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
+        _playerSessionManager.OnPlayerDataNetworkListChanged.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
+        _playerReadyManager.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
 
         UpdatePlayer();
     }
 
     public virtual void Uninit()
     {
-        _multiplayerStorage.OnPlayerDataNetworkListChanged.RemoveListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
-        _characterSelectReady?.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
-        _characterSelectReady = null;
+        _playerSessionManager.OnPlayerDataNetworkListChanged.RemoveListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
+        _playerReadyManager?.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
+        _playerReadyManager = null;
     }
 
     protected int GetPlayerIndex()
@@ -40,13 +40,14 @@ public abstract class PlayerInfo : MonoBehaviour
     {
         Show();
 
-        PlayerData playerData = _multiplayerStorage.GetPlayerDataFromPlayerIndex(_playerIndex);
+        PlayerData playerData = _playerSessionManager.GetPlayerDataFromPlayerIndex(_playerIndex);
 
-        bool isReady = _characterSelectReady.GetReadyStatus(playerData.clientId);
+        bool isReady = _playerReadyManager.GetReadyStatus(playerData.clientId);
 
         _readyGameObject.SetActive(isReady);
 
         UpdatePlayerName(playerData);
+        Debug.Log($"[Playerinfo] Update player index {_playerIndex}, name {_playerNameText.text} ");
     }
 
     private void CharacterSelectReady_OnReadyChanged()
@@ -59,9 +60,9 @@ public abstract class PlayerInfo : MonoBehaviour
         UpdatePlayer();
     }
 
-    private void UpdatePlayer()
+    protected void UpdatePlayer()
     {
-        if (_multiplayerStorage.IsPlayerIndexConnected(_playerIndex))
+        if (_playerSessionManager.IsPlayerIndexConnected(_playerIndex))
         {
             UpdatePlayerInfo();
         }
@@ -74,7 +75,7 @@ public abstract class PlayerInfo : MonoBehaviour
 
     private void UpdatePlayerName(PlayerData playerData)
     {
-        ulong localClientId = _multiplayerStorage.GetPlayerData().clientId;
+        ulong localClientId = _playerSessionManager.GetPlayerData().clientId;
 
         _playerNameText.color = playerData.clientId == localClientId ? Color.green : Color.white;
         _playerNameText.text = playerData.playerName.ToString();

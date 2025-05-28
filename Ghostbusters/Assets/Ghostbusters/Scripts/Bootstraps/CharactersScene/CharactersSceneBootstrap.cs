@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class CharactersSceneBootstrap : MonoBehaviour
 {
     [Header("Components")] 
     [SerializeField] private CharactersSceneUIBootstrap _charactersSceneUIBootstrap;
-    [SerializeField] private CharacterSelectReady _characterSelectReady;
+    [FormerlySerializedAs("_characterSelectReady")] [SerializeField] private PlayerReadyManager playerReadyManager;
     [SerializeField] private List<PlayerInfo> _listPlayerInfo;
 
     private void OnEnable()
     {
-        _charactersSceneUIBootstrap.Init(_characterSelectReady);
+        _charactersSceneUIBootstrap.Init(playerReadyManager);
         InitPlayersData();
     }
 
@@ -35,10 +36,10 @@ public class CharactersSceneBootstrap : MonoBehaviour
         {
             if (playerInfo.TryGetComponent(out ClientPlayerInfo clientInfo))
             {
-                clientInfo.Init(_characterSelectReady);
+                clientInfo.Init(playerReadyManager);
                 continue;
             }
-            playerInfo.Init(_characterSelectReady);
+            playerInfo.Init(playerReadyManager);
         }
     }
 

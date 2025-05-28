@@ -18,13 +18,14 @@ public class LobbyRelayManager : MonoBehaviour, IService
 {
     private const int LobbyListChangedDelaySeconds = 2;
     private const string RelayJoinCodeKey = "RelayJoinCode";
-    public const string PlayerNameKey = "PlayerName";
-
+    private const string DtlsConnectionType = "dtls";
     private float _heartbeatTimer;
     private float _lobbyPollTimer;
     private Lobby _joinedLobby;
     private string _playerName;
     private ServiceLocator _serviceLocator;
+
+    #region Unity Callbacks
 
     public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
     internal UnityEvent OnCreateLobbyStarted = new();
@@ -33,12 +34,13 @@ public class LobbyRelayManager : MonoBehaviour, IService
     internal UnityEvent OnQuickJoinFailed = new();
     internal UnityEvent OnJoinFailed = new();
     internal UnityEvent OnSignIn = new();
-
     private void Update()
     {
         HandleHeartbeat();
         HandlePeriodicListLobbies();
     }
+
+    #endregion
 
     public void Init()
     {
@@ -64,7 +66,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
         {
             if (string.IsNullOrWhiteSpace(lobbyName))
                 lobbyName = $"Lobby_{UnityEngine.Random.Range(100, 1000)}";
-            _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerStorage.MaxPlayerAmount,
+            _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, PlayerSessionManager.MaxPlayerAmount,
                 new CreateLobbyOptions
                 {
                     IsPrivate = isPrivate,
@@ -83,9 +85,9 @@ public class LobbyRelayManager : MonoBehaviour, IService
             });
 
             NetworkManager.Singleton.GetComponent<UnityTransport>()
-                .SetRelayServerData(new RelayServerData(allocation, "dtls"));
+                .SetRelayServerData(new RelayServerData(allocation, DtlsConnectionType));
 
-            _serviceLocator.Get<MultiplayerStorage>().StartHost();
+            _serviceLocator.Get<PlayerSessionManager>().StartHost();
             SceneLoader.LoadNetwork(SceneLoader.ScenesEnum.CharactersScene);
         }
         catch (LobbyServiceException e)
@@ -102,13 +104,13 @@ public class LobbyRelayManager : MonoBehaviour, IService
         OnJoinStarted?.Invoke();
         try
         {
-            var lobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+            Lobby lobby = await LobbyService.Instance.QuickJoinLobbyAsync();
             if (!await TryJoinRelayAndStartClient(lobby))
                 OnQuickJoinFailed?.Invoke();
         }
         catch (LobbyServiceException e)
         {
-            if(e.Message.Contains("Rate limit has been exceeded"))
+            if (e.Message.Contains("Rate limit has been exceeded"))
                 return;
             Debug.LogError($"QuickJoin Exception: {e.Message}");
             OnQuickJoinFailed?.Invoke();
@@ -122,13 +124,13 @@ public class LobbyRelayManager : MonoBehaviour, IService
         OnJoinStarted?.Invoke();
         try
         {
-            var lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+            Lobby lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
             if (!await TryJoinRelayAndStartClient(lobby))
                 OnJoinFailed?.Invoke();
         }
         catch (LobbyServiceException e)
         {
-            if(e.Message.Contains("Rate limit has been exceeded"))
+            if (e.Message.Contains("Rate limit has been exceeded"))
                 return;
             Debug.LogError($"JoinByCode Exception: {e.Message}");
             OnJoinFailed?.Invoke();
@@ -142,25 +144,19 @@ public class LobbyRelayManager : MonoBehaviour, IService
         OnJoinStarted?.Invoke();
         try
         {
-            var lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
+            Lobby lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
             if (!await TryJoinRelayAndStartClient(lobby))
                 OnJoinFailed?.Invoke();
         }
         catch (LobbyServiceException e)
         {
-            if(e.Message.Contains("Rate limit has been exceeded"))
+            if (e.Message.Contains("Rate limit has been exceeded"))
                 return;
             Debug.LogError($"JoinWithId Exception: {e.Message}");
             OnJoinFailed?.Invoke();
         }
     }
-
-
-    public string GetPlayerName()
-    {
-        return _playerName;
-    }
-
+    
     public async void DeleteLobby()
     {
         if (_joinedLobby != null)
@@ -197,6 +193,10 @@ public class LobbyRelayManager : MonoBehaviour, IService
         }
     }
 
+    public string GetPlayerName()
+    {
+        return _playerName;
+    }
     public async void KickPlayer(string playerId)
     {
         if (IsLobbyHost())
@@ -227,7 +227,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
     {
         _joinedLobby = lobby;
 
-        if (!lobby.Data.TryGetValue(RelayJoinCodeKey, out var relayData))
+        if (!lobby.Data.TryGetValue(RelayJoinCodeKey, out DataObject relayData))
         {
             Debug.Log("Relay join code not found in lobby data.");
             return false;
@@ -243,7 +243,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
         NetworkManager.Singleton.GetComponent<UnityTransport>()
             .SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
 
-        _serviceLocator.Get<MultiplayerStorage>().StartClient();
+        _serviceLocator.Get<PlayerSessionManager>().StartClient();
         Debug.Log($"{gameObject.name}: successfully joined relay");
 
         return true;
@@ -263,7 +263,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
     private async void InitializeUnityAuthentication()
     {
         _playerName = "Player" + UnityEngine.Random.Range(0, 1000);
-        _serviceLocator.Get<MultiplayerStorage>().SetPlayerName(_playerName);
+        _serviceLocator.Get<PlayerSessionManager>().SetPlayerName(_playerName);
         if (UnityServices.State != ServicesInitializationState.Initialized)
         {
             InitializationOptions initializationOptions = new();
@@ -356,7 +356,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
         try
         {
             Allocation allocation =
-                await RelayService.Instance.CreateAllocationAsync(MultiplayerStorage.MaxPlayerAmount - 1);
+                await RelayService.Instance.CreateAllocationAsync(PlayerSessionManager.MaxPlayerAmount - 1);
 
             return allocation;
         }

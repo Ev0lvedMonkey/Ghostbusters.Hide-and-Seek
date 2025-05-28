@@ -1,13 +1,15 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CameraRotationPropertiesScriptableObject", menuName = "CameraRotationProperties")]
+[CreateAssetMenu(
+    fileName = "CameraRotationPropertiesScriptableObject",
+    menuName = "CameraRotationProperties")]
 public class CameraRotationProperties : ScriptableObject
 {
-    [SerializeField] private float rotationSpeed;
-    [SerializeField] private float waveAmplitude;
-    [SerializeField] private float waveFrequency;
+    [SerializeField] private float _rotationSpeed;
+    [SerializeField] private float _waveAmplitude;
+    [SerializeField] private float _waveFrequency;
 
-    public float RotationSpeed => rotationSpeed;
-    public float WaveAmplitude => waveAmplitude;
-    public float WaveFrequency => waveFrequency;
+    public float RotationSpeed => _rotationSpeed;
+    public float WaveAmplitude => _waveAmplitude;
+    public float WaveFrequency => _waveFrequency;
 }
