@@ -243,9 +243,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7045450888813315848}
+  - component: {fileID: 6051211368187008528}
   - component: {fileID: 314914473734937228}
   - component: {fileID: 5715064690429666856}
-  - component: {fileID: 3713741004485258129}
   - component: {fileID: 4038037104488601648}
   - component: {fileID: 819188749191972949}
   m_Layer: 6
@@ -272,6 +272,26 @@ Transform:
   - {fileID: 6165201409464766203}
   m_Father: {fileID: 2874304489409965433}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6051211368187008528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2660743050981417221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75fa285fc7a446bf8a57df438771f1a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _deathEffect: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
+  _bodyTransform: {fileID: 7045450888813315848}
+  _bodyRigidbody: {fileID: 2787314762436721399}
+  _fireObj: {fileID: 8254223609894997543}
+  _characterMover: {fileID: 78950453516318046}
+  _hudView: {fileID: 6250410782170815527}
+  _deathAudioSource: {fileID: 819188749191972949}
 --- !u!33 &314914473734937228
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -322,26 +342,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3713741004485258129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2660743050981417221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc1e74657db4d504c96396378dec2eb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _deathEffect: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
-  _bodyTransform: {fileID: 7045450888813315848}
-  _bodyRigidbody: {fileID: 2787314762436721399}
-  _fireObj: {fileID: 8254223609894997543}
-  _characterMover: {fileID: 78950453516318046}
-  _hudView: {fileID: 6250410782170815527}
-  _deathAudioSource: {fileID: 819188749191972949}
 --- !u!64 &4038037104488601648
 MeshCollider:
   m_ObjectHideFlags: 0

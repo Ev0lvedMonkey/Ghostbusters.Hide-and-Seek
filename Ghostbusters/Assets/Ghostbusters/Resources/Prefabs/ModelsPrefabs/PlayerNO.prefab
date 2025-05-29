@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 289307720369143025}
   - component: {fileID: 7895445609988697491}
   - component: {fileID: -9148439180790676213}
-  - component: {fileID: -6096408923155873637}
+  - component: {fileID: 2121189566832509664}
   - component: {fileID: 627271985527512015}
   - component: {fileID: 2026730895169691158}
   - component: {fileID: 1874786418358173608}
@@ -457,7 +457,7 @@ MonoBehaviour:
   _fireRate: 0.62
   _maxRayDistance: 100
   _hitEffect: {fileID: 8601352837897393951, guid: 4fa7fbfd989c2d247942c721c0a1fbd5, type: 3}
-  _characterHealth: {fileID: -6096408923155873637}
+  _characterHealth: {fileID: 2121189566832509664}
   _shootSource: {fileID: 6322592334579268046}
 --- !u!114 &289307720369143025
 MonoBehaviour:
@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _virtualCamera: {fileID: 4590434700001787465}
---- !u!114 &-6096408923155873637
+--- !u!114 &2121189566832509664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -509,7 +509,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5255370187049413777}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc1e74657db4d504c96396378dec2eb4, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b83c0ca1ef548a495aca90ea89aae4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 150
@@ -519,8 +519,8 @@ MonoBehaviour:
   _fireObj: {fileID: 7155014602679406567}
   _characterMover: {fileID: 131683806190917558}
   _hudView: {fileID: 9014929157552778291}
-  _spaceCanvasTransform: {fileID: 5501239424411516893}
   _deathAudioSource: {fileID: 5098936875972626571}
+  _spaceCanvasTransform: {fileID: 5501239424411516893}
 --- !u!33 &627271985527512015
 MeshFilter:
   m_ObjectHideFlags: 0

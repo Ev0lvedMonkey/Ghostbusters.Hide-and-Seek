@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class CharacterHealthController : NetworkBehaviour
+public abstract class CharacterHealthController : NetworkBehaviour
 {
     private const int SelfDamage = 10;
     private const int GhostDamage = 20;
@@ -18,7 +18,6 @@ public class CharacterHealthController : NetworkBehaviour
 
     [Header("UI Elements")]
     [SerializeField] private HealthView _hudView;
-    [SerializeField] private WorldSpaceCanvasTransform _spaceCanvasTransform;
 
     [Header("Audio")]
     [SerializeField] private AudioSource _deathAudioSource;
@@ -119,7 +118,7 @@ public class CharacterHealthController : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void HandleDeathClientRpc()
+    protected void HandleDeathClientRpc()
     {
         if (IsOwner)
         {
@@ -128,8 +127,8 @@ public class CharacterHealthController : NetworkBehaviour
         }
         DisableHUD();
         _bodyTransform.gameObject.SetActive(false);
-        _spaceCanvasTransform.gameObject.SetActive(false);
-
+        BusterUniqMove();
+        
         _characterMover.enabled = false;
         _bodyRigidbody.isKinematic = true;
         _bodyRigidbody.useGravity = false;
@@ -138,6 +137,8 @@ public class CharacterHealthController : NetworkBehaviour
         UpdateHUDClientRpc(_currentHealth);
         Debug.Log($"{gameObject.name} entered spectator mode on client.");
     }
+
+    protected abstract void BusterUniqMove();
 
     [ClientRpc]
     private void SpawnDeathEffectClientRpc()
