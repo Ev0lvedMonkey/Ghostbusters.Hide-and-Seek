@@ -6352,7 +6352,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &291186622127794732
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6438,6 +6438,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2707354778013490300}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5775366116399881469}
   m_SourcePrefab: {fileID: 100100000, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
 --- !u!4 &252265135420771783 stripped
 Transform:
@@ -6509,7 +6512,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -6520,6 +6523,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.4, y: 3.2, z: 3.2}
   m_Center: {x: 0, y: 1.6, z: 0}
+--- !u!54 &5775366116399881469
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633856776525633405}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 1
 --- !u!1001 &372061850731392929
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7736,7 +7766,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &1279343403420073752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8056,7 +8086,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &1324609653656606846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9005,7 +9035,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &1804825005029332397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9121,7 +9151,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &6733462459667595590 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -9889,7 +9919,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &6535836300775750688 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -10407,7 +10437,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &2534480901638898406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10649,7 +10679,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &2591492207966842774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10908,7 +10938,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &2653744846276201557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11568,7 +11598,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &2798370789203172419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11810,7 +11840,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &3266399238615849880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11926,7 +11956,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &7578012689853812595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -12188,7 +12218,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &7623953956522749884 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -12309,7 +12339,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &7656093235850745948 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -12434,7 +12464,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &7647338197342895982 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -12718,7 +12748,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &3794232315644803842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13163,7 +13193,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &4184319160548365746
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13546,7 +13576,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &9191789757441481038 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -13927,7 +13957,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &8864318533786453130 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5113349843439142999, guid: 2caafce1cedb6724196010eca5dcf48f, type: 3}
@@ -14260,6 +14290,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8430438564087656237}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3796525182005934399}
   m_SourcePrefab: {fileID: 100100000, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
 --- !u!4 &5147691173925939287 stripped
 Transform:
@@ -14342,6 +14375,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.4, y: 3.2, z: 3.2}
   m_Center: {x: 0, y: 1.6, z: 0}
+--- !u!54 &3796525182005934399
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493148503506203373}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
 --- !u!1001 &4690261491609037007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14470,7 +14530,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &4831247946447816843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14591,7 +14651,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &4873296996405275016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14712,7 +14772,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &4892767560211565830
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15169,6 +15229,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9098038309305889193}
     m_Modifications:
+    - target: {fileID: 2026643708574079324, guid: ea20049a366595240924ecc348b14707, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2393541023315509928, guid: ea20049a366595240924ecc348b14707, type: 3}
       propertyPath: m_Name
       value: Table
@@ -15347,7 +15411,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &1096014822210957456 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5113349843439142999, guid: 2caafce1cedb6724196010eca5dcf48f, type: 3}
@@ -15593,7 +15657,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &982824040628227197 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -15714,7 +15778,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &1098708938963668584 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -16119,7 +16183,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &580063541884264135 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -16244,7 +16308,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &670798003508464863 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -16604,7 +16668,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &5967394145769965590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17353,7 +17417,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &1799445643356051549 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -18326,7 +18390,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &7209661167086392377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18560,7 +18624,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &7291207517492887504
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18786,7 +18850,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &7418042774160114575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18915,7 +18979,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &7513896352146983237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19297,7 +19361,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &3386417821319763235 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -19418,7 +19482,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &3380745123525339628 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -19672,7 +19736,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &2904603936886917275 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -19801,7 +19865,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &3052048388271998318 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -20055,7 +20119,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &3068380332193941837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -20501,7 +20565,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &8310399980612814581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20700,7 +20764,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1001 &8672663594933091171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20937,7 +21001,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &4461735236940507446 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
@@ -21391,6 +21455,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3837273996959659302}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5978669469895434275}
   m_SourcePrefab: {fileID: 100100000, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
 --- !u!1 &8610619972744766436 stripped
 GameObject:
@@ -21457,7 +21524,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -21468,6 +21535,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.4, y: 3.2, z: 3.2}
   m_Center: {x: 0, y: 1.6, z: 0}
+--- !u!54 &5978669469895434275
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8610619972744766436}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 1
 --- !u!4 &8949991192735889758 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1f56288b98aaa754d84fe7f79d39cc8a, type: 3}
@@ -22029,7 +22123,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &4318531247990856846 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4935407157193364715, guid: 637c031a49fc31a47a029b18c3fe1b13, type: 3}
