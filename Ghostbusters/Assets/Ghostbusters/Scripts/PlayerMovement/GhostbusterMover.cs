@@ -30,6 +30,8 @@ public class GhostbusterMover : CharacterMover
         if (_gameOverWinUI.IsOpened()) return;
         if (Input.GetKeyDown(KeyCode.E) && !_abilityUsed)
         {
+            if(ServiceLocator.Current.Get<ChatManager>().IsOpened())
+                return;
             SpawnSphereServerRpc();
             SpawnEffectServerRpc();
             OnDisableAbility.Invoke();
