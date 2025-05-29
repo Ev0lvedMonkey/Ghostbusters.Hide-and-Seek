@@ -192,6 +192,11 @@ namespace QFSW.QC
             }
         }
 
+        private void Start()
+        {
+            Deactivate();
+        }
+
         protected virtual void Update()
         {
             if (!IsActive)
