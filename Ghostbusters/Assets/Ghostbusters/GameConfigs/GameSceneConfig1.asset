@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: GameSceneConfig1
   m_EditorClassIdentifier: 
   _level: {fileID: 9108939825331442873, guid: c682194133ba89146be7ea543033fbe7, type: 3}
-  _terrain: {fileID: 4963065518317265569, guid: 083deed2d956e5347a3992067ba5a5ab, type: 3}
   _enviromentType:
-  - {fileID: 6299195358179895586, guid: 14b5ef79c1c597d47abe76bea4d1d95e, type: 3}
-  - {fileID: 4678163010366051187, guid: c0412321ae87e34489d4a3a79248d344, type: 3}
+  - {fileID: 405105202087106981, guid: c847ca6f5d4cfc34aaf7c9e27f4313e5, type: 3}
+  - {fileID: 8144131914908364379, guid: b51ae8a25d2300842a4b9123a9043b88, type: 3}

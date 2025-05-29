@@ -39,7 +39,7 @@ public class EnvironmentSpawner : NetworkBehaviour
     {
         if (_enviromentSpawned)
             return;
-        foreach (var entry in spawnEntries)
+        foreach (SpawnEntry entry in spawnEntries)
         {
             if (entry.prefab == null || entry.spawnPoint == null)
                 continue;

@@ -13,6 +13,11 @@ public class ClientPlayerInfo : PlayerInfo
         _kickButton.gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        _kickButton.gameObject.SetActive(true);
+    }
+
     private void OnApplicationQuit()
     {
         KickPlayer();
@@ -23,14 +28,12 @@ public class ClientPlayerInfo : PlayerInfo
         base.Init(playerReadyManager);
         _playerIndex = GetPlayerIndex();
         _kickButton.onClick.AddListener(KickPlayer);
-        _kickButton.onClick.AddListener(() => _kickButton.gameObject.SetActive(false));
     }
 
     public override void Uninit()
     {
         base.Uninit();
         _kickButton.onClick.RemoveListener(KickPlayer);
-        _kickButton.onClick.RemoveListener(() => _kickButton.gameObject.SetActive(false));
     }
     protected override void UpdatePlayerInfo()
     {

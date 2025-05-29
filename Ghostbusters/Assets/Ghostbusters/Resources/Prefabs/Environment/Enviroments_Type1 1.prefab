@@ -112,18 +112,12 @@ MonoBehaviour:
     prefab: {fileID: 7399117285860774473, guid: 1a689e0305cde2442becf5037ce112fb, type: 3}
   - spawnPoint: {fileID: 1723301894516514657}
     prefab: {fileID: 4839302639228903730, guid: 30e8c539719184e40bdc55dbdc760c86, type: 3}
-  - spawnPoint: {fileID: 9190511819645566528}
-    prefab: {fileID: 8475328464850747892, guid: e0257a8de1f50e84fa11042b80346c43, type: 3}
-  - spawnPoint: {fileID: 188175427319037517}
-    prefab: {fileID: 6195136322266174194, guid: 07f735e33a4df33488f297d3e02b318e, type: 3}
   - spawnPoint: {fileID: 1037513174718106059}
     prefab: {fileID: 8359712096277383028, guid: fcf8da2ca6366d84d9e53fa65c350165, type: 3}
   - spawnPoint: {fileID: 6116269840894167257}
     prefab: {fileID: 8359712096277383028, guid: fcf8da2ca6366d84d9e53fa65c350165, type: 3}
   - spawnPoint: {fileID: 2106792539278587208}
     prefab: {fileID: 8359712096277383028, guid: fcf8da2ca6366d84d9e53fa65c350165, type: 3}
-  - spawnPoint: {fileID: 2814466146362532508}
-    prefab: {fileID: 8475328464850747892, guid: e0257a8de1f50e84fa11042b80346c43, type: 3}
 --- !u!1 &2350686931545403625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1444,6 +1438,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LittleLamp
       objectReference: {fileID: 0}
+    - target: {fileID: 6195136322266174194, guid: 07f735e33a4df33488f297d3e02b318e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1596,6 +1594,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chair
       objectReference: {fileID: 0}
+    - target: {fileID: 8475328464850747892, guid: e0257a8de1f50e84fa11042b80346c43, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1695,6 +1697,10 @@ PrefabInstance:
     - target: {fileID: 7293682673236993549, guid: a2887173b5e44904e88f3a778133132e, type: 3}
       propertyPath: m_Name
       value: Chair
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293682673236993549, guid: a2887173b5e44904e88f3a778133132e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7958860083264634039, guid: a2887173b5e44904e88f3a778133132e, type: 3}
       propertyPath: m_LocalPosition.x

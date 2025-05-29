@@ -59,7 +59,7 @@ public class PlayerReadyManager : NetworkBehaviour
 
     private void OnClientConnected(ulong clientId)
     {
-        foreach (var kvp in _readyDict)
+        foreach (KeyValuePair<ulong, bool> kvp in _readyDict)
         {
             SendReadyStatusToNewClientClientRpc(kvp.Key, kvp.Value, new ClientRpcParams
             {
@@ -80,9 +80,9 @@ public class PlayerReadyManager : NetworkBehaviour
 
     private bool AllClientsReady()
     {
-        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            if (!_readyDict.TryGetValue(clientId, out var ready) || !ready)
+            if (!_readyDict.TryGetValue(clientId, out bool ready) || !ready)
                 return false;
         }
         return true;
