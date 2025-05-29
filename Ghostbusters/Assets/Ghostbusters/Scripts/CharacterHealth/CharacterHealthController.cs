@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class CharacterHealthController : NetworkBehaviour
 {
@@ -24,6 +25,9 @@ public abstract class CharacterHealthController : NetworkBehaviour
 
     private float _currentHealth;
 
+    
+    public UnityAction OnDeath;
+    
     private void Awake()
     {
         _currentHealth = _maxHealth;
@@ -61,6 +65,11 @@ public abstract class CharacterHealthController : NetworkBehaviour
         UpdateHUDClientRpc(_currentHealth);
     }
 
+    public bool IsDead()
+    {
+        return _currentHealth <= 0;
+    }
+    
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(bool isSelfDamage, ServerRpcParams rpcParams = default)
     {
@@ -69,7 +78,7 @@ public abstract class CharacterHealthController : NetworkBehaviour
         _currentHealth -= currentDamage;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
 
-        if (_currentHealth <= 0)
+        if (IsDead())
         {
             HandleDeathServerRpc();
         }
@@ -85,7 +94,7 @@ public abstract class CharacterHealthController : NetworkBehaviour
         _currentHealth -= _maxHealth;
         _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
 
-        if (_currentHealth <= 0)
+        if (IsDead())
         {
             HandleDeathServerRpc();
         }
@@ -124,6 +133,7 @@ public abstract class CharacterHealthController : NetworkBehaviour
         {
             ulong clientID = ServiceLocator.Current.Get<PlayerSessionManager>().GetPlayerData().clientId;
             ServiceLocator.Current.Get<GameStateManager>().ReportPlayerLostServerRpc(clientID);
+            ServiceLocator.Current.Get<ChatManager>().SetOwnerDead();
         }
         DisableHUD();
         _bodyTransform.gameObject.SetActive(false);
@@ -135,6 +145,7 @@ public abstract class CharacterHealthController : NetworkBehaviour
         _fireObj.enabled = false;
         SpawnDeathEffectClientRpc();
         UpdateHUDClientRpc(_currentHealth);
+        OnDeath.Invoke();
         Debug.Log($"{gameObject.name} entered spectator mode on client.");
     }
 

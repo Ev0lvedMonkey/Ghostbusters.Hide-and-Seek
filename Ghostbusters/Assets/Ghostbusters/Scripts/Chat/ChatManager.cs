@@ -13,8 +13,9 @@ public class ChatManager : NetworkBehaviour, IService
     private const int MaxMessages = 20;
     private const int MaxMessageLength = 100;
 
-    [Header("Components")]
-    [SerializeField] private ChatMessage _chatMessagePrefab;
+    [Header("Components")] [SerializeField]
+    private ChatMessage _chatMessagePrefab;
+
     [SerializeField] private CanvasGroup _chatContent;
     [SerializeField] private TMP_InputField _chatInput;
     [SerializeField] private GameObject _body;
@@ -23,28 +24,42 @@ public class ChatManager : NetworkBehaviour, IService
 
     private PlayerSessionManager _playerSessionManager;
     private bool _isChatOpen;
+    private bool _isOwnerDead;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return) && _chatInput.text.Length <= MaxMessageLength)
         {
-            SendChatMessage(_chatInput.text, _playerSessionManager.GetPlayerName(), _playerSessionManager.GetLocalPlayerID());
+            SendChatMessage(_chatInput.text, _playerSessionManager.GetPlayerName(),
+                _playerSessionManager.GetLocalPlayerID());
             _chatInput.text = string.Empty;
         }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
+            if (_isOwnerDead)
+            {
+                return;
+            }
             _isChatOpen = !_isChatOpen;
+
             _body.SetActive(_isChatOpen);
             if (_isChatOpen)
                 StartCoroutine(ScrollToBottom());
         }
     }
+
     public void Init()
     {
         _playerSessionManager = ServiceLocator.Current.Get<PlayerSessionManager>();
         _body.SetActive(false);
         _chatInput.characterLimit = MaxMessageLength;
+    }
+
+    public void SetOwnerDead()
+    {
+        _isOwnerDead = true;
+        _body.SetActive(false);
     }
 
     public bool IsOpened()
