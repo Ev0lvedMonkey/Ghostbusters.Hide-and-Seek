@@ -289,7 +289,7 @@ MonoBehaviour:
   _bodyTransform: {fileID: 7045450888813315848}
   _bodyRigidbody: {fileID: 2787314762436721399}
   _fireObj: {fileID: 8254223609894997543}
-  _characterMover: {fileID: 78950453516318046}
+  _characterMover: {fileID: 0}
   _hudView: {fileID: 6250410782170815527}
   _deathAudioSource: {fileID: 819188749191972949}
 --- !u!33 &314914473734937228
@@ -518,6 +518,7 @@ GameObject:
   - component: {fileID: 8423483442810501339}
   - component: {fileID: -6451329845446121523}
   - component: {fileID: 110489326125998510}
+  - component: {fileID: 8233105213468748957}
   - component: {fileID: 78950453516318046}
   - component: {fileID: 7320319623691824065}
   - component: {fileID: 8254223609894997543}
@@ -615,6 +616,24 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &8233105213468748957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8826096940076894113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a66306fa4dce88f42babc14b5d15638e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 2787314762436721399}
+  _navCheckDot: {fileID: 1422723434081376078}
+  _groundCheckDot: {fileID: 2943392045248195899}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 513
 --- !u!114 &78950453516318046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,13 +646,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 750082c9dd15c9c4198edad5ec8d62a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 2787314762436721399}
-  _navCheckDot: {fileID: 1422723434081376078}
-  _groundCheckDot: {fileID: 2943392045248195899}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 513
   _characterAbilityStateChanger: {fileID: 3317878131529014239}
+  _abilityEffect: {fileID: 7125343020030941311, guid: 4a3119034fbb50f4699a3b4b28e3fc27, type: 3}
 --- !u!114 &7320319623691824065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,7 +663,7 @@ MonoBehaviour:
   _mouseSenseConfig: {fileID: 11400000, guid: b95d8db789e061c4e925b5dd5b707af2, type: 2}
   _camFollowPosition: {fileID: 6165201409464766203}
   _torseObj: {fileID: 2874304489409965433}
-  _ghostMover: {fileID: 78950453516318046}
+  _ghostMover: {fileID: 8233105213468748957}
   _deafaultCamPos: {fileID: 815552867357321300}
 --- !u!114 &8254223609894997543
 MonoBehaviour:

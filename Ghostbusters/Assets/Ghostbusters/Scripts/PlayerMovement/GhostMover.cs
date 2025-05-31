@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class GhostMover : CharacterMover
+public class GhostMover : CharacterMover
 {
     private readonly Vector3 JumpDir = Vector3.up;
     private const KeyCode JumpKey = KeyCode.Space;
