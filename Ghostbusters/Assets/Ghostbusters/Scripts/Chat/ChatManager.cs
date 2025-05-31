@@ -5,7 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
+
 
 public class ChatManager : NetworkBehaviour, IService
 {
@@ -26,6 +28,8 @@ public class ChatManager : NetworkBehaviour, IService
     private bool _isChatOpen;
     private bool _isOwnerDead;
 
+    internal UnityEvent OnChatStateChanged = new();
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return) && _chatInput.text.Length <= MaxMessageLength)
@@ -35,8 +39,9 @@ public class ChatManager : NetworkBehaviour, IService
             _chatInput.text = string.Empty;
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
+            OnChatStateChanged.Invoke();
             if (_isOwnerDead)
             {
                 return;

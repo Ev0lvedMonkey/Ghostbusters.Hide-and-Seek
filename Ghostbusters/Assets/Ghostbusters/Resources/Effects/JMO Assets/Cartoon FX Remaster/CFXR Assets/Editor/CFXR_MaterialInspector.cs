@@ -208,7 +208,7 @@ namespace CartoonFX
 		public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
 		{
 			//init:
-			//- read metadata in properties comment to generate ui layout
+			//- read metadata in properties comment to generate UI layout
 			//- force update if timestamp doesn't match last (= file externally updated)
 			bool force = (shaderImporter != null && shaderImporter.assetTimeStamp != lastTimestamp);
 			Initialize(materialEditor, force);
