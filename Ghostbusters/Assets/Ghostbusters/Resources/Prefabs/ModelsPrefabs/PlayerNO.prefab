@@ -1234,10 +1234,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7108223805420827826, guid: b62ca8aac848c99479f6caa2153f2456, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7506120872589108128, guid: b62ca8aac848c99479f6caa2153f2456, type: 3}
       propertyPath: m_Name
       value: BusterHUD

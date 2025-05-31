@@ -21,10 +21,12 @@ public class ChatManager : NetworkBehaviour, IService
     [SerializeField] private CanvasGroup _chatContent;
     [SerializeField] private TMP_InputField _chatInput;
     [SerializeField] private GameObject _body;
+    [SerializeField] private GameObject _scrollRectBody;
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private EventSystem _eventSystem;
 
     private PlayerSessionManager _playerSessionManager;
+    private GameOverWinUI _overWinUI;
     private bool _isChatOpen;
     private bool _isOwnerDead;
 
@@ -42,13 +44,14 @@ public class ChatManager : NetworkBehaviour, IService
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             OnChatStateChanged.Invoke();
-            if (_isOwnerDead)
+            if (_isOwnerDead || _overWinUI.IsOpened())
             {
                 return;
             }
             _isChatOpen = !_isChatOpen;
 
-            _body.SetActive(_isChatOpen);
+            _scrollRectBody.SetActive(_isChatOpen);
+            _chatInput.gameObject.SetActive(_isChatOpen);
             if (_isChatOpen)
                 StartCoroutine(ScrollToBottom());
         }
@@ -57,7 +60,9 @@ public class ChatManager : NetworkBehaviour, IService
     public void Init()
     {
         _playerSessionManager = ServiceLocator.Current.Get<PlayerSessionManager>();
-        _body.SetActive(false);
+        _overWinUI = ServiceLocator.Current.Get<GameOverWinUI>();
+        _scrollRectBody.SetActive(false);
+        _chatInput.gameObject.SetActive(false);
         _chatInput.characterLimit = MaxMessageLength;
     }
 
