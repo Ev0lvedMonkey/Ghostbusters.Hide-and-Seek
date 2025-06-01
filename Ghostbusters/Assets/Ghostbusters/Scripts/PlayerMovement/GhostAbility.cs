@@ -30,11 +30,18 @@ public class GhostAbility : NetworkBehaviour
         
         if (Input.GetKeyDown(KeyCode.LeftShift) && _canUseAbility)
         {
-            ActivateAbility();
+            ActivateAbilityServerRpc();
         }
     }
 
-    private void ActivateAbility()
+    [ServerRpc(RequireOwnership = false)]
+    private void ActivateAbilityServerRpc()
+    {
+        ActivateAbilityClientRpc();
+    }
+
+    [ClientRpc]
+    private void ActivateAbilityClientRpc()
     {
         if (_abilityIsActive) return;
         OnDisableAbility.Invoke();

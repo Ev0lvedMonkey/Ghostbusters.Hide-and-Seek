@@ -4,8 +4,8 @@ public class GhostMover : CharacterMover
 {
     private readonly Vector3 JumpDir = Vector3.up;
     private const KeyCode JumpKey = KeyCode.Space;
-    private const float JumpHeight = 5.5f;
-    private const float GroundCheckRadius = 0.3f;
+    private const float JumpHeight = 4.5f;
+    private const float GroundCheckRadius = 0.2f;
 
     [Header("Ghost Movement Components")]
     [SerializeField] private Transform _groundCheckDot;
@@ -14,6 +14,15 @@ public class GhostMover : CharacterMover
     private bool _isGrounded;
 
     public bool IsRotationLocked { get; private set; }
+
+    private void OnDrawGizmos()
+    {
+        if (_groundCheckDot != null)
+        {
+            Gizmos.color = _isGrounded ? Color.green : Color.red;
+            Gizmos.DrawWireSphere(_groundCheckDot.position, GroundCheckRadius);
+        }
+    }
 
     protected override void Awake()
     {
@@ -27,19 +36,6 @@ public class GhostMover : CharacterMover
         Move();
     }
 
-    protected void GhostMove()
-    {
-        if (!IsOwner) return;
-
-        TryJump();
-        UpdateIdleState();
-    }
-
-    protected virtual float GetModifiedSpeed()
-    {
-        return 1.0f;
-    }
-
     protected override void Move()
     {
         if (!IsOwner) return;
@@ -50,8 +46,10 @@ public class GhostMover : CharacterMover
         float verticalInput = _input.y;
 
         _direction = transform.forward * verticalInput + transform.right * horizontalInput;
-        Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * GetModifiedSpeed() * Time.deltaTime;
+        Vector3 targetPosition = transform.position + _direction.normalized * GetMoveSpeed() * Time.deltaTime;
         _rigidbody.MovePosition(targetPosition);
+        TryJump();
+        UpdateIdleState();
         UpdatePositionServerRpc(targetPosition);
     }
 
@@ -68,7 +66,6 @@ public class GhostMover : CharacterMover
     {
         _rigidbody.AddForce(JumpDir * JumpHeight, ForceMode.Impulse);
         _isGrounded = false;
-        Debug.Log("Jumped");
     }
 
     private void UpdateIdleState()
