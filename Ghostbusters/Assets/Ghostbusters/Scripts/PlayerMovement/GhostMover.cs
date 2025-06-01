@@ -26,6 +26,7 @@ public class GhostMover : CharacterMover
 
     protected override void Awake()
     {
+        base.Awake();
         ServiceLocator.Current.Get<GameStateManager>().OnOpenHUD.AddListener(() => IsRotationLocked = true);
     }
 

@@ -289,7 +289,7 @@ MonoBehaviour:
   _bodyTransform: {fileID: 7045450888813315848}
   _bodyRigidbody: {fileID: 2787314762436721399}
   _fireObj: {fileID: 8254223609894997543}
-  _characterMover: {fileID: 0}
+  _characterMover: {fileID: 8233105213468748957}
   _hudView: {fileID: 6250410782170815527}
   _deathAudioSource: {fileID: 819188749191972949}
 --- !u!33 &314914473734937228
