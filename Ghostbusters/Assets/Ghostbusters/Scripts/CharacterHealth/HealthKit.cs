@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class HealthKit : MonoBehaviour
+public class HealthKit : NetworkBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
