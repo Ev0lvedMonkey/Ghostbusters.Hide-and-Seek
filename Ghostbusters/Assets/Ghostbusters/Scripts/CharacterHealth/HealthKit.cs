@@ -23,7 +23,6 @@ public class HealthKit : NetworkBehaviour
             Debug.Log($"Don`t have WeaponFire ib {other.gameObject.name}");
             return;
         }
-
         if (!component.TryGetComponent(out BusterHealthController healthController))
         {
             Debug.Log($"Don`t have BusterHealthController ib {other.gameObject.name}");

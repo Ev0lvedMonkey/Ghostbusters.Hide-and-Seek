@@ -130,7 +130,10 @@ public class GameStateManager : NetworkBehaviour, IService
             case State.GamePlaying:
                 _gamePlayingTimer.Value -= Time.deltaTime;
                 if (_gamePlayingTimer.Value <= _gameDuration / 2)
+                {
                     OnSecretRoomOpen.Invoke();
+                    OnSecretRoomOpenClientRpc();
+                }
                 if (_gamePlayingTimer.Value < 0f)
                 {
                     _state.Value = State.WinGhost;
@@ -138,6 +141,12 @@ public class GameStateManager : NetworkBehaviour, IService
 
                 break;
         }
+    }
+
+    [ClientRpc]
+    private void OnSecretRoomOpenClientRpc()
+    {
+        OnSecretRoomOpen.Invoke();
     }
 
     private void SceneManager_OnLoadEventCompleted(string sceneName,
