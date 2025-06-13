@@ -14,7 +14,6 @@ public class GhostAbility : NetworkBehaviour
 
     private bool _abilityIsActive;
     private bool _canUseAbility = true;
-
     private readonly UnityEvent OnEnableAbility = new();
     private readonly UnityEvent OnDisableAbility = new();
 

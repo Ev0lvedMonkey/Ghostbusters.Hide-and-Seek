@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-
 public class ChatManager : NetworkBehaviour, IService
 {
     private readonly Queue<ChatMessage> _chatMessages = new();
@@ -26,6 +25,7 @@ public class ChatManager : NetworkBehaviour, IService
     [SerializeField] private EventSystem _eventSystem;
 
     private PlayerSessionManager _playerSessionManager;
+    private GameStateManager _gameStateManager;
     private GameOverWinUI _overWinUI;
     private bool _isChatOpen;
     private bool _isOwnerDead;
@@ -40,26 +40,29 @@ public class ChatManager : NetworkBehaviour, IService
                 _playerSessionManager.GetLocalPlayerID());
             _chatInput.text = string.Empty;
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+    private void StateHandler()
+    {
+        OnChatStateChanged.Invoke();
+        if (_isOwnerDead || _overWinUI.IsOpened())
         {
-            OnChatStateChanged.Invoke();
-            if (_isOwnerDead || _overWinUI.IsOpened())
-            {
-                return;
-            }
-            _isChatOpen = !_isChatOpen;
-
-            _scrollRectBody.SetActive(_isChatOpen);
-            _chatInput.gameObject.SetActive(_isChatOpen);
-            if (_isChatOpen)
-                StartCoroutine(ScrollToBottom());
+            return;
         }
+        _isChatOpen = !_isChatOpen;
+
+        _scrollRectBody.SetActive(_isChatOpen);
+        _chatInput.gameObject.SetActive(_isChatOpen);
+        if (_isChatOpen)
+            StartCoroutine(ScrollToBottom());
     }
 
     public void Init()
     {
         _playerSessionManager = ServiceLocator.Current.Get<PlayerSessionManager>();
+        _gameStateManager = ServiceLocator.Current.Get<GameStateManager>();
+        _gameStateManager.OnChatClose.AddListener(StateHandler);
+        _gameStateManager.OnChatOpen.AddListener(StateHandler);
         _overWinUI = ServiceLocator.Current.Get<GameOverWinUI>();
         _scrollRectBody.SetActive(false);
         _chatInput.gameObject.SetActive(false);

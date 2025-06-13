@@ -68,17 +68,6 @@ public class SettingUI : MonoBehaviour
         _mouseSenceSettingUI.RemoveComponentsListeners();
     }
 
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
-
-
     private void InitSubSettings()
     {
         _mouseSenceSettingUI.SetSenseValues();
@@ -87,8 +76,6 @@ public class SettingUI : MonoBehaviour
         _screenModeChanger.DetermineScreenMode();
         _screenModeChanger.AddComponentsListeners();
     }
-
-
     private void OnMusicSliderChanged(float value)
     {
         SetMusicVolume(value);
@@ -145,5 +132,15 @@ public class SettingUI : MonoBehaviour
     {
         _selectedLanguage = (Language)CustomPlayerPrefs.GetInt(LanguageKey, (int)Language.ru);
         ChangeLocale(_selectedLanguage);
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7802146907363162552
 Transform:
   m_ObjectHideFlags: 0
@@ -546,6 +546,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7802146907363162552}
     m_Modifications:
+    - target: {fileID: 702872839258772175, guid: efc43cadc295b9f45999cab09592b117, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3894411533
+      objectReference: {fileID: 0}
     - target: {fileID: 732877307226614718, guid: efc43cadc295b9f45999cab09592b117, type: 3}
       propertyPath: m_Name
       value: HealKit (3)
@@ -830,6 +834,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7802146907363162552}
     m_Modifications:
+    - target: {fileID: 702872839258772175, guid: efc43cadc295b9f45999cab09592b117, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3894411533
+      objectReference: {fileID: 0}
     - target: {fileID: 732877307226614718, guid: efc43cadc295b9f45999cab09592b117, type: 3}
       propertyPath: m_Name
       value: HealKit (1)
@@ -892,6 +900,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7802146907363162552}
     m_Modifications:
+    - target: {fileID: 702872839258772175, guid: efc43cadc295b9f45999cab09592b117, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3894411533
+      objectReference: {fileID: 0}
     - target: {fileID: 732877307226614718, guid: efc43cadc295b9f45999cab09592b117, type: 3}
       propertyPath: m_Name
       value: HealKit
@@ -1488,6 +1500,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7802146907363162552}
     m_Modifications:
+    - target: {fileID: 702872839258772175, guid: efc43cadc295b9f45999cab09592b117, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3894411533
+      objectReference: {fileID: 0}
     - target: {fileID: 732877307226614718, guid: efc43cadc295b9f45999cab09592b117, type: 3}
       propertyPath: m_Name
       value: HealKit (4)
@@ -1846,6 +1862,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7802146907363162552}
     m_Modifications:
+    - target: {fileID: 702872839258772175, guid: efc43cadc295b9f45999cab09592b117, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3894411533
+      objectReference: {fileID: 0}
     - target: {fileID: 732877307226614718, guid: efc43cadc295b9f45999cab09592b117, type: 3}
       propertyPath: m_Name
       value: HealKit (2)

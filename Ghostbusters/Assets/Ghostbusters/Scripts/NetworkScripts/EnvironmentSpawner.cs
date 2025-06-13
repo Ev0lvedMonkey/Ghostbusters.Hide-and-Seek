@@ -44,7 +44,8 @@ public class EnvironmentSpawner : NetworkBehaviour
             if (entry.prefab == null || entry.spawnPoint == null)
                 continue;
 
-            GameObject obj = Instantiate(entry.prefab, entry.spawnPoint.position, entry.spawnPoint.rotation);
+            GameObject obj = 
+                Instantiate(entry.prefab, entry.spawnPoint.position, entry.spawnPoint.rotation);
             NetworkObject netObj = obj.GetComponent<NetworkObject>();
 
             if (netObj != null && !netObj.IsSpawned)
@@ -56,26 +57,5 @@ public class EnvironmentSpawner : NetworkBehaviour
         }
 
         _enviromentSpawned = true;
-    }
-
-    public void DespawnAll()
-    {
-        foreach (var obj in spawnedObjects)
-        {
-            if (obj != null)
-            {
-                var netObj = obj.GetComponent<NetworkObject>();
-                if (netObj != null && netObj.IsSpawned && IsServer)
-                {
-                    netObj.Despawn();
-                }
-                else
-                {
-                    Destroy(obj);
-                }
-            }
-        }
-
-        spawnedObjects.Clear();
     }
 }

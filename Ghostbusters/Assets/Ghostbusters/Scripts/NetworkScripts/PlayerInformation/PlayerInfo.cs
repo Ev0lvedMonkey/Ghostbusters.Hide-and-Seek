@@ -18,16 +18,16 @@ public abstract class PlayerInfo : MonoBehaviour
         _serviceLocator = ServiceLocator.Current;
         _playerSessionManager = _serviceLocator.Get<PlayerSessionManager>(); 
         
-        _playerSessionManager.OnPlayerDataNetworkListChanged.AddListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
-        _playerReadyManager.OnReadyChanged.AddListener(CharacterSelectReady_OnReadyChanged);
+        _playerSessionManager.OnPlayerDataNetworkListChanged.AddListener(PlayerSessionManager_OnPlayerDataNetworkListChanged);
+        _playerReadyManager.OnReadyChanged.AddListener(PlayerReadyManager_OnReadyChanged);
 
         UpdatePlayer();
     }
 
     public virtual void Uninit()
     {
-        _playerSessionManager.OnPlayerDataNetworkListChanged.RemoveListener(MultiplayerStorage_OnPlayerDataNetworkListChanged);
-        _playerReadyManager?.OnReadyChanged.RemoveListener(CharacterSelectReady_OnReadyChanged);
+        _playerSessionManager.OnPlayerDataNetworkListChanged.RemoveListener(PlayerSessionManager_OnPlayerDataNetworkListChanged);
+        _playerReadyManager?.OnReadyChanged.RemoveListener(PlayerReadyManager_OnReadyChanged);
         _playerReadyManager = null;
     }
 
@@ -50,12 +50,12 @@ public abstract class PlayerInfo : MonoBehaviour
         Debug.Log($"[Playerinfo] Update player index {_playerIndex}, name {_playerNameText.text} ");
     }
 
-    private void CharacterSelectReady_OnReadyChanged()
+    private void PlayerReadyManager_OnReadyChanged()
     {
         UpdatePlayer();
     }
 
-    private void MultiplayerStorage_OnPlayerDataNetworkListChanged()
+    private void PlayerSessionManager_OnPlayerDataNetworkListChanged()
     {
         UpdatePlayer();
     }

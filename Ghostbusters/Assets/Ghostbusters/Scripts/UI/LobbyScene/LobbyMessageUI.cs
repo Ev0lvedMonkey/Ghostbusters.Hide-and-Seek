@@ -37,7 +37,9 @@ public class LobbyMessageUI : MonoBehaviour
 
     private void LobbyMessage_OnQuickJoinFailed()
     {
-        ShowMessage(LocalizationSettings.StringDatabase.GetLocalizedString(DynamicTextTable, "QuickJoinFailedText_Key"));
+        ShowMessage(
+            LocalizationSettings.StringDatabase.
+                GetLocalizedString(DynamicTextTable, "QuickJoinFailedText_Key"));
     }
 
     private void LobbyMessage_OnJoinFailed()

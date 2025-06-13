@@ -34,6 +34,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
     internal UnityEvent OnQuickJoinFailed = new();
     internal UnityEvent OnJoinFailed = new();
     internal UnityEvent OnSignIn = new();
+
     private void Update()
     {
         HandleHeartbeat();
@@ -66,6 +67,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
         {
             if (string.IsNullOrWhiteSpace(lobbyName))
                 lobbyName = $"Lobby_{UnityEngine.Random.Range(100, 1000)}";
+            GenerateDefaultPlayerName();
             _joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, PlayerSessionManager.MaxPlayerAmount,
                 new CreateLobbyOptions
                 {
@@ -97,10 +99,19 @@ public class LobbyRelayManager : MonoBehaviour, IService
         }
     }
 
+    private void GenerateDefaultPlayerName()
+    {
+        if (string.IsNullOrWhiteSpace(_playerName))
+        {
+            _playerName = "Player" + UnityEngine.Random.Range(0, 1000);
+            _serviceLocator.Get<PlayerSessionManager>().SetPlayerName(_playerName);
+        }
+    }
+
     public async Task QuickJoin()
     {
         if (!IsAuthorized()) return;
-
+        GenerateDefaultPlayerName();
         OnJoinStarted?.Invoke();
         try
         {
@@ -120,7 +131,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
     public async Task JoinByCode(string lobbyCode)
     {
         if (!IsAuthorized()) return;
-
+        GenerateDefaultPlayerName();
         OnJoinStarted?.Invoke();
         try
         {
@@ -140,7 +151,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
     public async void JoinWithId(string lobbyId)
     {
         if (!IsAuthorized()) return;
-
+        GenerateDefaultPlayerName();
         OnJoinStarted?.Invoke();
         try
         {
@@ -156,7 +167,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
             OnJoinFailed?.Invoke();
         }
     }
-    
+
     public async void DeleteLobby()
     {
         if (_joinedLobby != null)
@@ -197,6 +208,7 @@ public class LobbyRelayManager : MonoBehaviour, IService
     {
         return _playerName;
     }
+
     public async void KickPlayer(string playerId)
     {
         if (IsLobbyHost())

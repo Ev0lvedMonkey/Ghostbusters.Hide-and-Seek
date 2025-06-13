@@ -10,6 +10,7 @@ public abstract class HealthView : MonoBehaviour
 
     public void UpdateHealthBar(float healthPercentage, float currentHealth)
     {
+        Debug.Log($"{gameObject.name} get new HealthView {healthPercentage} {currentHealth}");
         _healthBarImage.fillAmount = healthPercentage;
         _healthText.text = currentHealth.ToString();
     }

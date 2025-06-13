@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameSceneConfigurationScriptableObject", menuName = "GameSceneConfiguration")]
+[CreateAssetMenu(fileName = "GameSceneConfigurationScriptableObject",
+    menuName = "GameSceneConfiguration")]
 public class GameSceneConfiguration : ScriptableObject
 {
     [SerializeField] private GameObject _level;
@@ -14,8 +15,6 @@ public class GameSceneConfiguration : ScriptableObject
 
     public GameObject GetEnviroment(int index)
     {
-        Debug.Log(
-            $"[GameSceneConfiguration] GetEnviroment {index} on player {ServiceLocator.Current.Get<PlayerSessionManager>().GetPlayerData().playerName}");
         return _enviromentType[index];
     }
 

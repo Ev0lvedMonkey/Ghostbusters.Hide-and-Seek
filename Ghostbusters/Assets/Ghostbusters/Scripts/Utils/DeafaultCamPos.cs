@@ -5,7 +5,7 @@ using UnityEngine;
 public class DeafaultCamPos : MonoBehaviour
 {
     private const float TweenDuration = 0.5f;
-    private const float UpdateInterval = 2.5f;
+    private const float UpdateInterval = 1f;
 
     private const float MinZ = -2.5f;
     private const float MaxZ = 0.1f;

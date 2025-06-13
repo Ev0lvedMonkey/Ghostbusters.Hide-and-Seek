@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour, IService
 {
-    [Header("Audio Сomponents")]
+    [Header("Audio Components")]
     [SerializeField] private AudioSource _audioSource;
 
     private void OnValidate()

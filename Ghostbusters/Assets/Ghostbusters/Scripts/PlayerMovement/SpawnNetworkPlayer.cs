@@ -17,8 +17,10 @@ public class SpawnNetworkPlayer : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        ulong clientID = _serviceLocator.Get<PlayerSessionManager>().GetPlayerData().clientId;
-        int playerIndex = _serviceLocator.Get<PlayerSessionManager>().GetPlayerDataIndexFromClientId(clientID);
+        ulong clientID = _serviceLocator
+            .Get<PlayerSessionManager>().GetPlayerData().clientId;
+        int playerIndex = _serviceLocator
+            .Get<PlayerSessionManager>().GetPlayerDataIndexFromClientId(clientID);
         transform.position = _spawnPositionList.GetSpawnPositon(playerIndex);
     }
 }

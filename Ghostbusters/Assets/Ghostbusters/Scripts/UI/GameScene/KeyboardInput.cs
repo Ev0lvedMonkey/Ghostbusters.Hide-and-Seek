@@ -16,16 +16,12 @@ public class KeyboardInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (_isMenuOpen == false)
-            {
                 _gameStateManager.OnOpenHUD.Invoke();
-            }
             else
-            {
                 _gameStateManager.OnCloseHUD.Invoke();
-            }
             _isMenuOpen = !_isMenuOpen;
         }
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (_isChatOpen == false)
             {

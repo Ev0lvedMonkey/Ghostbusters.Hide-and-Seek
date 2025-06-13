@@ -30,7 +30,10 @@ public class WorldSpaceCanvasTransform : NetworkBehaviour
 
     private void RotateTowardCam(Camera cam)
     {
-        transform.LookAt(transform.position + (cam.transform.rotation * Vector3.forward), cam. transform.rotation * Vector3.up);
+        transform
+            .LookAt(transform.position
+                    + (cam.transform.rotation * Vector3.forward),
+                cam. transform.rotation * Vector3.up);
     }
 
     [ServerRpc(RequireOwnership = true)]

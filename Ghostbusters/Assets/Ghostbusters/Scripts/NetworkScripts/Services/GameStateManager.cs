@@ -27,7 +27,6 @@ public class GameStateManager : NetworkBehaviour, IService
     private NetworkVariable<float> _startDelay;
     private NetworkVariable<float> _gamePlayingTimer = new(0f);
     private float _gameDuration;
-    private Dictionary<ulong, bool> _playerReadyDictionary;
     private ServiceLocator _serviceLocator;
 
     internal UnityEvent OnStateChanged = new();
@@ -64,7 +63,7 @@ public class GameStateManager : NetworkBehaviour, IService
     public void StartCountdown()
     {
         _state.Value = State.CountdownToStart;
-        Debug.LogWarning($"CountdownToStart started");
+        Debug.Log($"CountdownToStart started");
     }
 
     public bool IsCountdownToStartActive()
@@ -222,29 +221,5 @@ public class GameStateManager : NetworkBehaviour, IService
     {
         OnStateChanged?.Invoke();
         Debug.Log($"State changed from {previousValue} to {newValue}");
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
-    {
-        _playerReadyDictionary = new Dictionary<ulong, bool>();
-
-        _playerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
-
-        bool allClientsReady = true;
-        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
-        {
-            if (!_playerReadyDictionary.ContainsKey(clientId) || !_playerReadyDictionary[clientId])
-            {
-                allClientsReady = false;
-                break;
-            }
-        }
-
-        if (allClientsReady)
-        {
-            _state.Value = State.CountdownToStart;
-            Debug.Log($"CountdownToStart started");
-        }
     }
 }
